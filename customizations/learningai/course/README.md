@@ -46,3 +46,7 @@ See `PROGRESS-CONTRACT.md`. Demo localStorage is device/browser/origin-only. It 
 - **Site migration:** confirm the authoritative current frontend and deployment target, make a reviewed backup, establish lesson routes and identity/progress ownership, and test links and accessibility before switching anything. No DNS, hosting, production files, or databases have been changed.
 
 References: [SurveyJS source and MIT license](https://github.com/surveyjs/survey-library), [plain-JavaScript setup](https://surveyjs.io/form-library/documentation/get-started-html-css-javascript), [H5P core](https://github.com/h5p/h5p-php-library), [H5P WordPress integration](https://github.com/h5p/h5p-wordpress-plugin).
+
+## Supplemental curriculum
+
+[AI and the Natural Resources Behind It](curriculum/supplemental/ai-and-natural-resources/README.md): supplied content draft and video storyboard, separate from the 15 numbered lessons. No video has been generated or published.
