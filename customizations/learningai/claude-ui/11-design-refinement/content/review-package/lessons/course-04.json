@@ -1,0 +1,159 @@
+{
+  "id": "lai.ai-you-can-use.l04",
+  "version": 1,
+  "title": "What is prompt engineering?",
+  "number": 4,
+  "sourceIds": [
+    "llm"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l04.brief",
+    "lai.ai-you-can-use.l04.check",
+    "lai.ai-you-can-use.l04.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l04.brief",
+    "lai.ai-you-can-use.l04.check"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l04.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "What is prompt engineering?",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l04.intro",
+            "html": "<h3>Write and test a brief with a task, relevant context, limits and output format.</h3><p>A prompt is an instruction and context you give a system. A useful brief makes the task inspectable: what should be done, for whom, with which limits, and in what format? A role such as “expert” may change style but does not give the model new evidence or qualifications. Better wording can help; it cannot guarantee truth. Test the result against your brief and keep responsibility for the decision.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>You need a notice for a fictional free book swap: Tuesday, library, 15:30–16:00. No refreshments are promised.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l04.brief",
+            "title": "Which prompt makes success easiest to check?",
+            "isRequired": true,
+            "correctAnswer": "specific",
+            "choices": [
+              {
+                "value": "magic",
+                "text": "Act as the world’s best organizer. Be perfect."
+              },
+              {
+                "value": "specific",
+                "text": "Draft a 40-word notice using only Tuesday, library, 15:30–16:00, free book swap; do not invent extras."
+              },
+              {
+                "value": "long",
+                "text": "Write the longest announcement possible."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l04.brief.feedback.magic",
+            "html": "<p class=\"feedback\" role=\"status\">There are no checkable facts or limits here.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l04.brief} = 'magic'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l04.brief.feedback.specific",
+            "html": "<p class=\"feedback\" role=\"status\">Clear facts and limits make review easier, though you still must inspect it.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l04.brief} = 'specific'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l04.brief.feedback.long",
+            "html": "<p class=\"feedback\" role=\"status\">Length is not the goal.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l04.brief} = 'long'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l04.check",
+            "title": "The draft adds free pizza. What next?",
+            "isRequired": true,
+            "correctAnswer": "remove",
+            "choices": [
+              {
+                "value": "keep",
+                "text": "Keep it because it sounds inviting."
+              },
+              {
+                "value": "remove",
+                "text": "Remove the unsupported promise and compare every fact with the brief."
+              },
+              {
+                "value": "role",
+                "text": "Add “expert” and trust the next draft unseen."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l04.check.feedback.keep",
+            "html": "<p class=\"feedback\" role=\"status\">It invents a promise.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l04.check} = 'keep'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l04.check.feedback.remove",
+            "html": "<p class=\"feedback\" role=\"status\">Correct the output using the supplied facts.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l04.check} = 'remove'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l04.check.feedback.role",
+            "html": "<p class=\"feedback\" role=\"status\">A role is not a factual check.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l04.check} = 'role'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l04.transfer",
+            "title": "Write your own brief for the book swap, then name two checks you would apply to any draft.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l04.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Includes all supplied event facts without new promises.</li><li>States audience or format.</li><li>Names two observable checks.</li></ul><p>Prompt patterns vary across models; no universal magic phrase is taught.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

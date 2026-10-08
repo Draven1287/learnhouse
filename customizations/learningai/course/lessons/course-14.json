@@ -1,0 +1,204 @@
+{
+  "id": "lai.ai-you-can-use.l14",
+  "version": 1,
+  "title": "Make something useful",
+  "number": 14,
+  "sourceIds": [
+    "competencies"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l14.scope",
+    "lai.ai-you-can-use.l14.record",
+    "lai.ai-you-can-use.l14.transfer",
+    "lai.ai-you-can-use.l14.artifact",
+    "lai.ai-you-can-use.l14.criteria",
+    "lai.ai-you-can-use.l14.process"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l14.scope",
+    "lai.ai-you-can-use.l14.record"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l14.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Make something useful",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l14.intro",
+            "html": "<h3>Create a small artifact with a defined audience, evidence and documented choices.</h3><p>Choose a problem small enough to test. Define who the artifact helps, what it must do, and what it must not claim. Keep a source list and a record of decisions. You may use the course’s fictional materials, permitted AI assistance, or no AI. Your project is evaluated on evidence, usefulness and judgment, not on how much AI you used or how polished it looks.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Project options: a one-page study guide from teacher-provided material; an accessible club notice using these fictional facts (Tuesday, library, 15:30–16:00, free entry, bring one book; no food promised); or a checklist for checking a viral claim. No external account, real personal data, or publication is required.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l14.scope",
+            "title": "Which project brief is testable?",
+            "isRequired": true,
+            "correctAnswer": "small",
+            "choices": [
+              {
+                "value": "small",
+                "text": "Make a club notice that states five supplied facts and is understandable without an image."
+              },
+              {
+                "value": "huge",
+                "text": "Make a guide that everyone will find helpful, without defining a user or test."
+              },
+              {
+                "value": "persuade",
+                "text": "Show that the AI draft is best before comparing it with alternatives."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l14.scope.feedback.small",
+            "html": "<p class=\"feedback\" role=\"status\">The facts and access requirement can be checked.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l14.scope} = 'small'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l14.scope.feedback.huge",
+            "html": "<p class=\"feedback\" role=\"status\">Choose an audience and observable criteria so usefulness can be tested.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l14.scope} = 'huge'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l14.scope.feedback.persuade",
+            "html": "<p class=\"feedback\" role=\"status\">Deciding the winner in advance blocks honest evaluation.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l14.scope} = 'persuade'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l14.record",
+            "title": "Which process record supports review?",
+            "isRequired": true,
+            "correctAnswer": "log",
+            "choices": [
+              {
+                "value": "log",
+                "text": "Keep source facts, draft, edits, assistance used or not used, and unresolved questions."
+              },
+              {
+                "value": "only",
+                "text": "Keep only the final image."
+              },
+              {
+                "value": "invent",
+                "text": "Invent user feedback to make the project convincing."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l14.record.feedback.log",
+            "html": "<p class=\"feedback\" role=\"status\">A reviewer can follow your reasoning.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l14.record} = 'log'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l14.record.feedback.only",
+            "html": "<p class=\"feedback\" role=\"status\">The result alone hides evidence and decisions.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l14.record} = 'only'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l14.record.feedback.invent",
+            "html": "<p class=\"feedback\" role=\"status\">Label actual tests and unknowns honestly.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l14.record} = 'invent'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l14.artifact",
+            "title": "Paste your draft artifact as plain text (or a complete text description). Use the fictional club facts if you need a starting point.",
+            "isRequired": true,
+            "maxLength": 6000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 80,
+                "text": "Add at least 80 characters of work to submit."
+              }
+            ]
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l14.criteria",
+            "title": "Name the audience and three observable success criteria.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 40,
+                "text": "Add at least 40 characters of work to submit."
+              }
+            ]
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l14.process",
+            "title": "List your sources or supplied facts, assistance used or not used, and two edits with reasons.",
+            "isRequired": true,
+            "maxLength": 3000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 60,
+                "text": "Add at least 60 characters of work to submit."
+              }
+            ]
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l14.transfer",
+            "title": "Create the artifact, then attach a short project card: audience, three success criteria, sources, assistance choices, two edits and one limitation.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l14.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Meets a clear small goal.</li><li>Uses traceable permitted material.</li><li>Documents decisions and uncertainty.</li><li>Provides a usable non-AI path and accessible text.</li></ul><p>This is a classroom draft. Do not publish, collect user data, or claim real-world impact as part of the exercise.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

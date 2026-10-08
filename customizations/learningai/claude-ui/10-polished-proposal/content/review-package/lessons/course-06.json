@@ -1,0 +1,160 @@
+{
+  "id": "lai.ai-you-can-use.l06",
+  "version": 1,
+  "title": "Show what good looks like",
+  "number": 6,
+  "sourceIds": [
+    "children",
+    "nist"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l06.format",
+    "lai.ai-you-can-use.l06.include",
+    "lai.ai-you-can-use.l06.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l06.format",
+    "lai.ai-you-can-use.l06.include"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l06.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Show what good looks like",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l06.intro",
+            "html": "<h3>Use examples to communicate format while noticing whose examples are missing.</h3><p>An example can show a desired structure more clearly than a vague adjective. Keep facts separate from the example’s style: copying a format is not permission to invent matching facts. Examples also influence which voices and situations appear normal. If all examples represent one group, test whether the result works for others. A small classroom test can reveal a problem, but cannot prove a system is fair everywhere.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>A fictional club uses notices with headings “When / Where / Bring.” Every sample assumes participants own a laptop. This event provides paper and welcomes students without devices.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l06.format",
+            "title": "What should be copied?",
+            "isRequired": true,
+            "correctAnswer": "shape",
+            "choices": [
+              {
+                "value": "shape",
+                "text": "The three headings, filled only with verified event facts."
+              },
+              {
+                "value": "laptop",
+                "text": "The laptop requirement from old examples."
+              },
+              {
+                "value": "names",
+                "text": "The old attendees’ names."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l06.format.feedback.shape",
+            "html": "<p class=\"feedback\" role=\"status\">Use structure while checking content.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l06.format} = 'shape'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l06.format.feedback.laptop",
+            "html": "<p class=\"feedback\" role=\"status\">That requirement does not apply here.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l06.format} = 'laptop'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l06.format.feedback.names",
+            "html": "<p class=\"feedback\" role=\"status\">Names are irrelevant and may disclose information.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l06.format} = 'names'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l06.include",
+            "title": "Which test addresses the missing perspective?",
+            "isRequired": true,
+            "correctAnswer": "access",
+            "choices": [
+              {
+                "value": "same",
+                "text": "Show it only to laptop owners."
+              },
+              {
+                "value": "access",
+                "text": "Ask whether someone without a device can understand how to join."
+              },
+              {
+                "value": "declare",
+                "text": "Declare it fair because the layout is neat."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l06.include.feedback.same",
+            "html": "<p class=\"feedback\" role=\"status\">This repeats the blind spot.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l06.include} = 'same'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l06.include.feedback.access",
+            "html": "<p class=\"feedback\" role=\"status\">Test the access condition the examples omitted.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l06.include} = 'access'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l06.include.feedback.declare",
+            "html": "<p class=\"feedback\" role=\"status\">Appearance is not evidence of inclusion.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l06.include} = 'declare'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l06.transfer",
+            "title": "Rewrite one notice line so it includes students without devices. State one additional perspective your test did not cover.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l06.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Preserves event facts.</li><li>Removes an unsupported device assumption.</li><li>Acknowledges a remaining test limitation.</li></ul><p>Fairness has multiple definitions; this activity checks one access barrier, not universal fairness.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

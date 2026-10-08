@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LearningAI · Cover</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..700;1,62..125,300&display=swap">
+<style>
+/* Concept B: COVER. The Home page as an issue cover. The learner's current lesson is the cover story;
+   everything else (greeting, progress, the way back to the course) is set as masthead, dateline and contents.
+   Pure black and white, one family, one easing curve, one orchestrated reveal. */
+:root{
+  --bg:#000; --raise:#0B0B0B;
+  --text:#F4F4F2; --text-2:#D9D9D6; --muted:#8E8E8B; --dim:#777774; --deco:#4A4A48; --track:#2A2A29;
+  --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.22);
+  --font:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gutter:max(40px,calc((100vw - 1312px)/2));
+  --gap:24px;
+  --cap-fs:11px; --cap-ls:.22em;
+  color-scheme:dark;
+}
+@media (max-width:899px){:root{--gutter:20px;--gap:16px}}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.6;letter-spacing:.005em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--text);color:#000}
+h1,p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+:focus-visible{outline:1px solid var(--text);outline-offset:4px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px}.skip:focus{left:20px;top:16px;z-index:99;background:var(--text);color:#000;padding:8px 14px}
+.cap{font-stretch:125%;font-size:var(--cap-fs);font-weight:500;letter-spacing:var(--cap-ls);text-transform:uppercase;color:var(--muted);line-height:1.4}
+.num{font-variant-numeric:tabular-nums lining-nums}
+em{font-style:normal;color:var(--text)}
+
+/* ---------- buttons and links (house system) ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;height:50px;padding:0 24px;border-radius:2px;border:1px solid var(--line-2);background:transparent;color:var(--text);font:500 11.5px var(--font);font-stretch:125%;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background .35s var(--ease),border-color .35s var(--ease),transform .35s var(--ease)}
+.btn:hover{border-color:var(--text)}
+.btn:active{transform:scale(.98)}
+.btn.white{background:var(--text);color:#000;border-color:var(--text)}
+.btn.white:hover{background:#fff}
+.btn.white:focus-visible{outline:0;box-shadow:0 0 0 2px #000,0 0 0 3px var(--text)}
+.btn .chev{font-size:15px;letter-spacing:0;line-height:1;margin-top:-2px;transition:transform .3s var(--ease)}
+.btn:hover .chev{transform:translateX(3px)}
+.ulink{display:inline-flex;align-items:center;gap:10px;font-stretch:125%;font-size:11.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;padding:0 0 4px;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;transition:background-size .45s var(--ease)}
+.ulink:hover{background-size:0 1px;background-position:100% 100%}
+
+/* ---------- page frame: one screen on desktop ---------- */
+.page{display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto;min-height:100svh;padding:0 var(--gutter) 56px}
+@media (min-width:900px) and (min-height:700px){.page{height:100svh}}
+.g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap)}
+.c-lbl{grid-column:1 / span 2}
+.c-main{grid-column:3 / -1}
+
+/* header: house pattern */
+.nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:72px}
+.menu-trigger{justify-self:start;display:inline-flex;align-items:center;gap:14px;background:none;border:0;cursor:pointer;padding:12px 0;font:500 11.5px var(--font);font-stretch:125%;letter-spacing:var(--cap-ls);text-transform:uppercase}
+.menu-trigger i{display:grid;gap:6px;width:26px}
+.menu-trigger i::before,.menu-trigger i::after{content:"";height:1px;background:currentColor;display:block;transition:transform .4s var(--ease)}
+.menu-trigger:hover i::after{transform:scaleX(.6);transform-origin:left}
+.mark{justify-self:center;font-stretch:125%;font-weight:500;font-size:13px;letter-spacing:.34em;text-transform:uppercase;padding:12px 0 12px .34em}
+.nav-ctx{justify-self:end;display:inline-flex;align-items:center;gap:10px;font-stretch:125%;font-size:11.5px;font-weight:500;letter-spacing:var(--cap-ls);text-transform:uppercase;padding:12px 0;color:var(--text-2)}
+.nav-ctx:hover{color:var(--text)}
+.nav-ctx .chev{font-size:15px;letter-spacing:0;line-height:1;margin-top:-2px;transition:transform .3s var(--ease)}
+.nav-ctx:hover .chev{transform:translateX(3px)}
+
+/* dateline: the masthead strip */
+.dateline{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:14px 0 13px}
+.dateline #dl-issue{justify-self:center}
+.dateline #dl-date{justify-self:end;text-align:right}
+.dateline b{font-weight:500;color:var(--text)}
+.hl{position:absolute;left:0;right:0;height:1px;background:var(--line-2);transform-origin:left center}
+.hl.top{top:0}.hl.bot{bottom:0}
+.hl.soft{background:var(--line)}
+
+/* the cover story */
+.story{display:flex;flex-direction:column;min-height:0;padding-top:22px}
+.labels{align-items:baseline}
+.lblrow{display:flex;justify-content:space-between;gap:16px;align-items:baseline}
+.head{margin-top:auto;align-items:start;padding:18px 0 30px}
+.folio{display:flex;flex-direction:column;gap:14px;min-width:0}
+.fnum{display:block;font-stretch:62%;font-weight:100;line-height:.78;letter-spacing:-.02em;white-space:nowrap;font-variant-numeric:tabular-nums lining-nums;font-size:200px;color:var(--text);margin-top:.02em}
+.fmeta{display:flex;flex-direction:column;gap:9px}
+.ticks{display:flex;gap:4px;max-width:150px}
+.ticks i{flex:1;height:1px;background:var(--deco)}
+.ticks i.on{background:var(--text)}
+.ticks i.now{background:var(--text);height:3px;margin-top:-1px}
+.title{font-stretch:125%;font-weight:250;text-transform:uppercase;letter-spacing:.005em;line-height:.96;font-size:120px;text-wrap:balance;color:var(--text);min-width:0}
+.title .w{display:inline-block;overflow:hidden;vertical-align:top;padding:.04em 0 .06em;margin:-.04em 0 -.06em}
+.title .w > span{display:inline-block}
+
+/* standfirst row */
+.foot{position:relative;padding:26px 0 30px;row-gap:22px}
+.dek-wrap{grid-column:3 / span 5}
+.dek{font-size:22px;line-height:1.42;font-weight:300;color:var(--text-2);letter-spacing:0;text-wrap:pretty;max-width:34ch}
+.side{grid-column:9 / -1;display:flex;flex-direction:column;gap:10px}
+.hello{font-stretch:112%;font-size:19px;font-weight:400;line-height:1.3;color:var(--text);letter-spacing:.005em}
+.line{font-size:15px;line-height:1.55;color:var(--text-2);text-wrap:pretty}
+.memory{font-size:13.5px;line-height:1.5;color:var(--muted)}
+.memory em{color:var(--text-2)}
+.ctas{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:10px}
+
+/* contents strip */
+.contents{position:relative;padding:18px 0 0}
+.parts{row-gap:18px}
+.part{grid-column:span 4;min-width:0}
+.part-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.part-h .cap b{font-weight:500;color:var(--text-2);margin-right:.7em}
+.ptrack{position:relative;height:1px;background:var(--track);margin:10px 0 2px;overflow:hidden}
+.ptrack::after{content:"";position:absolute;inset:0;background:var(--text);transform-origin:left;transform:scaleX(var(--p,0))}
+.nums{display:flex;justify-content:space-between}
+.n{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:34px;font-stretch:100%;font-size:12.5px;font-weight:400;letter-spacing:.06em;font-variant-numeric:tabular-nums lining-nums;color:var(--dim);transition:color .3s var(--ease)}
+.n:first-child{justify-content:flex-start}.n:last-child{justify-content:flex-end}
+.n.done{color:var(--text-2)}
+.n.now{color:var(--text);font-weight:600}
+.n.now::after{content:"";position:absolute;left:0;right:0;bottom:5px;height:1px;background:var(--text)}
+.n:first-child.now::after{right:auto;width:16px}.n:last-child.now::after{left:auto;width:16px}
+a.n:hover{color:var(--text)}
+.caption{margin-top:6px;min-height:18px;display:flex;gap:14px;align-items:baseline}
+.caption .t{font-size:13px;color:var(--text-2)}
+
+/* ---------- design-review control (not part of the design) ---------- */
+.review{position:fixed;right:16px;bottom:12px;z-index:60;font-size:11px}
+.rev-btn{display:inline-flex;align-items:center;gap:10px;height:30px;padding:0 12px;border:1px dashed var(--line-2);border-radius:2px;background:var(--raise);cursor:pointer;font-stretch:112%;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.rev-btn b{font-weight:500;color:var(--text)}
+.rev-btn:hover{color:var(--text-2);border-color:var(--muted)}
+.rev-panel{position:absolute;right:0;bottom:38px;width:240px;padding:12px;border:1px dashed var(--line-2);border-radius:2px;background:var(--raise)}
+.rev-panel p{font-size:11px;line-height:1.45;color:var(--muted);margin:0 0 10px}
+.rev-panel button{display:flex;justify-content:space-between;width:100%;padding:8px 10px;border:0;border-radius:2px;background:none;cursor:pointer;font-size:12.5px;color:var(--text-2);text-align:left}
+.rev-panel button span{color:var(--muted)}
+.rev-panel button:hover{background:#151515}
+.rev-panel button[aria-pressed="true"]{background:var(--text);color:#000}
+.rev-panel button[aria-pressed="true"] span{color:#333}
+
+/* ---------- narrow layouts ---------- */
+@media (max-width:1180px) and (min-width:900px){
+  .dek-wrap{grid-column:3 / span 4}.side{grid-column:8 / -1}
+}
+@media (max-width:899px){
+  .g{grid-template-columns:minmax(0,1fr)}
+  .c-lbl,.c-main,.dek-wrap,.side,.part{grid-column:1 / -1}
+  .labels .c-lbl{display:none}
+  .nav{height:64px}
+  .menu-trigger span,.nav-ctx .t{display:none}
+  .mark{font-size:12px;letter-spacing:.3em}
+  .dateline{grid-template-columns:1fr auto;row-gap:4px}
+  .dateline #dl-issue,#lbl-range{display:none}
+  .dateline #dl-date{white-space:nowrap}
+  .story{padding-top:18px}
+  .head{margin-top:0;padding:16px 0 26px;row-gap:22px}
+  .folio{flex-direction:row;align-items:flex-end;gap:16px;order:0}
+  .fnum{font-size:88px}
+  .fmeta{padding-bottom:4px;flex:1}
+  .ticks{max-width:120px}
+  .title{font-size:44px;line-height:1}
+  .foot{padding:22px 0 26px}
+  .dek{font-size:19px}
+  .ctas .btn{flex:1 1 auto}
+  .page{padding-bottom:64px}
+}
+
+/* ---------- the reveal: lines unmask, hairlines draw ---------- */
+.js .rv{opacity:0}
+.js .title .w > span{transform:translateY(108%)}
+.js .hl,.js .ptrack::after{transform:scaleX(0)}
+.play .rv{animation:rise 1s var(--ease) var(--d,0ms) both}
+.play .title .w > span{animation:unmask 1.15s var(--ease) var(--d,0ms) both}
+.play .hl{animation:draw 1.3s var(--ease) var(--d,0ms) both}
+.play .ptrack::after{animation:fill 1.4s var(--ease) var(--d,0ms) both}
+.play .fnum{animation:unmask-n 1.3s var(--ease) var(--d,0ms) both}
+.js .fnum{clip-path:inset(0 0 100% 0)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes unmask{from{transform:translateY(108%)}to{transform:none}}
+@keyframes unmask-n{from{clip-path:inset(0 0 100% 0);transform:translateY(-6%)}to{clip-path:inset(0 0 0 0);transform:none}}
+@keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(var(--p,0))}}
+@media (prefers-reduced-motion:reduce){
+  .js .rv,.play .rv{opacity:1;animation:none}
+  .js .title .w > span,.play .title .w > span{transform:none;animation:none}
+  .js .hl,.play .hl{transform:none;animation:none}
+  .js .ptrack::after,.play .ptrack::after{transform:scaleX(var(--p,0));animation:none}
+  .js .fnum,.play .fnum{clip-path:none;animation:none}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#cover">Skip to content</a>
+<div class="page">
+  <header class="nav" aria-label="Site">
+    <button class="menu-trigger" type="button" aria-expanded="false" aria-label="Menu"><i aria-hidden="true"></i><span>Menu</span></button>
+    <a class="mark" href="../index.html#home" aria-label="LearningAI, home">LearningAI</a>
+    <a class="nav-ctx" href="../index.html#course"><span class="t">All lessons</span><span class="vh">All 15 lessons</span><span class="chev" aria-hidden="true">›</span></a>
+  </header>
+
+  <div class="dateline" role="group" aria-label="Today">
+    <span class="hl top" style="--d:0ms" aria-hidden="true"></span>
+    <span class="cap rv" style="--d:120ms" id="dl-who"></span>
+    <span class="cap rv num" style="--d:180ms" id="dl-issue"></span>
+    <span class="cap rv num" style="--d:240ms" id="dl-date"></span>
+    <span class="hl bot soft" style="--d:120ms" aria-hidden="true"></span>
+  </div>
+
+  <main id="cover" class="story" aria-labelledby="title">
+    <div class="labels g">
+      <span class="cap c-lbl rv" style="--d:260ms" id="lbl-kind">Lesson</span>
+      <div class="c-main lblrow">
+        <span class="cap rv" style="--d:300ms" id="lbl-part"></span>
+        <span class="cap rv num" style="--d:340ms" id="lbl-range"></span>
+      </div>
+    </div>
+    <div class="head g">
+      <div class="folio c-lbl">
+        <span class="fnum" style="--d:360ms"><span class="vh" id="fnum-sr"></span><span aria-hidden="true" id="fnum"></span></span>
+        <div class="fmeta rv" style="--d:820ms">
+          <div class="ticks" id="ticks" role="img"></div>
+          <span class="cap num" id="step-lbl"></span>
+        </div>
+      </div>
+      <h1 class="title c-main" id="title"></h1>
+    </div>
+  </main>
+
+  <section class="foot g" aria-label="Where you are">
+    <span class="hl top" style="--d:520ms" aria-hidden="true"></span>
+    <span class="cap c-lbl rv" style="--d:700ms" id="dek-lbl">The question</span>
+    <div class="dek-wrap"><p class="dek rv" style="--d:760ms" id="dek"></p></div>
+    <div class="side">
+      <p class="hello rv" style="--d:860ms" id="hello"></p>
+      <p class="line rv" style="--d:920ms" id="line"></p>
+      <p class="memory rv" style="--d:980ms" id="memory"></p>
+      <div class="ctas rv" style="--d:1040ms" id="ctas"></div>
+    </div>
+  </section>
+
+  <nav class="contents" aria-label="Course contents">
+    <span class="hl top soft" style="--d:640ms" aria-hidden="true"></span>
+    <div class="parts g" id="parts"></div>
+    <div class="caption rv" style="--d:1300ms" aria-hidden="true"><span class="cap" id="cap-k"></span><span class="t" id="cap-t"></span></div>
+  </nav>
+</div>
+
+<div class="review" id="review">
+  <button class="rev-btn" id="rev-btn" type="button" aria-expanded="false" aria-controls="rev-panel">Design review · State <b id="rev-cur">Mid</b></button>
+  <div class="rev-panel" id="rev-panel" role="group" aria-label="Preview learner state (design review control)" hidden>
+    <p>Design-review control. Not part of the page. Switches the learner shown.</p>
+    <div id="rev-list"></div>
+  </div>
+</div>
+
+<script src="../course.js"></script>
+<script>
+(() => {
+  const root = document.documentElement; root.classList.add('js');
+  const C = window.LAI_COURSE || [];
+  const $ = s => document.querySelector(s);
+  const pad = n => String(n).padStart(2, '0');
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const CHEV = '<span class="chev" aria-hidden="true">›</span>';
+  const PARTS = [{ name: 'First Contact', r: 'I', from: 1 }, { name: 'How It Works', r: 'II', from: 6 }, { name: 'Talking to AI', r: 'III', from: 11 }];
+  const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
+  const STATES = {
+    out:  { label: 'Signed out', who: '',       name: null,     done: 0,  cur: 1,  step: 0 },
+    new:  { label: 'New',        who: 'Maya',   name: 'Maya',   done: 0,  cur: 1,  step: 0 },
+    mid:  { label: 'Mid',        who: 'Sam',    name: 'Sam',    done: 1,  cur: 2,  step: 2 },
+    late: { label: 'Late',       who: 'Alex',   name: 'Alex',   done: 9,  cur: 10, step: 4 },
+    fin:  { label: 'Finished',   who: 'Jordan', name: 'Jordan', done: 15, cur: 0,  step: 0 }
+  };
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const wide = matchMedia('(min-width: 900px)');
+  const tall = matchMedia('(min-width: 900px) and (min-height: 700px)');
+  let key = new URLSearchParams(location.search).get('state');
+  if (!STATES[key]) key = 'mid';
+
+  function time() {
+    const now = new Date(), hr = now.getHours();
+    const tod = hr < 5 ? 'late' : hr < 12 ? 'morning' : hr < 17 ? 'afternoon' : hr < 22 ? 'evening' : 'late';
+    return {
+      tod,
+      greet: { morning: 'Good morning', afternoon: 'Good afternoon', evening: 'Good evening', late: 'Up late' }[tod],
+      day: `${now.toLocaleDateString('en', { weekday: 'long' })} ${tod === 'late' ? 'night' : tod}`,
+      date: now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+    };
+  }
+  const partOf = n => n >= 11 ? 2 : n >= 6 ? 1 : 0;
+
+  function render() {
+    const S = STATES[key], T = time(), fin = S.done >= 15;
+    const L = fin ? C[14] : C[S.cur - 1];
+    if (!L) return;
+    const last = S.done ? C[S.done - 1] : null;
+    const pi = partOf(L.num), P = PARTS[pi];
+
+    /* dateline */
+    $('#dl-who').innerHTML = `${esc(T.day)} · ${S.name ? `For <b>${esc(S.name)}</b>` : 'For you'}`;
+    $('#dl-issue').textContent = fin ? 'Complete · 15 of 15' : `Issue ${pad(L.num)} of 15`;
+    $('#dl-date').textContent = T.date;
+
+    /* labels + folio */
+    $('#lbl-kind').textContent = fin ? 'Next' : 'Lesson';
+    $('#lbl-part').textContent = fin ? 'After lesson 15 · Final project' : `Part ${P.r} · ${P.name}`;
+    $('#lbl-range').textContent = fin ? 'All three parts complete' : `Lessons ${pad(P.from)}–${pad(P.from + 4)}`;
+    $('#fnum').textContent = fin ? '15' : pad(L.num);
+    $('#fnum-sr').textContent = fin ? 'All 15 lessons complete' : `Lesson ${L.num}`;
+
+    const n = fin ? 15 : L.steps.length, at = fin ? 15 : S.step;
+    $('#ticks').innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < at ? 'on' : i === at && S.step ? 'now' : ''}"></i>`).join('');
+    $('#ticks').setAttribute('aria-label', fin ? 'All lessons complete' : S.step ? `Step ${S.step + 1} of ${n}` : `${n} steps, not started`);
+    $('#step-lbl').textContent = fin ? 'Fifteen of fifteen' : S.step ? `Step ${pad(S.step + 1)} / ${pad(n)}` : `${n} steps · ${L.min} min`;
+
+    /* the cover line itself */
+    const title = fin ? 'One real task.' : L.title;
+    $('#title').innerHTML = title.split(/\s+/).map(w => `<span class="w"><span>${esc(w)}</span></span>`).join(' ');
+    $('#dek-lbl').textContent = fin ? 'The brief' : 'The question';
+    $('#dek').textContent = fin ? 'Your final project, after lesson 15: take one task from goal to finished result, with AI as a tool.' : L.q;
+
+    /* personal column */
+    const minsLeft = Math.max(1, Math.round(L.min * (1 - S.step / L.steps.length)));
+    let hello, line, ctas;
+    if (!S.name) {
+      hello = `${T.greet}.`;
+      line = 'LearningAI is fifteen short lessons on using AI without handing over your judgment. Lesson 01 takes about 15 minutes and needs no account.';
+      ctas = `<a class="btn white" href="../index.html#intro-1">Begin lesson 01 ${CHEV}</a><a class="ulink" href="../index.html#signin">Sign in</a>`;
+    } else if (fin) {
+      hello = `${T.greet}, ${esc(S.name)}.`;
+      line = 'You finished all fifteen lessons. Your final project is next: one real task, from goal to finished result.';
+      ctas = `<a class="btn white" href="../index.html#projects">Start your project ${CHEV}</a><a class="ulink" href="../index.html#course">Review lessons</a>`;
+    } else if (S.step) {
+      hello = `${T.greet}, ${esc(S.name)}.`;
+      line = `Ready to continue? You’re on step ${S.step + 1} of ${L.steps.length}: <em>${esc(L.steps[S.step].title)}</em>. About ${minsLeft} minutes left.`;
+      ctas = `<a class="btn white" href="../index.html#lesson-${L.num}">Resume lesson ${pad(L.num)} ${CHEV}</a>`;
+    } else {
+      hello = `${T.greet}, ${esc(S.name)}.`;
+      line = `Your first lesson opens with <em>${esc(L.steps[0].title)}</em>. About ${L.min} minutes. Nothing is graded.`;
+      ctas = `<a class="btn white" href="../index.html#lesson-${L.num}">Start lesson ${pad(L.num)} ${CHEV}</a><a class="ulink" href="../index.html#intro-${L.num}">About this lesson</a>`;
+    }
+    $('#hello').innerHTML = hello;
+    $('#line').innerHTML = line;
+    const mem = $('#memory');
+    mem.innerHTML = last ? `Last time you finished <em>${esc(last.title)}</em>.${S.done > 1 && !fin ? ` That makes ${WORDS[S.done]} of fifteen.` : ''}` : '';
+    mem.hidden = !last;
+    $('#ctas').innerHTML = ctas;
+
+    /* contents strip */
+    const status = l => l.num <= S.done ? 'done' : (!fin && l.num === L.num) ? 'now' : 'locked';
+    const word = { done: 'finished', now: S.step ? 'in progress' : 'up next', locked: 'not yet open' };
+    $('#parts').innerHTML = PARTS.map((p, i) => {
+      const ls = C.slice(p.from - 1, p.from + 4), d = ls.filter(l => status(l) === 'done').length;
+      return `<div class="part"><div class="part-h"><span class="cap"><b>${p.r}</b>${p.name}</span><span class="cap num rv" style="--d:${1000 + i * 80}ms">${d}/5</span></div>
+        <div class="ptrack" style="--p:${d / 5};--d:${700 + i * 120}ms" aria-hidden="true"></div>
+        <div class="nums">${ls.map(l => {
+          const st = status(l), a = `class="n ${st} rv" data-n="${l.num}" style="--d:${760 + l.num * 34}ms" aria-label="Lesson ${l.num}: ${esc(l.title)}, ${word[st]}"${st === 'now' ? ' aria-current="step"' : ''}`;
+          return st === 'locked' ? `<span ${a} role="img">${pad(l.num)}</span>` : `<a href="../index.html#intro-${l.num}" ${a}>${pad(l.num)}</a>`;
+        }).join('')}</div></div>`;
+    }).join('');
+    const caption = num => {
+      const l = num ? C[num - 1] : null;
+      if (!l) { $('#cap-k').textContent = 'Contents'; $('#cap-t').textContent = fin ? 'All fifteen lessons finished. Open any one to review it.' : ''; return; }
+      const st = status(l);
+      $('#cap-k').textContent = `${pad(l.num)} · ${st === 'done' ? 'Finished' : st === 'now' ? (S.step ? 'Now' : 'Up next') : `${l.min} min`}`;
+      $('#cap-t').textContent = l.title;
+    };
+    const home = fin ? 0 : L.num;
+    caption(home);
+    document.querySelectorAll('#parts .n').forEach(el => {
+      const on = () => caption(+el.dataset.n), off = () => caption(home);
+      el.addEventListener('mouseenter', on); el.addEventListener('focus', on);
+      el.addEventListener('mouseleave', off); el.addEventListener('blur', off);
+    });
+
+    $('#rev-cur').textContent = S.label;
+    document.querySelectorAll('#rev-list button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.k === key)));
+    document.title = fin ? 'LearningAI · Final project' : `LearningAI · ${pad(L.num)} ${L.title}`;
+  }
+
+  /* Set the cover line as large as the frame allows, then stagger the reveal line by line. */
+  function fit() {
+    const h1 = $('#title'), story = $('#cover'), head = h1.parentElement, labels = story.querySelector('.labels');
+    const fnum = $('#fnum').parentElement, folio = fnum.parentElement;
+    const fixed = tall.matches;
+    let avail = Infinity;
+    if (fixed) {
+      const cs = getComputedStyle(head), csS = getComputedStyle(story);
+      avail = story.clientHeight - parseFloat(csS.paddingTop) - labels.offsetHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 2;
+    }
+    let lo = wide.matches ? 40 : 28, hi = wide.matches ? 148 : Math.min(64, window.innerWidth * .14);
+    const ok = fs => { h1.style.fontSize = fs + 'px'; return h1.scrollWidth <= h1.clientWidth + 1 && h1.scrollHeight <= avail; };
+    if (!ok(lo)) hi = lo;
+    else for (let i = 0; i < 9; i++) { const mid = (lo + hi) / 2; ok(mid) ? lo = mid : hi = mid; }
+    const fs = Math.floor(ok(hi) ? hi : lo);
+    h1.style.fontSize = fs + 'px';
+
+    if (wide.matches) {
+      const lines = new Set([...h1.querySelectorAll('.w')].map(w => w.offsetTop)).size;
+      let ns = Math.min(lines > 1 ? fs * 2.3 : fs, 260);
+      fnum.style.fontSize = ns + 'px';
+      while (fnum.scrollWidth > folio.clientWidth && ns > 48) { ns -= 4; fnum.style.fontSize = ns + 'px'; }
+    } else fnum.style.fontSize = '';
+
+    const words = [...h1.querySelectorAll('.w')];
+    const tops = [...new Set(words.map(w => w.offsetTop))].sort((a, b) => a - b);
+    words.forEach(w => { const li = tops.indexOf(w.offsetTop); w.firstChild.style.setProperty('--d', `${380 + li * 110}ms`); });
+  }
+
+  function play() {
+    root.classList.remove('play');
+    if (reduce.matches) return;
+    void root.offsetWidth;
+    root.classList.add('play');
+  }
+
+  /* design-review switcher */
+  const list = $('#rev-list'), btn = $('#rev-btn'), panel = $('#rev-panel');
+  list.innerHTML = Object.entries(STATES).map(([k, s]) => `<button type="button" data-k="${k}" aria-pressed="false">${s.label}<span>${s.who || 'no name'}</span></button>`).join('');
+  const setOpen = o => { panel.hidden = !o; btn.setAttribute('aria-expanded', String(o)); };
+  btn.addEventListener('click', () => setOpen(panel.hidden));
+  list.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || b.dataset.k === key) return;
+    key = b.dataset.k; render(); fit(); play();
+    const u = new URL(location.href); u.searchParams.set('state', key); history.replaceState(null, '', u);
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) { setOpen(false); btn.focus(); } });
+  document.addEventListener('click', e => { if (!panel.hidden && !e.target.closest('#review')) setOpen(false); });
+
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(fit, 120); });
+
+  render();
+  const start = () => { fit(); play(); };
+  if (document.fonts && document.fonts.ready) Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]).then(start);
+  else start();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+{
+  "id": "lai.ai-you-can-use.l02",
+  "version": 1,
+  "title": "How did we get here?",
+  "number": 2,
+  "sourceIds": [
+    "ml"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l02.approaches",
+    "lai.ai-you-can-use.l02.inference",
+    "lai.ai-you-can-use.l02.overlap_check",
+    "lai.ai-you-can-use.l02.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l02.approaches",
+    "lai.ai-you-can-use.l02.inference"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l02.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "How did we get here?",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.intro",
+            "html": "<h3>Distinguish explicit rules, learning from examples, and generative output without treating them as mutually exclusive eras.</h3><p>Some software follows rules people specify. Machine learning fits patterns using data. Generative AI produces content such as text or images. These approaches coexist: a generative model can be machine learning, and a product can combine models with ordinary rules. Training adjusts a model using data; inference uses the trained model. A useful test asks how a system works, not just whether its label says AI.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Three fictional tools: A sends a reminder when a timer reaches zero. B learns to label plant photos from labeled examples. C generates a new club announcement from a brief.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l02.approaches",
+            "title": "Which description is most accurate?",
+            "isRequired": true,
+            "correctAnswer": "mix",
+            "choices": [
+              {
+                "value": "eras",
+                "text": "A is obsolete; B and C replaced all rules."
+              },
+              {
+                "value": "mix",
+                "text": "A uses an explicit rule; B learns from examples; C generates content and may also use machine learning."
+              },
+              {
+                "value": "all",
+                "text": "All three must be conscious to work."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.approaches.feedback.eras",
+            "html": "<p class=\"feedback\" role=\"status\">Rules still run timers, checks and many parts of AI applications.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.approaches} = 'eras'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.approaches.feedback.mix",
+            "html": "<p class=\"feedback\" role=\"status\">These categories overlap rather than forming a simple replacement timeline.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.approaches} = 'mix'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.approaches.feedback.all",
+            "html": "<p class=\"feedback\" role=\"status\">None of these behaviors establishes consciousness.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.approaches} = 'all'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l02.inference",
+            "title": "A trained plant model labels one new photo. What is this step?",
+            "isRequired": true,
+            "correctAnswer": "infer",
+            "choices": [
+              {
+                "value": "train",
+                "text": "Training must happen again for every photo."
+              },
+              {
+                "value": "infer",
+                "text": "Inference: applying the trained model to a new input."
+              },
+              {
+                "value": "certain",
+                "text": "Proof that its label is correct."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.inference.feedback.train",
+            "html": "<p class=\"feedback\" role=\"status\">Using a trained model does not by itself imply its parameters changed.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.inference} = 'train'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.inference.feedback.infer",
+            "html": "<p class=\"feedback\" role=\"status\">Right. Separate using the model from changing it during training.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.inference} = 'infer'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.inference.feedback.certain",
+            "html": "<p class=\"feedback\" role=\"status\">A prediction still needs evaluation.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.inference} = 'certain'"
+          }
+        ]
+      },
+      {
+        "name": "detour",
+        "title": "Take a closer look",
+        "visibleIf": "{lai.ai-you-can-use.l02.approaches} notempty and {lai.ai-you-can-use.l02.approaches} != 'mix'",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l02.overlap_check",
+            "title": "Can a generative system also use machine learning?",
+            "isRequired": true,
+            "correctAnswer": "yes",
+            "choices": [
+              {
+                "value": "yes",
+                "text": "Yes; these describe overlapping properties."
+              },
+              {
+                "value": "no",
+                "text": "No; they must be separate technologies."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.overlap_check.feedback.yes",
+            "html": "<p class=\"feedback\" role=\"status\">Generation describes output, while learning describes how patterns are fitted.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.overlap_check} = 'yes'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.overlap_check.feedback.no",
+            "html": "<p class=\"feedback\" role=\"status\">A generative model can learn from data.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.overlap_check} = 'no'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l02.transfer",
+            "title": "Invent a simple rule-based tool and a tool that learns from examples. Explain how you would test the second on examples it did not train on.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Rule example has an explicit condition/action.</li><li>Learning example uses data to fit patterns.</li><li>Test includes new examples and a way to identify errors.</li></ul><p>Systems can combine approaches. Do not date a single clean switch from rules to learning or infer consciousness from outputs.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

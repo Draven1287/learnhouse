@@ -1,0 +1,226 @@
+{
+  "id": "lai.message-to-judgment",
+  "version": 1,
+  "title": "One small message",
+  "activityIds": [
+    "route",
+    "first_move",
+    "evidence_check",
+    "verdict",
+    "explanation"
+  ],
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHidden",
+    "pages": [
+      {
+        "name": "trace",
+        "title": "Follow \u201chi\u201d",
+        "elements": [
+          {
+            "type": "html",
+            "name": "route_intro",
+            "html": "<h3>What happens after Send?</h3><p>In a typical cloud chat app, your app sends a request over the network, usually using encrypted HTTPS. A server receives it and prepares the conversation for a model.</p><p>The model processes tokens (pieces of text) and generates output step by step using learned patterns. That is <strong>inference</strong>. The service sends the reply back through the network to your app, often a piece at a time.</p><p>This is a simplified route: services may add safety checks or tools. Sending \u201chi\u201d does not necessarily retrain the model immediately; later use of chats depends on the service\u2019s policies and settings.</p>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "route",
+            "title": "Which route best describes this cloud chat?",
+            "isRequired": true,
+            "choices": [
+              {
+                "value": "local",
+                "text": "App \u2192 model inside every phone \u2192 answer"
+              },
+              {
+                "value": "cloud",
+                "text": "App \u2192 network \u2192 server \u2192 model inference \u2192 reply back"
+              },
+              {
+                "value": "search",
+                "text": "App \u2192 search engine \u2192 copied answer every time"
+              }
+            ],
+            "correctAnswer": "cloud"
+          },
+          {
+            "type": "html",
+            "name": "route_right",
+            "html": "<p class=\"feedback\">Yes. The app is the interface; a remote service runs inference and returns the output. Some apps use on-device models, but that is a different setup.</p>",
+            "visibleIf": "{route} = 'cloud'"
+          },
+          {
+            "type": "html",
+            "name": "route_retry",
+            "html": "<p class=\"feedback\">Try again if you like. For this cloud example, the request travels to a server. A model can generate a reply without searching the web. The route above shows the missing steps.</p>",
+            "visibleIf": "{route} notempty and {route} != 'cloud'"
+          }
+        ]
+      },
+      {
+        "name": "claim",
+        "title": "Confidence is not evidence",
+        "elements": [
+          {
+            "type": "html",
+            "name": "claim_intro",
+            "html": "<h3>A reply lands in your group chat.</h3><div class=\"evidence\"><strong>Fictional AI answer</strong><p>\u201cEvery message sent to an AI instantly trains it. That means the more confidently it answers, the more accurate it must be.\u201d</p></div><p>You are about to share this with your class. What do you do first?</p>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "first_move",
+            "title": "Choose your next move.",
+            "isRequired": true,
+            "choices": [
+              {
+                "value": "share",
+                "text": "Share it \u2014 the explanation sounds confident."
+              },
+              {
+                "value": "ask",
+                "text": "Ask the same AI whether it is sure."
+              },
+              {
+                "value": "verify",
+                "text": "Check reliable sources and the service\u2019s documentation."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "share_feedback",
+            "html": "<p class=\"feedback\">Pause before sharing. A confident tone is a style of output, not a measure of truth. Follow the evidence path on the next screen.</p>",
+            "visibleIf": "{first_move} = 'share'"
+          },
+          {
+            "type": "html",
+            "name": "ask_feedback",
+            "html": "<p class=\"feedback\">A second answer can help clarify the claim, but the same model may repeat its mistake. Follow the evidence path next.</p>",
+            "visibleIf": "{first_move} = 'ask'"
+          },
+          {
+            "type": "html",
+            "name": "verify_feedback",
+            "html": "<p class=\"feedback\">Good move. Check what a source actually says, who published it, and whether it applies to this service.</p>",
+            "visibleIf": "{first_move} = 'verify'"
+          }
+        ]
+      },
+      {
+        "name": "detour",
+        "title": "Take an evidence detour",
+        "visibleIf": "{first_move} != 'verify'",
+        "elements": [
+          {
+            "type": "html",
+            "name": "detour_intro",
+            "html": "<h3>What would make the claim checkable?</h3><p>Repeating a claim can make it familiar without making it true. Find evidence outside the original answer.</p>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "evidence_check",
+            "title": "Which is stronger evidence?",
+            "isRequired": true,
+            "choices": [
+              {
+                "value": "repeat",
+                "text": "Another confident answer from the same chat."
+              },
+              {
+                "value": "source",
+                "text": "Documentation that distinguishes training from inference, plus the service\u2019s data-use policy."
+              }
+            ],
+            "correctAnswer": "source"
+          },
+          {
+            "type": "html",
+            "name": "detour_feedback",
+            "html": "<p class=\"feedback\">Look for documentation and a policy that applies to the actual service. Repetition alone is not independent support.</p>",
+            "visibleIf": "{evidence_check} notempty"
+          }
+        ]
+      },
+      {
+        "name": "evidence",
+        "title": "Read, compare, decide",
+        "elements": [
+          {
+            "type": "html",
+            "name": "evidence_cards",
+            "html": "<h3>Inspect the evidence</h3><p>These are fictional practice cards, not quotations from a real provider.</p><div class=\"evidence\"><strong>Card A \u00b7 Model documentation</strong><p>Training adjusts model parameters using data. Inference uses a trained model to produce outputs. Generating an answer does not itself mean the model\u2019s parameters changed.</p><strong>Card B \u00b7 Example service policy</strong><p>Conversation data may be used in later improvement processes, depending on settings and policy. This does not mean every message instantly retrains the model.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "verdict",
+            "title": "What can you responsibly conclude?",
+            "isRequired": true,
+            "choices": [
+              {
+                "value": "true",
+                "text": "The original claim is supported in full."
+              },
+              {
+                "value": "never",
+                "text": "No service ever uses conversations for training."
+              },
+              {
+                "value": "qualified",
+                "text": "The claim overstates things: inference differs from training, policies vary, and confidence does not prove accuracy."
+              }
+            ],
+            "correctAnswer": "qualified"
+          },
+          {
+            "type": "html",
+            "name": "verdict_good",
+            "html": "<p class=\"feedback\">Exactly. You separated how a model responds from how a service might later use data. The confident wording was not evidence.</p>",
+            "visibleIf": "{verdict} = 'qualified'"
+          },
+          {
+            "type": "html",
+            "name": "verdict_bad",
+            "html": "<p class=\"feedback\">Revisit the cards. They do not support \u201cevery message instantly trains it\u201d or \u201cno service ever uses chats.\u201d A careful conclusion keeps the policy-dependent detail.</p>",
+            "visibleIf": "{verdict} notempty and {verdict} != 'qualified'"
+          }
+        ]
+      },
+      {
+        "name": "reflect",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "html",
+            "name": "reflection_intro",
+            "html": "<h3>Write the message you would send instead.</h3><p>In one or two sentences, explain why the original claim needs correcting and name one check you would make before sharing it. Use practice text only; no names or personal information.</p>"
+          },
+          {
+            "type": "comment",
+            "name": "explanation",
+            "title": "My explanation",
+            "isRequired": true,
+            "maxLength": 600,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 20,
+                "text": "Add a little more reasoning (at least 20 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "rubric",
+            "html": "<p><strong>Self-check:</strong> Did you distinguish inference from training? Mention policies or settings? Explain why evidence beats confidence?</p><p>Your writing is saved on this device only. It is not AI graded; completion means you submitted a reflection, not that a teacher assessed it.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

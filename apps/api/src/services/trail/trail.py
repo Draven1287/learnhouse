@@ -1,3 +1,4 @@
+from src.services.learningai.contract import is_managed
 from datetime import datetime
 from typing import List, Optional
 from uuid import uuid4
@@ -234,6 +235,9 @@ async def add_activity_to_trail(
             status_code=status.HTTP_404_NOT_FOUND, detail="Activity not found"
         )
 
+    if is_managed(activity):
+        raise HTTPException(status_code=409, detail="Use validated LearningAI submission; generic mark/reset is unavailable")
+
     statement = select(Course).where(Course.id == activity.course_id)
     course = (await db_session.execute(statement)).scalars().first()
 
@@ -409,6 +413,9 @@ async def remove_activity_from_trail(
             status_code=status.HTTP_404_NOT_FOUND, detail="Activity not found"
         )
 
+    if is_managed(activity):
+        raise HTTPException(status_code=409, detail="Use validated LearningAI submission; generic mark/reset is unavailable")
+
     statement = select(Course).where(Course.id == activity.course_id)
     course = (await db_session.execute(statement)).scalars().first()
 
@@ -561,6 +568,10 @@ async def remove_course_from_trail(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Course not found"
         )
+
+    course_activities = (await db_session.execute(select(Activity).where(Activity.course_id == course.id))).scalars().all()
+    if any(is_managed(item) for item in course_activities):
+        raise HTTPException(status_code=409, detail="LearningAI pilot course reset is unavailable")
 
     statement = select(Trail).where(
         Trail.org_id == course.org_id, Trail.user_id == user.id

@@ -1,0 +1,159 @@
+{
+  "id": "lai.ai-you-can-use.l09",
+  "version": 1,
+  "title": "Make something that sounds like you",
+  "number": 9,
+  "sourceIds": [
+    "copyright"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l09.rights",
+    "lai.ai-you-can-use.l09.voice",
+    "lai.ai-you-can-use.l09.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l09.rights",
+    "lai.ai-you-can-use.l09.voice"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l09.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Make something that sounds like you",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l09.intro",
+            "html": "<h3>Make creative choices and distinguish attribution, permission, and authorship.</h3><p>You can choose, combine, reject and rewrite ideas to express your own intent. Keep a record of what you made and what help you used. Attribution tells people where material came from; it does not automatically give permission to use it. In the United States, copyrightability depends on human authorship, and AI assistance does not erase protection for qualifying human contributions. Rules differ by country and the details matter; do not treat “AI-made” as a universal permission slip.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>You are making a fictional club poster. Options include your own drawing, an image with a clearly applicable reuse license, and a copied illustration with no permission information.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l09.rights",
+            "title": "Which plan has a clearer rights basis?",
+            "isRequired": true,
+            "correctAnswer": "licensed",
+            "choices": [
+              {
+                "value": "copy",
+                "text": "Use the unlicensed illustration and add “credit to artist.”"
+              },
+              {
+                "value": "licensed",
+                "text": "Use your drawing or verify the other image’s license and follow its conditions."
+              },
+              {
+                "value": "ai",
+                "text": "Assume any AI output is automatically free of every rights issue."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l09.rights.feedback.copy",
+            "html": "<p class=\"feedback\" role=\"status\">Credit alone does not establish permission.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l09.rights} = 'copy'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l09.rights.feedback.licensed",
+            "html": "<p class=\"feedback\" role=\"status\">Check permission separately from credit and keep the record.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l09.rights} = 'licensed'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l09.rights.feedback.ai",
+            "html": "<p class=\"feedback\" role=\"status\">AI involvement does not settle all rights questions.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l09.rights} = 'ai'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l09.voice",
+            "title": "Which revision shows your creative judgment?",
+            "isRequired": true,
+            "correctAnswer": "own",
+            "choices": [
+              {
+                "value": "own",
+                "text": "Reject a slogan that misrepresents the club and write a specific alternative."
+              },
+              {
+                "value": "all",
+                "text": "Accept every suggestion because the model is creative."
+              },
+              {
+                "value": "claim",
+                "text": "Say no tools were used even if they were."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l09.voice.feedback.own",
+            "html": "<p class=\"feedback\" role=\"status\">Your choice has an explained purpose.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l09.voice} = 'own'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l09.voice.feedback.all",
+            "html": "<p class=\"feedback\" role=\"status\">That avoids evaluating whether the work represents you.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l09.voice} = 'all'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l09.voice.feedback.claim",
+            "html": "<p class=\"feedback\" role=\"status\">Describe the process honestly where disclosure is required or useful.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l09.voice} = 'claim'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l09.transfer",
+            "title": "Draft a slogan and explain one idea you rejected. Add a short materials/assistance note and a rights question you would resolve before publication.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l09.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Makes an original, purposeful choice.</li><li>Distinguishes credit from permission.</li><li>States assistance honestly and identifies uncertainty.</li></ul><p>U.S. copyrightability is not a global rule or a ruling on all AI training disputes. Seek qualified guidance for a real contested publication.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

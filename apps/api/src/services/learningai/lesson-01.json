@@ -1,0 +1,103 @@
+{
+  "id": "lai.ai-you-can-use.l01",
+  "version": 1,
+  "number": 1,
+  "part": 1,
+  "title": "Get your first useful result",
+  "estimatedMinutes": 8,
+  "status": "implemented-draft",
+  "objective": "Judge a suggestion against practical constraints and justify a tool choice.",
+  "explanation": "You decide what a useful result means. A fluent suggestion can still miss your time, budget, or audience. Write down the constraints, compare the suggestion with them, and change or reject it. You can do this with a person, a checklist, or an AI tool. Choosing not to use AI is a valid outcome; the goal is a decision you can explain.",
+  "scenario": "Fictional club brief: six students have 10 minutes, no spending money and no phones. A draft suggests a paid online tournament lasting 45 minutes.",
+  "activities": [
+    {
+      "prompt": "Which revision fits all three constraints?",
+      "choices": [
+        {
+          "value": "paid",
+          "text": "Keep the tournament but call it quick.",
+          "feedback": "A new label does not change the cost, phones, or duration."
+        },
+        {
+          "value": "paper",
+          "text": "Run a 10-minute paper word game using scrap paper.",
+          "feedback": "This fits time, cost, and device constraints; check that everyone can participate."
+        },
+        {
+          "value": "buy",
+          "text": "Buy tablets first.",
+          "feedback": "That breaks the zero-spending constraint."
+        }
+      ],
+      "correctAnswer": "paper",
+      "rationale": "Compare the actual plan with every stated constraint.",
+      "id": "lai.ai-you-can-use.l01.repair"
+    },
+    {
+      "prompt": "What is a defensible way to choose your tool?",
+      "choices": [
+        {
+          "value": "always",
+          "text": "Use AI because newer tools are always better.",
+          "feedback": "Novelty is not evidence of usefulness."
+        },
+        {
+          "value": "fit",
+          "text": "Use a checklist or ask the club; use AI only if it adds something worth checking.",
+          "feedback": "Either a non-AI or AI-supported route can work when you explain the fit."
+        },
+        {
+          "value": "obey",
+          "text": "Let the tool choose without reviewing it.",
+          "feedback": "You remain responsible for whether the plan works."
+        }
+      ],
+      "correctAnswer": "fit",
+      "rationale": "Credit justified non-use equally with justified use.",
+      "id": "lai.ai-you-can-use.l01.tool"
+    }
+  ],
+  "transfer": {
+    "id": "lai.ai-you-can-use.l01.transfer",
+    "prompt": "Write a two-sentence replacement plan. Name one constraint it meets and one person you would ask before running it. You may reject AI entirely.",
+    "rubric": [
+      "Plan fits 10 minutes, no money, and no phones.",
+      "Explains a concrete revision or justified rejection.",
+      "Identifies an inclusion check or participant to consult."
+    ]
+  },
+  "sourceIds": [
+    "competencies"
+  ],
+  "uncertainty": "A proposed activity is not proven successful until tried with its actual participants.",
+  "optionalMedia": {
+    "status": "specification-only",
+    "description": "No media needed. Use the written scenario and choices."
+  },
+  "branchActivity": {
+    "prompt": "What should guide a revised plan?",
+    "choices": [
+      {
+        "value": "label",
+        "text": "Whether the wording sounds exciting.",
+        "feedback": "Excitement does not resolve the constraint mismatch."
+      },
+      {
+        "value": "limits",
+        "text": "The actual time, cost and device limits.",
+        "feedback": "Use the stated limits to evaluate the plan."
+      }
+    ],
+    "correctAnswer": "limits",
+    "rationale": "Complete this short check, then return to the main lesson.",
+    "id": "lai.ai-you-can-use.l01.constraint_check",
+    "visibleIfActivity": "lai.ai-you-can-use.l01.repair",
+    "visibleIfNotEqual": "paper"
+  },
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  }
+}

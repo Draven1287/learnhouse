@@ -1,0 +1,196 @@
+{
+  "id": "lai.ai-you-can-use.l01",
+  "version": 1,
+  "title": "Get your first useful result",
+  "number": 1,
+  "sourceIds": [
+    "competencies"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l01.repair",
+    "lai.ai-you-can-use.l01.tool",
+    "lai.ai-you-can-use.l01.constraint_check",
+    "lai.ai-you-can-use.l01.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l01.repair",
+    "lai.ai-you-can-use.l01.tool"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l01.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Get your first useful result",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.intro",
+            "html": "<h3>Judge a suggestion against practical constraints and justify a tool choice.</h3><p>You decide what a useful result means. A fluent suggestion can still miss your time, budget, or audience. Write down the constraints, compare the suggestion with them, and change or reject it. You can do this with a person, a checklist, or an AI tool. Choosing not to use AI is a valid outcome; the goal is a decision you can explain.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Fictional club brief: six students have 10 minutes, no spending money and no phones. A draft suggests a paid online tournament lasting 45 minutes.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l01.repair",
+            "title": "Which revision fits all three constraints?",
+            "isRequired": true,
+            "correctAnswer": "paper",
+            "choices": [
+              {
+                "value": "paid",
+                "text": "Keep the tournament but call it quick."
+              },
+              {
+                "value": "paper",
+                "text": "Run a 10-minute paper word game using scrap paper."
+              },
+              {
+                "value": "buy",
+                "text": "Buy tablets first."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.repair.feedback.paid",
+            "html": "<p class=\"feedback\" role=\"status\">A new label does not change the cost, phones, or duration.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l01.repair} = 'paid'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.repair.feedback.paper",
+            "html": "<p class=\"feedback\" role=\"status\">This fits time, cost, and device constraints; check that everyone can participate.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l01.repair} = 'paper'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.repair.feedback.buy",
+            "html": "<p class=\"feedback\" role=\"status\">That breaks the zero-spending constraint.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l01.repair} = 'buy'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l01.tool",
+            "title": "What is a defensible way to choose your tool?",
+            "isRequired": true,
+            "correctAnswer": "fit",
+            "choices": [
+              {
+                "value": "always",
+                "text": "Use AI because newer tools are always better."
+              },
+              {
+                "value": "fit",
+                "text": "Use a checklist or ask the club; use AI only if it adds something worth checking."
+              },
+              {
+                "value": "obey",
+                "text": "Let the tool choose without reviewing it."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.tool.feedback.always",
+            "html": "<p class=\"feedback\" role=\"status\">Novelty is not evidence of usefulness.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l01.tool} = 'always'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.tool.feedback.fit",
+            "html": "<p class=\"feedback\" role=\"status\">Either a non-AI or AI-supported route can work when you explain the fit.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l01.tool} = 'fit'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.tool.feedback.obey",
+            "html": "<p class=\"feedback\" role=\"status\">You remain responsible for whether the plan works.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l01.tool} = 'obey'"
+          }
+        ]
+      },
+      {
+        "name": "detour",
+        "title": "Take a closer look",
+        "visibleIf": "{lai.ai-you-can-use.l01.repair} notempty and {lai.ai-you-can-use.l01.repair} != 'paper'",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l01.constraint_check",
+            "title": "What should guide a revised plan?",
+            "isRequired": true,
+            "correctAnswer": "limits",
+            "choices": [
+              {
+                "value": "label",
+                "text": "Whether the wording sounds exciting."
+              },
+              {
+                "value": "limits",
+                "text": "The actual time, cost and device limits."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.constraint_check.feedback.label",
+            "html": "<p class=\"feedback\" role=\"status\">Excitement does not resolve the constraint mismatch.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l01.constraint_check} = 'label'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.constraint_check.feedback.limits",
+            "html": "<p class=\"feedback\" role=\"status\">Use the stated limits to evaluate the plan.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l01.constraint_check} = 'limits'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l01.transfer",
+            "title": "Write a two-sentence replacement plan. Name one constraint it meets and one person you would ask before running it. You may reject AI entirely.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Plan fits 10 minutes, no money, and no phones.</li><li>Explains a concrete revision or justified rejection.</li><li>Identifies an inclusion check or participant to consult.</li></ul><p>A proposed activity is not proven successful until tried with its actual participants.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}
