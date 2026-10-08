@@ -1,0 +1,159 @@
+{
+  "id": "lai.ai-you-can-use.l10",
+  "version": 1,
+  "title": "Check the part that matters",
+  "number": 10,
+  "sourceIds": [
+    "nist"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l10.claim",
+    "lai.ai-you-can-use.l10.share",
+    "lai.ai-you-can-use.l10.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l10.claim",
+    "lai.ai-you-can-use.l10.share"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l10.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Check the part that matters",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l10.intro",
+            "html": "<h3>Trace a claim to relevant evidence and decide whether to share it.</h3><p>Before sharing a claim, identify what would make it true or false. Find the original source, check date and context, and compare what it actually supports. A screenshot or confident paragraph can omit important details. A source link is useful only if it exists and supports the claim. You can conclude “not enough evidence” and withhold a claim; verification is not a contest to defend the tool.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Fictional viral post: “All school buses are cancelled tomorrow.” Evidence card A: a cropped screenshot with no date. Card B: the school transport page, updated today, says Route 7 is delayed by 20 minutes; other routes run normally.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l10.claim",
+            "title": "Which statement is supported by the supplied cards?",
+            "isRequired": true,
+            "correctAnswer": "limited",
+            "choices": [
+              {
+                "value": "all",
+                "text": "All buses are cancelled."
+              },
+              {
+                "value": "limited",
+                "text": "The current page reports a Route 7 delay, not all-route cancellation."
+              },
+              {
+                "value": "fake",
+                "text": "Every screenshot online is false."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l10.claim.feedback.all",
+            "html": "<p class=\"feedback\" role=\"status\">Neither card supports that broad claim.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l10.claim} = 'all'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l10.claim.feedback.limited",
+            "html": "<p class=\"feedback\" role=\"status\">Preserve the route, delay and date context.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l10.claim} = 'limited'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l10.claim.feedback.fake",
+            "html": "<p class=\"feedback\" role=\"status\">The problem is missing context, not the format alone.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l10.claim} = 'fake'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l10.share",
+            "title": "What should you share, if anything?",
+            "isRequired": true,
+            "correctAnswer": "correct",
+            "choices": [
+              {
+                "value": "correct",
+                "text": "A dated correction with the official page, or wait if you cannot verify the page."
+              },
+              {
+                "value": "viral",
+                "text": "The dramatic version because it spreads faster."
+              },
+              {
+                "value": "certainty",
+                "text": "A guarantee that no future service change can occur."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l10.share.feedback.correct",
+            "html": "<p class=\"feedback\" role=\"status\">Both correction and withholding can be responsible.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l10.share} = 'correct'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l10.share.feedback.viral",
+            "html": "<p class=\"feedback\" role=\"status\">Reach does not make it reliable.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l10.share} = 'viral'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l10.share.feedback.certainty",
+            "html": "<p class=\"feedback\" role=\"status\">The page describes current information, not all future events.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l10.share} = 'certainty'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l10.transfer",
+            "title": "Write a short correction with source, date context and one limitation. You may instead explain why you would wait to share.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l10.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Corrects the all-buses claim.</li><li>Identifies original relevant source and time context.</li><li>Avoids overstating certainty or shaming people who were misled.</li></ul><p>All notices here are fictional. For real safety or travel decisions, use the responsible authority’s current information.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

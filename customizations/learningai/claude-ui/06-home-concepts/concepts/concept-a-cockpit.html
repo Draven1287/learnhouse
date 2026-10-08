@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LearningAI · Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..700&display=swap">
+<style>
+/* Concept A — COCKPIT.
+   The course is one instrument. 107 fine ticks = every step of all 15 lessons, set in three arcs for the three parts.
+   Lit ticks are steps you have done; the needle rests on the step you are on. Everything else is a quiet readout. */
+:root{
+  --bg:#000; --text:#F4F4F2; --text-2:#D9D9D6; --muted:#8E8E8B; --dim:#777774; --deco:#4A4A48; --track:#2A2A29;
+  --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.22);
+  --font:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --cap-fs:11px; --cap-ls:.22em;
+  --gutter:max(32px,calc((100vw - 1320px)/2 + 32px));
+  --gauge:min(600px,calc(100vh - 230px),calc(100vw - 2 * var(--gutter)));
+  color-scheme:dark;
+}
+@media (max-width:640px){:root{--gutter:20px}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{margin:0;min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.6;letter-spacing:.005em;-webkit-font-smoothing:antialiased;overflow-x:hidden;display:flex;flex-direction:column}
+::selection{background:var(--text);color:#000}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:1px solid var(--text);outline-offset:4px}
+h1,h2,p{margin:0}
+.cap{font-stretch:125%;font-size:var(--cap-fs);font-weight:500;letter-spacing:var(--cap-ls);text-transform:uppercase;color:var(--muted);line-height:1.4}
+.tab{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px}.skip:focus{left:20px;top:16px;z-index:99;background:var(--text);color:#000;padding:8px 14px}
+
+/* header */
+.nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:76px;padding:0 var(--gutter);flex:none}
+.mark{justify-self:center;font-stretch:125%;font-weight:500;font-size:13px;letter-spacing:.34em;text-transform:uppercase;padding:12px 0 12px .34em}
+.nav-btn{display:inline-flex;align-items:center;gap:14px;background:none;border:0;color:var(--text);cursor:pointer;padding:12px 0;font:500 11.5px var(--font);font-stretch:125%;letter-spacing:var(--cap-ls);text-transform:uppercase}
+.nav-btn.l{justify-self:start}.nav-btn.r{justify-self:end}
+.burger{display:grid;gap:6px;width:26px}
+.burger::before,.burger::after{content:"";height:1px;background:currentColor;display:block;transition:transform .4s var(--ease)}
+.nav-btn:hover .burger::after{transform:scaleX(.6);transform-origin:left}
+.chev{font-size:15px;letter-spacing:0;line-height:1;margin-top:-2px;transition:transform .3s var(--ease)}
+.nav-btn:hover .chev,.btn:hover .chev{transform:translateX(4px)}
+@media (max-width:640px){.mark{font-size:12px;letter-spacing:.3em}.nav-btn .t{display:none}}
+
+/* cluster */
+main{flex:1;display:grid;grid-template-columns:minmax(0,1fr) var(--gauge) minmax(0,1fr);align-items:center;column-gap:clamp(24px,3.5vw,64px);padding:0 var(--gutter) 64px}
+.side{align-self:center;min-width:0}
+.left{justify-self:start;max-width:340px}
+.right{justify-self:end;width:min(240px,100%)}
+
+.clock{display:flex;gap:14px;align-items:baseline}
+.clock .hm{color:var(--text-2)}
+h1{margin-top:22px;font-stretch:125%;font-weight:300;text-transform:uppercase;letter-spacing:.02em;line-height:1.06;font-size:clamp(28px,2.6vw,40px);text-wrap:balance}
+.lead{margin-top:22px;color:var(--muted);font-size:15.5px;line-height:1.62;max-width:34ch}
+.lead em{font-style:normal;color:var(--text)}
+.memory{display:block;margin-top:28px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;line-height:1.55;max-width:34ch;transition:color .25s}
+.memory .cap{display:block;margin-bottom:6px;color:var(--dim)}
+.memory em{font-style:normal;color:var(--text-2)}
+a.memory:hover{color:var(--text-2)}
+.memory[hidden]{display:none}
+.ulink{display:inline-flex;align-items:center;gap:12px;margin-top:26px;font-stretch:125%;font-size:11.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;padding:0 0 4px;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;transition:background-size .4s var(--ease)}
+.ulink:hover{background-size:40% 1px}
+.ulink[hidden]{display:none}
+
+/* readouts */
+.ro{list-style:none;margin:0;padding:0}
+.ro li{border-top:1px solid var(--line);padding:16px 0 22px}
+.ro li:last-child{padding-bottom:0}
+.ro .v{display:flex;align-items:baseline;gap:8px;margin-top:8px;font-stretch:125%;font-weight:200;font-size:clamp(34px,3vw,44px);line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.ro .v small{font-size:13px;font-weight:500;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.ro .s{margin-top:10px;color:var(--muted);font-size:13.5px;line-height:1.45}
+
+/* gauge */
+.gauge{position:relative;width:var(--gauge);aspect-ratio:1;container-type:inline-size;justify-self:center}
+.gauge svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.tk{stroke:var(--deco);stroke-width:1.4;transition:stroke .5s var(--ease),opacity .6s var(--ease)}
+.tk.on{stroke:var(--text)}
+.tk.now{stroke:var(--text);stroke-width:2.2}
+.lnum{fill:var(--muted);font:500 10.5px var(--font);font-stretch:125%;letter-spacing:.08em;font-variant-numeric:tabular-nums;transition:fill .5s}
+.lnum.done{fill:var(--text-2)}
+.lnum.now{fill:var(--text);font-weight:700}
+.part{fill:var(--muted);font:500 10px var(--font);font-stretch:125%;letter-spacing:.3em;text-transform:uppercase;transition:fill .5s}
+.part.now{fill:var(--text)}
+.trk{fill:none;stroke:var(--track);stroke-width:1}
+.prog{fill:none;stroke:var(--text);stroke-width:1.5}
+.ndl line{stroke:var(--text);stroke-width:2;stroke-linecap:round}
+.ndl{filter:drop-shadow(0 0 5px rgba(255,255,255,.55))}
+.ndl .hz{stroke:rgba(255,255,255,.14);stroke-width:1}
+.inner{fill:none;stroke:var(--line);stroke-width:1}
+
+.core{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:58cqw;text-align:center;display:grid;justify-items:center}
+.core .cap{font-size:max(10px,1.85cqw)}
+.gear{margin:1.6cqw 0 .6cqw;font-stretch:125%;font-weight:100;font-size:27cqw;line-height:.86;letter-spacing:-.04em;font-variant-numeric:tabular-nums;padding-left:.04em}
+.ttl{font-stretch:125%;font-weight:400;font-size:max(12px,2.3cqw);letter-spacing:.12em;text-transform:uppercase;line-height:1.35;color:var(--text);text-wrap:balance}
+.q{margin-top:2cqw;color:var(--muted);font-size:max(13px,2.35cqw);line-height:1.5;max-width:46cqw;text-wrap:balance}
+
+.ign{position:absolute;left:50%;top:81%;transform:translate(-50%,-50%);width:max-content}
+.ign-in{display:grid;justify-items:center;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;height:52px;padding:0 26px;border-radius:2px;border:1px solid var(--text);background:var(--text);color:#000;font:500 11.5px var(--font);font-stretch:125%;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background .35s var(--ease),color .35s var(--ease),box-shadow .5s var(--ease)}
+.btn:hover{background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.06)}
+.btn:focus-visible{outline:0;box-shadow:0 0 0 2px #000,0 0 0 3px var(--text)}
+.btn:active{transform:translateY(1px)}
+.kbd{display:inline-flex;align-items:center;gap:8px;color:var(--muted)}
+.kbd b{display:inline-grid;place-items:center;min-width:22px;height:20px;padding:0 5px;border:1px solid var(--line-2);border-radius:2px;font:500 10px var(--font);letter-spacing:0;color:var(--text-2)}
+
+/* staged reveal */
+.rv{opacity:0;transform:translateY(8px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0ms)}
+.ready .rv{opacity:1;transform:none}
+.swap{transition:opacity .28s ease}
+.swap.out{opacity:0}
+
+/* design-review control */
+.rev{position:fixed;right:16px;bottom:16px;z-index:60;font-size:12px}
+.rev summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;height:34px;padding:0 12px;border:1px dashed var(--line-2);border-radius:2px;background:rgba(0,0,0,.86);color:var(--muted);font:500 10px var(--font);font-stretch:125%;letter-spacing:.18em;text-transform:uppercase}
+.rev summary::-webkit-details-marker{display:none}
+.rev summary b{color:var(--text);font-weight:500}
+.rev[open] summary{border-bottom-color:transparent}
+.rev-p{position:absolute;right:0;bottom:42px;width:272px;padding:16px;border:1px dashed var(--line-2);border-radius:2px;background:#050505;display:grid;gap:12px}
+.rev-p p{color:var(--muted);font-size:12px;line-height:1.45}
+.rev-g{display:grid;gap:6px}
+.rev-row{display:flex;flex-wrap:wrap;gap:6px}
+.opt{min-height:32px;padding:0 10px;border:1px solid var(--line-2);border-radius:2px;background:transparent;color:var(--muted);font:500 10px var(--font);font-stretch:125%;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.opt:hover{color:var(--text);border-color:var(--text)}
+.opt[aria-pressed="true"]{background:var(--text);color:#000;border-color:var(--text)}
+
+/* tablet / phone */
+@media (max-width:1100px){
+  :root{--gauge:min(560px,calc(100vw - 2 * var(--gutter)))}
+  main{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"g g" "l r";row-gap:40px;padding-top:8px;padding-bottom:96px}
+  .gauge{grid-area:g}.left{grid-area:l;align-self:start}.right{grid-area:r;align-self:start;width:min(280px,100%)}
+}
+@media (max-width:700px){
+  main{grid-template-columns:minmax(0,1fr);grid-template-areas:"l" "g" "r";row-gap:28px}
+  .left,.right{justify-self:stretch;max-width:none;width:auto}
+  h1{margin-top:16px}
+  .lead{margin-top:14px}
+  .gauge{margin-top:4px}
+  .q{display:none}
+  .core{top:47%}
+  .gear{font-size:30cqw}
+  .ign{top:84%;width:68%}
+  .ign .btn{width:100%;padding:0 14px;gap:10px;letter-spacing:.14em}
+  .kbd{display:none}
+  .ro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:16px}
+  .ro li{padding:14px 0 0}
+  .ro .v{font-size:28px}
+  .ro .s{display:none}
+  .memory{margin-top:22px}
+  .rev{left:16px;right:16px}.rev summary{width:100%;justify-content:space-between}.rev-p{width:auto;left:0}
+}
+@media (max-height:760px) and (min-width:1101px){.q{display:none}}
+@media (prefers-reduced-motion:reduce){
+  .rv,.swap,.tk,.lnum,.part,.btn,.chev,.ulink{transition:none!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <button class="nav-btn l" type="button" aria-label="Open menu"><i class="burger" aria-hidden="true"></i><span class="t">Menu</span></button>
+  <a class="mark" href="../index.html#home" aria-label="LearningAI home">LearningAI</a>
+  <a class="nav-btn r" id="navR" href="../index.html#course"><span class="t" id="navRT">Course</span><span class="chev" aria-hidden="true">›</span></a>
+</header>
+
+<main id="main">
+  <section class="side left" aria-labelledby="greet">
+    <div class="clock rv" style="--d:120ms"><span class="cap tab hm" id="hm">--:--</span><span class="cap" id="day"></span></div>
+    <div class="swap" data-swap>
+      <h1 id="greet" class="rv" style="--d:200ms">Hello.</h1>
+      <p class="lead rv" style="--d:300ms" id="lead"></p>
+      <a class="memory rv" style="--d:420ms" id="memory" href="../index.html#toolkit" hidden></a>
+      <a class="ulink rv" style="--d:420ms" id="signin" href="../index.html#signin" hidden>Sign in to keep your place</a>
+    </div>
+  </section>
+
+  <section class="gauge rv" style="--d:0ms" aria-labelledby="gaugeH">
+    <h2 class="sr" id="gaugeH">Your course</h2>
+    <svg viewBox="-320 -320 640 640" role="img" aria-labelledby="gaugeL" id="svg">
+      <title id="gaugeL">Course progress</title>
+      <defs id="defs"></defs>
+      <g aria-hidden="true">
+        <circle class="inner" r="196"></circle>
+        <g id="trk"></g>
+        <path class="prog" id="prog" d=""></path>
+        <g id="ticks"></g>
+        <g id="nums"></g>
+        <g id="parts"></g>
+        <g class="ndl" id="ndl"><line class="hz" x1="0" y1="-200" x2="0" y2="-222"></line><line x1="0" y1="-226" x2="0" y2="-268"></line></g>
+      </g>
+    </svg>
+    <div class="core swap" data-swap>
+      <span class="cap rv" style="--d:500ms" id="coreCap">Lesson</span>
+      <span class="gear rv" style="--d:560ms" id="gear" aria-hidden="true">02</span>
+      <p class="ttl rv" style="--d:640ms" id="ttl"></p>
+      <p class="q rv" style="--d:720ms" id="q"></p>
+    </div>
+    <div class="ign swap" data-swap><div class="ign-in rv" style="--d:820ms">
+      <a class="btn" id="go" href="#"><span id="goT">Resume lesson 02</span><span class="chev" aria-hidden="true">›</span></a>
+      <span class="cap kbd" aria-hidden="true"><b>↵</b> Enter</span>
+    </div></div>
+  </section>
+
+  <section class="side right rv" style="--d:380ms" aria-labelledby="roH">
+    <h2 class="sr" id="roH">Readouts</h2>
+    <ul class="ro swap" data-swap id="ro"></ul>
+  </section>
+</main>
+
+<details class="rev">
+  <summary aria-label="Design review control: preview learner state">Preview state <b id="revCur">Mid</b></summary>
+  <div class="rev-p">
+    <p>Design-review control. Not part of the product. Switch the learner state and time of day.</p>
+    <div class="rev-g" role="group" aria-labelledby="revS"><span class="cap" id="revS">Learner</span><div class="rev-row" id="revStates"></div></div>
+    <div class="rev-g" role="group" aria-labelledby="revT"><span class="cap" id="revT">Time of day</span><div class="rev-row" id="revTimes"></div></div>
+  </div>
+</details>
+
+<script src="../course.js"></script>
+<script>
+(() => {
+  const C = window.LAI_COURSE || [];
+  if (!C.length) return;
+  const pad = n => String(n).padStart(2, '0');
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+
+  /* ---------- learner states (preview only) ---------- */
+  const STATES = {
+    out:  { label: 'Signed out', name: null,     done: 0,  cur: 1,  step: 0 },
+    new:  { label: 'New',        name: 'Maya',   done: 0,  cur: 1,  step: 0 },
+    mid:  { label: 'Mid',        name: 'Sam',    done: 1,  cur: 2,  step: 2 },
+    late: { label: 'Late',       name: 'Alex',   done: 9,  cur: 10, step: 4 },
+    fin:  { label: 'Finished',   name: 'Jordan', done: 15, cur: null, step: 0 }
+  };
+  const TIMES = { auto: 'Auto', morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening', late: 'Late' };
+  let stateKey = 'mid', timeKey = 'auto';
+  try { const u = new URLSearchParams(location.search).get('state'); if (STATES[u]) stateKey = u; } catch (e) {}
+
+  /* ---------- geometry: 240° sweep, three part arcs, one tick per step ---------- */
+  const PARTS = [...new Set(C.map(l => l.arc))];
+  const START = -120, END = 120, GAP = 11, PAD = 1.3;
+  const PSPAN = (END - START - GAP * (PARTS.length - 1)) / PARTS.length;
+  const R_T0 = 238, R_T1 = 254, R_NOW = 262, R_NUM = 282, R_PART = 304, R_TRK = 226;
+  const geo = C.map(l => {
+    const pi = PARTS.indexOf(l.arc), inPart = C.filter(x => x.arc === l.arc), li = inPart.indexOf(l);
+    const ls = PSPAN / inPart.length, a0 = START + pi * (PSPAN + GAP) + li * ls + PAD / 2, a1 = a0 + ls - PAD;
+    const n = l.steps.length;
+    return { l, pi, a0, a1, mid: (a0 + a1) / 2, n, tick: k => a0 + (k + .5) / n * (a1 - a0) };
+  });
+  const pt = (a, r) => { const t = (a - 90) * Math.PI / 180; return [r * Math.cos(t), r * Math.sin(t)]; };
+  const arc = (a0, a1, r) => { const [x0, y0] = pt(a0, r), [x1, y1] = pt(a1, r); return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`; };
+  const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
+
+  const ticks = [], nums = [], parts = [];
+  geo.forEach((g, i) => {
+    el('path', { class: 'trk', d: arc(g.a0, g.a1, R_TRK) }, $('trk'));
+    for (let k = 0; k < g.n; k++) {
+      const a = g.tick(k), [x0, y0] = pt(a, R_T0), [x1, y1] = pt(a, R_T1);
+      ticks.push({ a, li: i, k, e: el('line', { class: 'tk', x1: x0.toFixed(2), y1: y0.toFixed(2), x2: x1.toFixed(2), y2: y1.toFixed(2) }, $('ticks')) });
+    }
+    const [nx, ny] = pt(g.mid, R_NUM);
+    const t = el('text', { class: 'lnum', x: nx.toFixed(2), y: ny.toFixed(2), 'text-anchor': 'middle', 'dominant-baseline': 'central' }, $('nums'));
+    t.textContent = pad(g.l.num); nums.push(t);
+  });
+  PARTS.forEach((p, pi) => {
+    const a0 = START + pi * (PSPAN + GAP), a1 = a0 + PSPAN;
+    el('path', { id: 'pp' + pi, d: arc(a0, a1, R_PART), fill: 'none' }, $('defs'));
+    const t = el('text', { class: 'part' }, $('parts'));
+    const tp = el('textPath', { href: '#pp' + pi, startOffset: '50%', 'text-anchor': 'middle' }, t);
+    tp.textContent = `${pad(pi + 1)}  ${p}`; parts.push(t);
+  });
+
+  /* needle angle for a state: rests on the current step's tick, or the end stop when finished */
+  const target = s => s.cur == null ? END : geo[s.cur - 1].tick(s.step);
+  const progPath = a => geo.filter(g => g.a0 < a).map(g => arc(g.a0, Math.min(g.a1, a), R_TRK)).join('');
+
+  let needle = START, sweeping = false;
+  function drawNeedle(a, s) {
+    needle = a;
+    $('ndl').setAttribute('transform', `rotate(${a.toFixed(3)})`);
+    $('prog').setAttribute('d', progPath(a - .01));
+    for (const t of ticks) {
+      t.e.classList.toggle('on', t.a < a - .05);
+      t.e.classList.toggle('now', !sweeping && s && s.cur != null && Math.abs(t.a - a) < .05);
+    }
+  }
+  function labels(s) {
+    nums.forEach((t, i) => { const n = i + 1; t.setAttribute('class', 'lnum' + (n <= s.done ? ' done' : '') + (n === s.cur ? ' now' : '')); });
+    const pi = s.cur != null ? geo[s.cur - 1].pi : -1;
+    parts.forEach((t, i) => t.setAttribute('class', 'part' + (i === pi ? ' now' : '')));
+  }
+  const ease = t => 1 - Math.pow(1 - t, 4);
+  const easeIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  let raf = 0;
+  function tween(keys, s, done) {
+    cancelAnimationFrame(raf);
+    let seg = 0, t0 = performance.now();
+    const step = now => {
+      const k = keys[seg], p = Math.min(1, (now - t0) / k.ms);
+      drawNeedle(k.from + (k.to - k.from) * k.fn(p), s);
+      if (p < 1) { raf = requestAnimationFrame(step); return; }
+      if (++seg < keys.length) { t0 = now; raf = requestAnimationFrame(step); } else { done && done(); }
+    };
+    raf = requestAnimationFrame(step);
+  }
+
+  /* ---------- time ---------- */
+  function tod() {
+    if (timeKey !== 'auto') return timeKey;
+    const h = new Date().getHours();
+    return h < 5 ? 'late' : h < 12 ? 'morning' : h < 17 ? 'afternoon' : h < 22 ? 'evening' : 'late';
+  }
+  function clock() {
+    const d = new Date();
+    $('hm').textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    $('day').textContent = d.toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short' }).replace(/,/g, '');
+  }
+
+  /* ---------- content ---------- */
+  const totalMin = C.reduce((a, l) => a + l.min, 0);
+  const totalSteps = C.reduce((a, l) => a + l.steps.length, 0);
+  const minsLeft = (l, k) => Math.max(1, Math.round(l.min * (1 - k / l.steps.length)));
+  const ro = (label, v, unit, sub) => `<li><span class="cap">${label}</span><div class="v">${v}${unit ? `<small>${unit}</small>` : ''}</div>${sub ? `<p class="s">${sub}</p>` : ''}</li>`;
+
+  function content(s) {
+    const t = tod();
+    const greet = { morning: 'Good morning', afternoon: 'Good afternoon', evening: 'Good evening', late: 'Up late' }[t];
+    const nudge = { morning: 'A short lesson before the day gets going?', afternoon: 'Ready for the next one?', evening: 'One lesson before the day ends?', late: 'This one is short.' }[t];
+    const l = s.cur != null ? C[s.cur - 1] : null, last = s.done ? C[s.done - 1] : null;
+    const o = { h1: s.name ? `${greet}, ${esc(s.name)}.` : `${greet}.` };
+
+    if (!s.name) {
+      o.lead = `Fifteen short lessons on using AI without handing over your judgment. Lesson 01 takes about ${l.min} minutes and needs no account.`;
+      o.cap = 'Begin with'; o.gear = pad(l.num); o.ttl = l.title; o.q = l.q;
+      o.go = `Start lesson ${pad(l.num)}`; o.href = `../index.html#intro-${l.num}`;
+      o.ro = ro('Lessons', pad(C.length), '', `${PARTS.length} parts: ${PARTS.join(', ')}.`)
+           + ro('Steps', totalSteps, '', 'Short, hands-on, never graded.')
+           + ro('Lesson 01', pad(l.min), 'min', `${l.steps.length} steps.`);
+      o.aria = `Course gauge: ${C.length} lessons in ${PARTS.length} parts. Nothing started yet.`;
+    } else if (!l) {
+      o.lead = 'You finished all fifteen lessons. Your final project is next: one real task, from goal to finished result.';
+      o.cap = 'All lessons complete'; o.gear = pad(C.length); o.ttl = 'Final project next'; o.q = 'One real task, from goal to finished result, with AI as a tool.';
+      o.go = 'Start your project'; o.href = '../index.html#projects';
+      o.ro = ro('Course', `${pad(C.length)}`, `/${pad(C.length)}`, 'Every lesson finished.')
+           + ro('Steps', totalSteps, '', 'All of them, in all three parts.')
+           + ro('Time in', totalMin, 'min', 'Across fifteen lessons.');
+      o.aria = `Course gauge: all ${C.length} of ${C.length} lessons complete.`;
+    } else {
+      const n = l.steps.length, k = s.step, left = minsLeft(l, k), stepT = l.steps[k].title;
+      o.lead = k
+        ? `Ready to continue? You’re on step ${k + 1} of ${n} of <em>${esc(l.title)}</em>. About ${left} minutes left.`
+        : s.done ? `${nudge} <em>${esc(l.title)}</em> is next, about ${l.min} minutes.`
+        : `${nudge} Your first lesson, <em>${esc(l.title)}</em>, takes about ${l.min} minutes. Nothing is graded.`;
+      o.cap = `Lesson · Part ${pad(PARTS.indexOf(l.arc) + 1)}`; o.gear = pad(l.num); o.ttl = l.title; o.q = l.q;
+      o.go = `${k ? 'Resume' : 'Start'} lesson ${pad(l.num)}`; o.href = `../index.html#lesson-${l.num}`;
+      o.ro = ro('Step', pad(k + 1), `/${pad(n)}`, esc(stepT) + '.')
+           + ro('Remaining', pad(left), 'min', `Of about ${l.min} for this lesson.`)
+           + ro('Course', pad(s.done), `/${pad(C.length)}`, `${l.arc}, ${s.done ? `${pad(s.done)} done` : 'just starting'}.`);
+      o.aria = `Course gauge: ${s.done} of ${C.length} lessons complete. Current: lesson ${l.num}, ${l.title}, step ${k + 1} of ${n}.`;
+    }
+    if (last) o.memory = `<span class="cap">Last time</span>You finished <em>${esc(last.title)}</em>.`;
+    return o;
+  }
+
+  function apply(s) {
+    const o = content(s);
+    $('greet').innerHTML = o.h1;
+    $('lead').innerHTML = o.lead;
+    const m = $('memory'); m.hidden = !o.memory; m.innerHTML = o.memory || '';
+    $('signin').hidden = !!s.name;
+    $('coreCap').textContent = o.cap; $('gear').textContent = o.gear;
+    $('ttl').textContent = o.ttl; $('q').textContent = o.q;
+    $('goT').textContent = o.go; $('go').href = o.href;
+    $('ro').innerHTML = o.ro;
+    $('gaugeL').textContent = o.aria;
+    $('navRT').textContent = s.name ? 'Course' : 'Sign in';
+    $('navR').href = s.name ? '../index.html#course' : '../index.html#signin';
+    $('revCur').textContent = s.label;
+    labels(s);
+  }
+
+  /* ---------- state switching ---------- */
+  function setState(key, animate) {
+    stateKey = key; const s = STATES[key];
+    document.querySelectorAll('#revStates .opt').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === key));
+    const to = target(s);
+    if (!animate || reduce) { apply(s); drawNeedle(to, s); return; }
+    const sw = document.querySelectorAll('[data-swap]');
+    sw.forEach(e => e.classList.add('out'));
+    setTimeout(() => { apply(s); sw.forEach(e => e.classList.remove('out')); }, 280);
+    sweeping = true;
+    tween([{ from: needle, to, ms: 1100, fn: easeIO }], s, () => { sweeping = false; drawNeedle(to, s); });
+  }
+  function setTime(key) {
+    timeKey = key;
+    document.querySelectorAll('#revTimes .opt').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === key));
+    apply(STATES[stateKey]);
+  }
+  const mk = (box, obj, fn) => { for (const k in obj) { const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.dataset.k = k; b.textContent = obj[k].label || obj[k]; b.onclick = () => fn(k); box.appendChild(b); } };
+  mk($('revStates'), STATES, k => setState(k, true));
+  mk($('revTimes'), TIMES, setTime);
+  document.querySelectorAll('#revTimes .opt').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === timeKey));
+
+  /* Enter = ignition, when nothing else has focus */
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || e.altKey || e.metaKey || e.ctrlKey) return;
+    const a = document.activeElement;
+    if (a && a !== document.body) return;
+    e.preventDefault(); $('go').click();
+  });
+
+  /* ---------- start-up: the cluster's self-check sweep, then settle on your step ---------- */
+  clock(); setInterval(() => { clock(); if (timeKey === 'auto') apply(STATES[stateKey]); }, 30000);
+  const s0 = STATES[stateKey];
+  document.querySelectorAll('#revStates .opt').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === stateKey));
+  apply(s0);
+  if (reduce) { drawNeedle(target(s0), s0); document.body.classList.add('ready'); return; }
+  drawNeedle(START, s0);
+  requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('ready')));
+  sweeping = true;
+  setTimeout(() => tween([
+    { from: START, to: END, ms: 1050, fn: easeIO },
+    { from: END, to: target(s0), ms: 1300, fn: ease }
+  ], s0, () => { sweeping = false; drawNeedle(target(s0), s0); }), 250);
+})();
+</script>
+</body>
+</html>

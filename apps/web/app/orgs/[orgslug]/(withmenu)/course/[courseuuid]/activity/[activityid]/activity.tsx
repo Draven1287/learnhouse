@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import LearningAIActivity from '@components/Objects/Activities/LearningAIActivity/LearningAIActivity'
 import { getUriWithOrg } from '@services/config/config'
 import { BookOpenCheck, CheckCircle, ChevronLeft, ChevronRight, MessageSquare, UserRoundPen, Edit2, Loader2, Maximize2, Minimize2, Trophy, Sparkles, XCircle, Lock, RotateCcw, Infinity as InfinityIcon } from 'lucide-react'
 import dynamic from 'next/dynamic'
@@ -182,7 +183,7 @@ function ActivityActions({ activity, activityid, course, orgslug, assignment, sh
     <div className="flex space-x-2 items-center">
       {activity && activity.published == true && activity.content.paid_access != false && (
         <AuthenticatedClientElement checkMethod="authentication">
-          {activity.activity_type != 'TYPE_ASSIGNMENT' && (
+          {activity.activity_type != 'TYPE_ASSIGNMENT' && !(activity.activity_type === 'TYPE_CUSTOM' && activity.content?.learningai) && (
             <>
               <MarkStatus
                 activity={activity}
@@ -307,6 +308,8 @@ function ActivityClient(props: ActivityClientProps) {
     }
 
     switch (activity.activity_type) {
+      case 'TYPE_CUSTOM':
+        return activity.content?.learningai ? <LearningAIActivity activity={activity} /> : null;
       case 'TYPE_DYNAMIC':
         if (activity.activity_sub_type === 'SUBTYPE_DYNAMIC_MARKDOWN') {
           return (

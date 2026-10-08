@@ -1,0 +1,84 @@
+<title>LearningAI Home Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..700&display=swap">
+<style>
+/* Comparison of three Home directions, in the site's own monochrome language. */
+:root{--bg:#000;--text:#F4F4F2;--text-2:#D9D9D6;--muted:#8E8E8B;--dim:#777774;--line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.22);
+  --font:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;--gutter:max(20px,calc((100vw - 1200px)/2 + 32px));color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-inline:var(--gutter);padding-block:72px 120px}
+h1,h2{margin:0;font-stretch:125%;font-weight:300;text-transform:uppercase;letter-spacing:.02em;line-height:1.05;text-wrap:balance}
+h1{font-size:clamp(34px,5vw,64px)}
+.cap{font-stretch:125%;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);font-size:18px;max-width:40em;margin-top:20px}
+a{color:inherit}
+:focus-visible{outline:1px solid var(--text);outline-offset:4px}
+.concept{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:48px;align-items:start;padding-block:64px;border-top:1px solid var(--line);margin-top:64px}
+.concept + .concept{margin-top:0}
+.shot{display:block;border:1px solid var(--line-2);overflow:hidden}
+.shot img{display:block;width:100%;height:auto;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.shot:hover img{transform:scale(1.015)}
+.concept h2{font-size:clamp(26px,3vw,38px);margin:10px 0 16px}
+.concept p{color:var(--text-2);margin:0 0 18px;max-width:34em}
+.concept dl{margin:0;border-top:1px solid var(--line)}
+.concept dl div{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
+.concept dd{margin:0;color:var(--muted)}
+.open{display:inline-flex;align-items:center;gap:14px;margin-top:26px;height:50px;padding:0 24px;border-radius:2px;background:var(--text);color:#000;text-decoration:none;font:500 11.5px var(--font);font-stretch:125%;letter-spacing:.18em;text-transform:uppercase}
+.open:hover{background:#fff}
+.pick{border:1px solid var(--text);padding:28px 32px;margin-top:24px}
+.pick h2{font-size:clamp(22px,2.4vw,30px);margin-bottom:14px}
+.pick p{color:var(--text-2);max-width:44em;margin:0 0 10px}
+.note{color:var(--muted);font-size:14.5px;margin-top:40px;max-width:46em}
+@media (max-width:860px){.concept{grid-template-columns:1fr;gap:28px}}
+</style>
+
+<header>
+  <p class="cap">LearningAI · Home · three directions</p>
+  <h1>Which Home feels right?</h1>
+  <p class="lede">Three complete concepts for the signed-in Home, built on the real lessons. Each one is personal and time-aware, works on phones, and has a small “design review” switch in the corner so you can flip between signed out, new, mid-course, late and finished.</p>
+</header>
+
+<section class="concept" aria-labelledby="b">
+  <a class="shot" href="concepts/concept-b-cover.html"><img src="concepts/shots/b-cover.jpg" alt="Concept B, Cover: a dateline strip, the lesson title set huge beside a tall 02, the question as a standfirst, a greeting column with Resume, and a contents strip of the three parts."></a>
+  <div>
+    <span class="cap">Direction B</span>
+    <h2 id="b">Cover</h2>
+    <p>Home as a luxury magazine cover. Your current lesson is the cover story; a dateline reads “Sunday morning · For Sam · Issue 02 of 15”.</p>
+    <dl><div><dt class="cap">Strong</dt><dd>Most premium and most editorial. Personal without being chatty. The contents strip doubles as the course map.</dd></div>
+      <div><dt class="cap">Trade-off</dt><dd>The densest of the three; needs strict restraint as content grows.</dd></div></dl>
+    <a class="open" href="concepts/concept-b-cover.html">Open live <span aria-hidden="true">›</span></a>
+  </div>
+</section>
+
+<section class="concept" aria-labelledby="a">
+  <a class="shot" href="concepts/concept-a-cockpit.html"><img src="concepts/shots/a-cockpit.jpg" alt="Concept A, Cockpit: a circular instrument gauge with three labelled arcs for the parts, the lesson number 02 in the centre like a gear indicator, a greeting on the left and step, time and course readouts on the right."></a>
+  <div>
+    <span class="cap">Direction A</span>
+    <h2 id="a">Cockpit</h2>
+    <p>Home as a hypercar instrument cluster. One gauge holds every step of the course; the needle sits on where you stopped and sweeps on load.</p>
+    <dl><div><dt class="cap">Strong</dt><dd>Most car-inspired and most memorable. Progress is instantly readable.</dd></div>
+      <div><dt class="cap">Trade-off</dt><dd>Risks feeling like a dashboard; harder on small phones.</dd></div></dl>
+    <a class="open" href="concepts/concept-a-cockpit.html">Open live <span aria-hidden="true">›</span></a>
+  </div>
+</section>
+
+<section class="concept" aria-labelledby="c">
+  <a class="shot" href="concepts/concept-c-invitation.html"><img src="concepts/shots/c-invitation.jpg" alt="Concept C, Invitation: a greeting, a line about last time, and the lesson's real question set large with a single field for your first thought and a Continue button."></a>
+  <div>
+    <span class="cap">Direction C</span>
+    <h2 id="c">Invitation</h2>
+    <p>Home does the work. After a short greeting it asks your lesson’s real question, and your first answer carries you into the lesson.</p>
+    <dl><div><dt class="cap">Strong</dt><dd>Least information, most doing. The calmest and the most focused on learning.</dd></div>
+      <div><dt class="cap">Trade-off</dt><dd>Quiet on large screens; less sense of the whole course.</dd></div></dl>
+    <a class="open" href="concepts/concept-c-invitation.html">Open live <span aria-hidden="true">›</span></a>
+  </div>
+</section>
+
+<section class="pick" aria-labelledby="rec">
+  <h2 id="rec">My recommendation</h2>
+  <p><b>Cover (B) as the base, with Invitation’s (C) inline answer</b> in the question area: you see the cover story, and you can start the lesson by answering right there.</p>
+  <p>Cockpit (A) is the most striking, but it reads as a dashboard. Its gauge would work well on a dedicated progress screen instead.</p>
+</section>
+
+<p class="note">Concepts are design prototypes: menus in them don’t open, and their links point at the main site’s routes. Pick one (or a mix) and it gets built into the full site.</p>

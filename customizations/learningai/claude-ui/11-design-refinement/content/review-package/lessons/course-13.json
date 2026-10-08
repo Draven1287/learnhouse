@@ -1,0 +1,160 @@
+{
+  "id": "lai.ai-you-can-use.l13",
+  "version": 1,
+  "title": "Stay in charge",
+  "number": 13,
+  "sourceIds": [
+    "children",
+    "nist"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l13.fairness",
+    "lai.ai-you-can-use.l13.appeal",
+    "lai.ai-you-can-use.l13.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l13.fairness",
+    "lai.ai-you-can-use.l13.appeal"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l13.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Stay in charge",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l13.intro",
+            "html": "<h3>Test for uneven outcomes and keep consequential decisions reviewable.</h3><p>An automated score can reflect data gaps, unsuitable goals, or biased patterns. A high average score can hide different error rates across groups. Ask who is affected, who can challenge a result, and whether automation belongs in the decision at all. In a small fictional test, identifying a disparity is a reason to investigate; it is not proof of one particular cause. People need a meaningful way to correct mistakes, not just a label saying a human is involved.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Fictional club translation test: the tool meets the same prewritten meaning-preservation checklist for 18 of 20 standard-English notices, but 10 of 20 notices using a local dialect. Someone proposes using it alone to reject club applications.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l13.fairness",
+            "title": "What follows from this test?",
+            "isRequired": true,
+            "correctAnswer": "investigate",
+            "choices": [
+              {
+                "value": "perfect",
+                "text": "The tool is equally reliable for everyone."
+              },
+              {
+                "value": "investigate",
+                "text": "Investigate the gap and avoid using it alone for exclusion."
+              },
+              {
+                "value": "blame",
+                "text": "Keep the tool unchanged because its combined score is above half."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l13.fairness.feedback.perfect",
+            "html": "<p class=\"feedback\" role=\"status\">The supplied groups have different observed results.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l13.fairness} = 'perfect'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l13.fairness.feedback.investigate",
+            "html": "<p class=\"feedback\" role=\"status\">The gap warrants review; the test does not establish the cause or all future performance.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l13.fairness} = 'investigate'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l13.fairness.feedback.blame",
+            "html": "<p class=\"feedback\" role=\"status\">An overall threshold can hide the different observed error rates.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l13.fairness} = 'blame'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l13.appeal",
+            "title": "Which safeguard is meaningful?",
+            "isRequired": true,
+            "correctAnswer": "appeal",
+            "choices": [
+              {
+                "value": "appeal",
+                "text": "Let applicants correct errors and obtain review by someone able to change the decision."
+              },
+              {
+                "value": "rubber",
+                "text": "Have a person automatically approve every machine result."
+              },
+              {
+                "value": "hide",
+                "text": "Hide the reason so nobody argues."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l13.appeal.feedback.appeal",
+            "html": "<p class=\"feedback\" role=\"status\">An appeal needs authority and a path to correction.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l13.appeal} = 'appeal'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l13.appeal.feedback.rubber",
+            "html": "<p class=\"feedback\" role=\"status\">A rubber stamp does not provide independent judgment.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l13.appeal} = 'rubber'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l13.appeal.feedback.hide",
+            "html": "<p class=\"feedback\" role=\"status\">That prevents challenge and repair.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l13.appeal} = 'hide'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l13.transfer",
+            "title": "Propose two checks before this tool is used again and one reason to choose a non-automated process.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l13.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Identifies the observed gap without inventing its cause.</li><li>Includes affected people or representative testing.</li><li>Provides meaningful review or justified non-use.</li></ul><p>Twenty examples per group are limited evidence. Fairness is contextual, and this exercise does not certify a system or decide any real person’s eligibility.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

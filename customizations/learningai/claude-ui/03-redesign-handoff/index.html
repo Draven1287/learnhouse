@@ -1,0 +1,583 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Learning AI Redesign Handoff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=Literata:opsz,wght@7..72,500;7..72,600&family=Public+Sans:wght@400;700&display=swap">
+<style>
+/* Layout: one 68ch reading column with a wider band for tables and sketches; the page itself demos Direction A (lab notebook). */
+:root{
+  --paper:#F5F6F2; --sheet:#FFFFFF; --ink:#1D2B3A; --muted:#55606B; --rule:#D9DDD6;
+  --pen:#2F5D8A; --hl:#F3D65A; --hl-ink:#3A3000;
+  --ok:#2E6B47; --ok-bg:#E3F0E7; --warn:#8A5A00; --warn-bg:#FBF0D9; --bad:#A23B2A; --bad-bg:#F8E4E0; --info-bg:#E4ECF4;
+  --read:"Atkinson Hyperlegible Next","Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --title:"Literata",Georgia,"Times New Roman",serif;
+  --mono:"Atkinson Hyperlegible Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#14191F; --sheet:#1B222A; --ink:#E6EAEE; --muted:#A4AEB8; --rule:#2F3A45;
+  --pen:#8DB8E3; --hl:#5E5220; --hl-ink:#FFF3BF;
+  --ok:#8FD1A6; --ok-bg:#1E3427; --warn:#E9C27A; --warn-bg:#3A2F17; --bad:#F0A396; --bad-bg:#3D211C; --info-bg:#1F2C3A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#14191F; --sheet:#1B222A; --ink:#E6EAEE; --muted:#A4AEB8; --rule:#2F3A45;
+  --pen:#8DB8E3; --hl:#5E5220; --hl-ink:#FFF3BF;
+  --ok:#8FD1A6; --ok-bg:#1E3427; --warn:#E9C27A; --warn-bg:#3A2F17; --bad:#F0A396; --bad-bg:#3D211C; --info-bg:#1F2C3A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--read);font-size:17px;line-height:1.6;padding:0 16px}
+.wrap{max-width:1080px;margin:0 auto;padding-block:40px 96px}
+.col{max-width:68ch}
+h1,h2,h3{text-wrap:balance;line-height:1.2}
+h1{font-family:var(--title);font-weight:600;font-size:clamp(32px,5vw,46px);margin:8px 0 12px;letter-spacing:-.01em}
+h2{font-family:var(--title);font-weight:600;font-size:clamp(25px,3.4vw,31px);margin:72px 0 10px;padding-top:20px;border-top:2px solid var(--ink)}
+h3{font-size:19px;margin:28px 0 6px}
+p{margin:0 0 14px}
+a{color:var(--pen)}
+:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.lede{color:var(--muted);max-width:68ch}
+.meta{font-family:var(--mono);font-size:13px;color:var(--muted)}
+code{font-family:var(--mono);font-size:.86em;background:var(--sheet);border:1px solid var(--rule);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+mark{background:var(--hl);color:var(--hl-ink);padding:0 3px}
+nav.toc{margin:28px 0 0;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:15px}
+nav.toc a{text-decoration:none;border-bottom:1px solid var(--rule)}
+
+/* tables */
+.tbl{overflow-x:auto;margin:14px 0 8px;border:1px solid var(--rule);background:var(--sheet)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--rule)}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--paper)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600}
+
+/* evidence tags: word + mark, never color alone */
+.tag{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:.04em;padding:2px 7px;border-radius:3px;white-space:nowrap;border:1px solid currentColor}
+.t-seen{color:var(--ok);background:var(--ok-bg)}
+.t-code{color:var(--pen);background:var(--info-bg)}
+.t-inf{color:var(--warn);background:var(--warn-bg)}
+.t-no{color:var(--bad);background:var(--bad-bg)}
+.t-seen::before{content:"● "}.t-code::before{content:"◆ "}.t-inf::before{content:"◐ "}.t-no::before{content:"○ "}
+
+.access{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:16px}
+.access div{background:var(--sheet);border:1px solid var(--rule);padding:14px 16px}
+.access b{display:block;margin-bottom:4px}
+.access p{font-size:15px;margin:6px 0 0;color:var(--muted)}
+
+ol.findings{padding-left:0;list-style:none;counter-reset:f;display:grid;gap:12px;margin-top:14px}
+ol.findings li{background:var(--sheet);border:1px solid var(--rule);padding:14px 16px 12px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
+.pri{font-family:var(--mono);font-weight:600;font-size:13px;padding:2px 6px;height:fit-content;border:1.5px solid var(--ink)}
+.pri.p0{background:var(--ink);color:var(--paper)}
+ol.findings h3{margin:0;font-size:17px}
+ol.findings p{grid-column:2;margin:2px 0 0;font-size:15.5px}
+ol.findings .ev{font-size:14px;color:var(--muted)}
+
+/* directions */
+.dir-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:20px}
+.dir{background:var(--sheet);border:1px solid var(--rule);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.dir:first-child{border:2px solid var(--ink)}
+.dir h3{margin:2px 0 4px;font-family:var(--title);font-size:22px}
+.dir-head p:not(.eyebrow){font-size:15px;margin:0}
+.spec{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px;margin:0}
+.spec dt{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:2px}
+.spec dd{margin:0}
+.sw{display:inline-block;width:13px;height:13px;border:1px solid var(--muted);background:var(--c);vertical-align:-2px;margin:0 3px 0 6px}
+.sw:first-child{margin-left:0}
+.sketch{margin-top:auto;border:1px solid var(--rule);font-size:12px;line-height:1.45;overflow:hidden}
+/* sketches intentionally use fixed colours: they depict each direction's own palette */
+.btn-dark{display:inline-block;background:#1D2B3A;color:#fff;padding:5px 10px;font-weight:600;font-size:11px}
+.btn-line{display:inline-block;border:1px solid #1D2B3A;color:#1D2B3A;padding:4px 9px;font-weight:600;font-size:11px}
+.sk-a{background:#F5F6F2;color:#1D2B3A;font-family:var(--read)}
+.a-top{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;border-bottom:1px solid #D9DDD6;font-family:var(--mono);font-size:10px}
+.a-save{color:#2E6B47}
+.a-body{display:grid;grid-template-columns:1fr 92px;gap:10px;padding:10px}
+.a-task{margin:0 0 8px}.a-task mark{background:#F3D65A;color:#3A3000}
+.a-entry{border-left:2px solid #1D2B3A;padding:2px 0 2px 8px;margin-bottom:7px}
+.a-entry p{margin:2px 0 0}.a-entry b{font-family:var(--mono);font-size:9.5px;font-weight:600}
+.a-rev{border-left-color:#2F5D8A}
+.a-btns{display:flex;gap:6px;flex-wrap:wrap}
+.a-margin{border-left:1px dashed #9AA3AB;padding-left:8px;font-size:11px}.a-margin p{margin:3px 0 6px}
+.a-margin .tag{font-size:8.5px;white-space:normal;color:#55606B;background:none}
+.sk-b{background:#ECEAE4;color:#22302B;font-family:"Public Sans",system-ui,sans-serif}
+.b-bar{display:flex;justify-content:space-between;padding:7px 10px;background:#22302B;color:#fff;font-weight:700;font-size:11px}
+.b-bar span{background:#E0A526;color:#22302B;padding:0 6px}
+.b-split{display:grid;grid-template-columns:1fr 1.2fr;gap:8px;padding:10px}
+.b-card{background:#fff;border:1px solid #c9c5bb;padding:6px;margin-top:6px}
+.b-field{background:#fff;border:1px solid #1F7A6B;padding:6px;margin:6px 0}
+.b-right ul{margin:0;padding-left:16px}.b-right li.ok{color:#1F7A6B;font-weight:700}
+.sk-c{background:radial-gradient(circle at 30% 0,#fbfaf6,#e3e1d9);color:#171A18;font-family:-apple-system,"Segoe UI",sans-serif;padding:10px}
+.c-top{font-size:10px;letter-spacing:.08em;color:#636965;margin-bottom:8px}
+.c-card{background:#FBFAF7;border:1px solid #fff;border-radius:16px;padding:12px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.c-eye{margin:0;font-size:9px;letter-spacing:.16em;color:#6e5c37;font-weight:700}
+.c-h{font-size:17px;font-weight:600;letter-spacing:-.02em;margin:4px 0 8px}
+.c-opt{border:1px solid rgba(0,0,0,.14);border-radius:10px;padding:6px 8px;margin-top:5px;background:#fff}
+.c-opt.sel{border-color:#9b7832;background:#FFFBEF;font-weight:600}
+.c-btns{text-align:right;margin-top:8px}.c-btns .btn-dark{background:#303734;border-radius:9px}
+
+.callout{margin-top:24px;background:var(--sheet);border:2px solid var(--ink);padding:18px 22px}
+.callout h3{margin-top:0;font-family:var(--title);font-size:21px}
+.callout ul{margin:0;padding-left:20px}.callout li{margin-bottom:8px}
+
+/* viewport strip */
+.vp{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px}
+.vp div{background:var(--sheet);border:1px solid var(--rule);padding:12px 14px;font-size:15px}
+.vp b{font-family:var(--mono);font-size:12.5px;display:block;margin-bottom:4px}
+
+/* flow */
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:14px 0;font-family:var(--mono);font-size:13px}
+.flow span{background:var(--sheet);border:1px solid var(--ink);padding:4px 9px}
+.flow i{font-style:normal;color:var(--muted)}
+
+/* slice screens */
+.screens{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px;margin-top:16px}
+.scr{background:var(--sheet);border:1px solid var(--rule);min-width:0}
+.scr-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.scr-b{padding:14px 14px 16px;font-size:15px}
+.scr-b h4{margin:0 0 6px;font-family:var(--title);font-size:18px;font-weight:600}
+.scr-b p{margin:0 0 10px}
+.src{border:1px solid var(--rule);padding:8px 10px;margin:6px 0;font-size:14px;background:var(--paper)}
+.src b{font-family:var(--mono);font-size:11.5px;display:block}
+.entry{border-left:3px solid var(--ink);padding:4px 0 4px 10px;margin:8px 0}
+.entry.rev{border-left-color:var(--pen)}
+.entry small{font-family:var(--mono);font-size:11.5px;color:var(--muted);display:block}
+.ladder{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px}
+.ladder li{border:1px solid var(--rule);padding:7px 10px;font-size:14px}
+.ladder li.open{border-color:var(--pen);background:var(--info-bg)}
+.ladder li.locked{color:var(--muted)}
+.fb{border:1px solid var(--rule);background:var(--paper);padding:10px 12px;font-size:14.5px}
+.fb .crit{font-family:var(--mono);font-size:11.5px;color:var(--muted);display:block;margin-bottom:4px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:12px;font-weight:600;padding:3px 8px;border:1px solid currentColor}
+.pill.ok{color:var(--ok);background:var(--ok-bg)}.pill.warn{color:var(--warn);background:var(--warn-bg)}.pill.bad{color:var(--bad);background:var(--bad-bg)}.pill.info{color:var(--pen);background:var(--info-bg)}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.b1{background:var(--ink);color:var(--paper);padding:7px 13px;font-weight:600;font-size:14px}
+.b2{border:1.5px solid var(--ink);padding:6px 12px;font-weight:600;font-size:14px}
+
+.copy{background:var(--sheet);border:1px solid var(--rule);padding:4px 16px}
+.copy dl{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:0;margin:0}
+.copy dt,.copy dd{padding:10px 0;border-bottom:1px solid var(--rule);margin:0}
+.copy dt{font-family:var(--mono);font-size:12.5px;color:var(--muted);padding-right:14px}
+.copy dl > :nth-last-child(-n+2){border-bottom:0}
+@media (max-width:560px){.copy dl{grid-template-columns:1fr}.copy dt{border-bottom:0;padding-bottom:0}}
+
+.stage{display:grid;gap:12px;margin-top:16px;counter-reset:s}
+.stage > div{background:var(--sheet);border:1px solid var(--rule);padding:14px 18px;display:grid;grid-template-columns:auto 1fr;gap:2px 16px}
+.stage .n{font-family:var(--mono);font-size:13px;font-weight:600;border:1.5px solid var(--ink);padding:2px 7px;height:fit-content}
+.stage h3{margin:0;font-size:17px}
+.stage p,.stage ul{grid-column:2;margin:4px 0 0;font-size:15.5px}
+.stage ul{padding-left:18px}
+
+.decide{counter-reset:d;list-style:none;padding:0;display:grid;gap:10px;margin-top:14px}
+.decide li{background:var(--sheet);border-left:4px solid var(--hl);border-top:1px solid var(--rule);border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:12px 16px;font-size:16px}
+.decide li b{display:block}
+footer{margin-top:64px;font-size:14px;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px}
+@media (max-width:520px){.a-body{grid-template-columns:1fr}.b-split{grid-template-columns:1fr} ol.findings li,.stage > div{grid-template-columns:1fr} ol.findings p,.stage p,.stage ul{grid-column:1}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+<header class="col">
+  <p class="eyebrow">LearningAI · Historical design study</p>
+  <h1>Learning AI: audit and redesign plan</h1>
+  <p class="lede">Three visual directions, a recommendation, state specifications, and a plan for one vertical slice. Historical prototype observations illustrate design issues; they do not describe the current deployment or its operational state.</p>
+  <p class="meta">Evidence key: <span class="tag t-seen">Seen live</span> <span class="tag t-code">In code</span> <span class="tag t-inf">Inference</span> <span class="tag t-no">Not checked</span></p>
+</header>
+<nav class="toc" aria-label="Sections">
+  <a href="#access">Design study scope</a><a href="#baseline">Baseline</a><a href="#problems">Priority problems</a><a href="#directions">Directions</a><a href="#layout">Layout by viewport</a><a href="#routes">Route plan</a><a href="#states">Save states</a><a href="#learning">Learning states</a><a href="#slice">First slice</a><a href="#a11y">Accessibility &amp; privacy</a><a href="#tests">Acceptance tests</a><a href="#plan">Staged plan</a><a href="#decisions">Your decisions</a>
+</nav>
+
+<section id="access">
+  <h2>Design study scope</h2>
+  <div class="access">
+    <div><b>Entry and orientation</b><p>Explain the audience, effort and course promise before asking learners to commit.</p></div>
+    <div><b>Lesson workspace</b><p>Compare clear decisions, authored feedback and revision with accessible controls.</p></div>
+    <div><b>Saved-state communication</b><p>Distinguish device-only drafts, confirmed account saves and unavailable services.</p></div>
+    <div><b>Illustrative curriculum</b><p>Use clearly labelled examples to evaluate the design; review lesson content separately.</p></div>
+    <div><b>Acceptance scope</b><p>Check keyboard, mobile, privacy and recovery states with fictional test data before release.</p></div>
+  </div>
+</section>
+
+<section id="baseline">
+  <h2>Inspected baseline</h2>
+  <div class="col">
+  <h3>Prototype scope</h3>
+  <p>This historical design study uses static HTML, CSS and JavaScript sketches to communicate layout and interaction patterns. Account, persistence and backend behavior require separate implementation and verification.</p>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Observation</th><th>Evidence</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Entry screen is a yes/no gate</td><td>“Ready to learn the first lesson of this website?” with Yes / No / Log in. It gives no course promise, effort or audience. “No” replaces the page with “nothing has been saved” and one button.</td><td><span class="tag t-seen">Seen live</span> <code>index.html:62-125</code></td></tr>
+      <tr><td>Lesson 1 orientation is strong</td><td>“About 17 minutes”, “Nothing is graded”, “No account yet”, plus a clear privacy warning. Choice feedback uses <code>aria-live</code>.</td><td><span class="tag t-seen">Seen live</span></td></tr>
+      <tr><td>Lesson 1 saves honestly to this device</td><td>“Your lesson stays on this device until you create or sign in.” Draft is in <code>learningai-lesson-one-draft-v2</code>, and reload restored step 2.</td><td><span class="tag t-seen">Seen live</span></td></tr>
+      <tr><td>Signed-out students can’t see the course</td><td><code>/lessons.html</code>, <code>/progress.html</code> and <code>/gallery.html</code> all redirect to Lesson 1. The guard needs three localStorage flags.</td><td><span class="tag t-seen">Seen live</span> <code>theme.js:883-1089</code></td></tr>
+      <tr><td>Selected choice is shown mainly by tint</td><td>Selected option gets a gold border and a pale fill. It has no check mark, and the option buttons have no <code>aria-pressed</code>.</td><td><span class="tag t-seen">Seen live</span></td></tr>
+      <tr><td>Lesson titles push the task down</td><td>Headings up to 76px. On a 375px phone the first decision starts about 500px down.</td><td><span class="tag t-seen">Seen live</span></td></tr>
+      <tr><td>No FAQ route</td><td><code>/faq.html</code> returns 404, and no help destination is served.</td><td><span class="tag t-seen">Seen live</span></td></tr>
+      <tr><td>Old V2 app still public</td><td><code>/v2/</code> serves the July app (noindex) and loads Google Analytics. No other live page loads analytics.</td><td><span class="tag t-seen">Seen live</span></td></tr>
+      <tr><td>Answer keys ship to the browser</td><td>Answers are in the DOM (<code>data-answer</code>). Next is never disabled, and checks are non-blocking.</td><td><span class="tag t-code">In code</span> <code>lesson.html:224</code></td></tr>
+      <tr><td>Project submission</td><td>Fields: title, https URL, “What is it?”, “What did AI do, and what did you decide or check yourself?”, “Anything that went wrong?”, age range, public name, and three confirmations. Server status is <code>queued</code> only, with no published state. The gallery shows founder examples only.</td><td><span class="tag t-code">In code</span> <code>submit-project.html</code>, <code>db.mjs:593</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The earlier leads, rechecked</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Lead</th><th>What I found</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>1 of 15 shown as 7%, with a dark curve that looks more complete</td><td>The number is right: <code>Math.round(1/15*100)</code> with the total hard-coded at 15. The dashboard “mountain” is a dash-length on an SVG path, and its <code>aria-label</code> is static. Progress-page curve not seen.</td><td><span class="tag t-code">In code</span> <span class="tag t-no">Visual not rechecked</span></td></tr>
+      <tr><td>“Preview mode — nothing is saved” vs. a dashboard showing progress, and the warning gone on Lesson 2</td><td><strong>Confirmed by code.</strong> Preview is a Settings switch saved in localStorage. While on, it blocks writes to course keys but still lets the dashboard read old progress. The banner exists only on <code>lessons.html</code>; <code>lesson.html</code> and the dashboard have none.</td><td><span class="tag t-code">In code</span> <code>theme.js:19-104</code></td></tr>
+      <tr><td>Lessons can count as complete without a confirmed save</td><td><code>LearningAICourseState.complete()</code> runs whether or not the server accepted the save. The lesson screen labels this honestly, but the dashboard count can run ahead of the server.</td><td><span class="tag t-code">In code</span> <code>lesson.html:331</code></td></tr>
+      <tr><td>Expired session</td><td>On 401, writes queue locally and the UI stays “signed in”. The comment reads 401 as “nobody signed in yet”. Admin expiry is a separate 8-hour cookie. Not rechecked live.</td><td><span class="tag t-inf">Inference</span></td></tr>
+      <tr><td>June 3: name editing fails</td><td>Save confirms only after the server says OK. Bug found: Settings reads <code>?name=</code> from the URL before the stored name, so a stale or crafted link can pre-fill and display the wrong name.</td><td><span class="tag t-code">In code</span> <code>settings.html:322</code></td></tr>
+      <tr><td>June 3: bullet-point preference fails</td><td>It no longer exists in the deployed app; it lives only in the old, unserved root <code>settings.html</code>. Decide whether to bring it back.</td><td><span class="tag t-code">In code</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="problems">
+  <h2>Priority problems</h2>
+  <ol class="findings">
+    <li><span class="pri p0">P0</span><h3>Save state isn’t truthful across routes</h3><p>Preview hides itself outside the catalogue. Completion is recorded locally before the server confirms. Expired sessions look signed in while work queues silently. The dashboard reads progress from localStorage. Students can’t tell what will survive a device change.</p></li>
+    <li><span class="pri">P1</span><h3>A new student can’t see what the course is</h3><p>The entry is a yes/no prompt, and the outline is hidden until they finish Lesson 1, make an account and answer the questionnaire. There is no plain course promise or total effort, and no way to look before committing.</p></li>
+    <li><span class="pri">P1</span><h3>Attempts aren’t preserved, and help isn’t separated from independent work</h3><p>The lesson player has no first-attempt record, no hint ladder, and no independent check that hides help. Answer keys are in the page. Checks never block, and the end screen shows a % score that mixes assisted and unassisted answers.</p></li>
+    <li><span class="pri">P1</span><h3>Account recovery is broken by configuration</h3><p>Password reset email isn’t configured. A student who forgets a password, or whose session expires, has no self-service way back to their saved work.</p></li>
+    <li><span class="pri">P2</span><h3>Progress graphics carry meaning by color and static labels</h3><p>Arc-colored dots are <code>aria-hidden</code>, the SVG labels don’t change with progress, and the count isn’t announced. The production dashboard title still reads “Stage 1 Navigation Proof”.</p></li>
+    <li><span class="pri">P2</span><h3>Projects have no publish path or reasoning evidence</h3><p>States are local draft → <code>queued</code>, and nothing beyond that. Consent to the gallery isn’t a separate, reversible choice. There are no fields for reproducible summary, tools, cautions, or attribution.</p></li>
+    <li><span class="pri">P2</span><h3>No help or FAQ, and a stale <code>/v2/</code> app with analytics</h3><p>Students have nowhere to ask about verification, privacy, school rules, or how progress is saved. The leftover app is a privacy and confusion risk.</p></li>
+  </ol>
+</section>
+<!-- DESIGN DIRECTIONS (inserted into handoff) -->
+<section id="directions">
+  <h2>Three directions</h2>
+  <p class="lede">Each sketch shows the same moment: a student partway through the survey lesson after making a first attempt, with one hint open.</p>
+
+  <div class="dir-grid">
+    <!-- A -->
+    <article class="dir" aria-labelledby="dirA">
+      <header class="dir-head">
+        <p class="eyebrow">Direction A · recommended</p>
+        <h3 id="dirA">Lab notebook</h3>
+        <p>One reading column. Each attempt is a dated entry that stays on the page. Hints and sources sit in the margin on wide screens and inline on narrow ones.</p>
+      </header>
+      <dl class="spec">
+        <dt>Type</dt><dd>Atkinson Hyperlegible Next for reading and UI. Literata for lesson titles only. Atkinson Hyperlegible Mono for evidence labels and numbers.</dd>
+        <dt>Spacing</dt><dd>8px base, 68-character measure, 32px between entries, 16px gutter on phones.</dd>
+        <dt>Palette</dt><dd><span class="sw" style="--c:#F5F6F2"></span>cool paper <span class="sw" style="--c:#1D2B3A"></span>ink <span class="sw" style="--c:#2F5D8A"></span>pen blue <span class="sw" style="--c:#F3D65A"></span>highlighter (current task only)</dd>
+        <dt>Components</dt><dd>Flat, ruled edges, no glass. Entries carry a label and time. Verdicts are word + icon + color.</dd>
+      </dl>
+      <div class="sketch sk-a" role="img" aria-label="Sketch of the lab notebook direction: a single column with a highlighted current task, the student's first attempt kept as a labelled entry, and a hint shown in the margin.">
+        <div class="a-top"><span>Survey claims · Step 3 of 7</span><span class="a-save">● Saved to your account 2:14 pm</span></div>
+        <div class="a-body">
+          <div class="a-col">
+            <p class="a-task"><mark>Check claim 2.</mark> The summary says “Most students want a later start.” Is that supported by the source cards?</p>
+            <div class="a-entry"><b>Your first attempt · 2:09 pm</b><p>Supported, 70% said yes.</p></div>
+            <div class="a-entry a-rev"><b>Revision 1 · 2:13 pm</b><p>Unsupported as written. 168 of 240 <i>respondents</i> said yes, but only 240 of 1,200 students answered…</p></div>
+            <div class="a-btns"><span class="btn-dark">Submit for feedback</span><span class="btn-line">Next hint</span></div>
+          </div>
+          <aside class="a-margin"><b>Hint 1 of 3</b><p>Who answered the survey, and who didn’t?</p><span class="tag">Doesn’t affect independent check</span></aside>
+        </div>
+      </div>
+    </article>
+
+    <!-- B -->
+    <article class="dir" aria-labelledby="dirB">
+      <header class="dir-head">
+        <p class="eyebrow">Direction B</p>
+        <h3 id="dirB">Workshop bench</h3>
+        <p>A split workspace: materials on the left, your work on the right, with a checklist of criteria. It reads as a practical job sheet.</p>
+      </header>
+      <dl class="spec">
+        <dt>Type</dt><dd>Public Sans for everything, with heavier weights for headings. IBM Plex Mono for tags.</dd>
+        <dt>Spacing</dt><dd>Dense 4px grid with fixed panes on desktop. It collapses to tabs below 900px.</dd>
+        <dt>Palette</dt><dd><span class="sw" style="--c:#ECEAE4"></span>bench grey <span class="sw" style="--c:#22302B"></span>slate <span class="sw" style="--c:#1F7A6B"></span>teal <span class="sw" style="--c:#E0A526"></span>signal amber</dd>
+        <dt>Components</dt><dd>Square cards, tool-tag chips, checkboxes for criteria, and a sticky action bar.</dd>
+      </dl>
+      <div class="sketch sk-b" role="img" aria-label="Sketch of the workshop bench direction: source cards in a left pane, the student's answer and a criteria checklist in a right pane.">
+        <div class="b-bar">Job 3 · Check claim 2 <span>Criteria 1/3</span></div>
+        <div class="b-split">
+          <div class="b-left"><b>Source cards</b><div class="b-card">S1 · Response rate<br><small>240 of 1,200 replied</small></div><div class="b-card">S2 · Results<br><small>168 of 240 support</small></div></div>
+          <div class="b-right"><b>Your call</b><div class="b-field">Unsupported as written…</div><ul><li class="ok">Names a verdict</li><li>Cites a source card</li><li>Explains the gap</li></ul></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- C -->
+    <article class="dir" aria-labelledby="dirC">
+      <header class="dir-head">
+        <p class="eyebrow">Direction C</p>
+        <h3 id="dirC">Quiet paper, refined</h3>
+        <p>Keep today’s look: the paper backdrop, the dark primary button, system type. Remove most of the glass, shrink the hero, and raise contrast.</p>
+      </header>
+      <dl class="spec">
+        <dt>Type</dt><dd>The existing system stack (SF / Segoe). Tighter heading scale, with lesson titles capped near 40px instead of 76px.</dd>
+        <dt>Spacing</dt><dd>The existing card rhythm, with card padding cut by about a third.</dd>
+        <dt>Palette</dt><dd><span class="sw" style="--c:#EFEEE9"></span>paper <span class="sw" style="--c:#171A18"></span>ink <span class="sw" style="--c:#303734"></span>button <span class="sw" style="--c:#A8843F"></span>brass</dd>
+        <dt>Components</dt><dd>Opaque cards instead of blur, the existing option buttons with a check mark added to the selected state.</dd>
+      </dl>
+      <div class="sketch sk-c" role="img" aria-label="Sketch of the refined current direction: a rounded opaque card on a pale paper background with a smaller heading and the existing option buttons.">
+        <div class="c-top"><span>Lesson 07 · Step 3 of 7</span></div>
+        <div class="c-card">
+          <p class="c-eye">CLAIM 2 OF 4</p>
+          <p class="c-h">Most students want a later start.</p>
+          <div class="c-opt">Supported</div><div class="c-opt sel">✓ Unsupported as written</div><div class="c-opt">Contradicted</div>
+          <div class="c-btns"><span class="btn-dark">Next →</span></div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="callout">
+    <h3>Recommendation: A, keeping C’s brand cues</h3>
+    <ul>
+      <li><strong>It makes revision visible.</strong> A notebook entry can’t be silently overwritten, so “your first attempt survives revision” shows in the layout, not only in the code.</li>
+      <li><strong>It reads well at every size.</strong> A single column survives 375px phones and 200% zoom with no layout change. B’s split panes turn into tabs on phones, which hides the sources while students write.</li>
+      <li><strong>Fewer contrast problems.</strong> Text on blurred, translucent glass over a photo is the main contrast risk today. Flat paper removes it.</li>
+      <li><strong>Continuity for the two testers.</strong> Keep the dark primary button, the brass accent for awards, and the paper photo on the entry screen only. Returning testers will still recognise the site.</li>
+      <li><strong>B wins on desktop for long source packets.</strong> A borrows from it: at 1100px and wider, source cards dock into the margin.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="layout">
+  <h2>Lesson layout by viewport</h2>
+  <p class="col">There is no permanent three-panel layout. The column is the default, and panels appear only when the screen is wide enough to show sources and writing side by side without squeezing either one.</p>
+  <div class="vp">
+    <div><b>&lt; 700px · phone</b>Single column. Source cards collapse into a “Sources (4)” disclosure directly above the response box, so they stay next to the writing instead of on another tab. Primary action sits at the end of content, not pinned (the current code already learned this). Outline link in the top bar.</div>
+    <div><b>700–1099px · tablet / laptop zoomed</b>Single 68ch column with hints opening inline under the task. Sources inline as cards.</div>
+    <div><b>≥ 1100px · desktop</b>Reading column plus a 300px margin. The margin holds the hint ladder and sources, and scrolls with the step rather than sticking. At 200% zoom it falls back to the tablet layout automatically.</div>
+  </div>
+</section>
+
+<section id="routes">
+  <h2>Screen and route plan</h2>
+  <p class="col">All existing URLs keep working. Changes are listed by route, with what each one touches on the backend. Nothing on this list needs a schema migration, except where marked.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Route</th><th>Today</th><th>Proposed</th><th>Backend impact</th></tr></thead>
+    <tbody>
+      <tr><td><code>/</code></td><td>Yes / No gate</td><td>Entry page: a plain-language promise, “Try a sample lesson, no account needed (about 20 min)”, “Sign in to continue”, and what the course covers in one line per part. Returning users still redirect to their resume point.</td><td>None</td></tr>
+      <tr><td><code>lesson-one.html</code></td><td>Free 7-step lesson</td><td>Keep as the free sample, or replace it with the survey lesson (your decision). Add the shared save chip and an export.</td><td>None</td></tr>
+      <tr><td><code>access.html</code></td><td>Sign in / up / reset</td><td>Add a “session expired” mode that returns to the exact lesson and stage, then drains the local queue. Show honestly that reset email isn’t available until it’s configured.</td><td>Uses existing <code>returnTo</code>-style redirect; reset needs owner config</td></tr>
+      <tr><td><code>stage-1-navigation-proof.html</code> (dashboard)</td><td>Greeting, count, %, curve</td><td>“Pick up where you left off” card naming lesson, stage and last saved time. Completed activities and independently demonstrated checks listed as counts with words. One progress bar whose label states the same fraction. Real page title.</td><td>Read from <code>/api/v2/state</code> when signed in, so counts are server-confirmed</td></tr>
+      <tr><td><code>lessons.html</code></td><td>Catalogue; preview banner</td><td>Outline for each module: goal, activities, estimated time, prerequisite, and status in words (Not started / In progress, step 3 of 7 / Done / Shown independently). Readable when signed out, without unlocking lessons.</td><td>None; the guard changes only for the read-only outline</td></tr>
+      <tr><td><code>lesson.html?id=</code></td><td>Generic step player</td><td>New workspace (see the slice): attempt → hint ladder → compare → feedback → revise → independent check. Persistent preview bar and save chip.</td><td>Attempts may fit in <code>/api/v2/interaction</code>. <mark>If an ordered attempt history doesn’t fit, that becomes a separate migration proposal.</mark></td></tr>
+      <tr><td><code>progress.html</code></td><td>Signal curve</td><td>Fold into the dashboard, or keep as a detailed list. Same visual language, with state in text.</td><td>None</td></tr>
+      <tr><td><code>projects.html</code> · <code>submit-project.html</code></td><td>Template → <code>queued</code></td><td>Reuse the template. Add “How someone could reproduce it”, “Tools used”, “Cautions”, “Credits”, and one reasoning prompt: “Show one thing you checked and how.” Show the states Draft (this device) → Submitted for review → Published. Gallery consent becomes its own optional checkbox that can be withdrawn later.</td><td>New fields go inside the existing free-form <code>artifact</code> object, so no migration. A Published state needs a decision on who approves.</td></tr>
+      <tr><td><code>gallery.html</code></td><td>Gated; founder examples</td><td>Public, read-only. Shows only consented, approved projects.</td><td>Read-only endpoint, if one is added later</td></tr>
+      <tr><td><code>help.html</code> <em>(new)</em></td><td>None (404)</td><td>FAQ: what AI can and can’t do, checking answers, school rules, privacy, academic integrity, energy and water (with dates and uncertainty), accessibility, and how progress is saved.</td><td>None</td></tr>
+      <tr><td><code>settings.html</code></td><td>Account, display, preview</td><td>Stop reading the name from the URL. Explain that preview mode is for testers, and show its state on every page. Bullet-point preference: restore or drop (your call).</td><td>Existing <code>/api/v2/profile</code></td></tr>
+      <tr><td><code>/v2/</code></td><td>Old app with analytics</td><td>Retire (redirect to <code>/</code>) after you confirm no tester relies on it.</td><td>Server route map only</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Component map</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Component</th><th>Job</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Save chip</td><td>One truthful sentence about where the work is</td><td>Single source: a <code>saveState</code> module wrapping <code>learning-api.js</code>. <code>role="status"</code>. Never shows “Saved” without a 2xx response.</td></tr>
+      <tr><td>Mode bar</td><td>Preview or no-account notice on every route</td><td>Rendered by <code>theme.js</code>, so no page can forget it.</td></tr>
+      <tr><td>Task block</td><td>The current task, highlighted</td><td>One per step; the only use of the highlighter colour.</td></tr>
+      <tr><td>Notebook entry</td><td>An attempt or a revision, stamped and kept</td><td>Read-only once superseded; the latest one is editable.</td></tr>
+      <tr><td>Hint ladder</td><td>Three levels, opened one at a time</td><td>Each one opened is recorded. Level 3 is a worked example on a parallel problem.</td></tr>
+      <tr><td>Source card</td><td>Authored evidence with a short ID (S1–S4)</td><td>Selectable text; students can cite one by ID.</td></tr>
+      <tr><td>Feedback note</td><td>One next step tied to one criterion</td><td>Labelled “Authored feedback”. A future AI coach would carry its own label plus a “Disagree with this” control.</td></tr>
+      <tr><td>Status pill</td><td>Learning state in words plus a symbol</td><td>Never colour alone.</td></tr>
+      <tr><td>Progress line</td><td>Fraction, text, graphic and label that agree</td><td>One computed value feeds all four.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="states">
+  <h2>Save states</h2>
+  <p class="col">Every screen that holds student work shows exactly one of these, in the save chip. The wording is the student-facing copy.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>State</th><th>When</th><th>Student sees</th><th>Actions</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill info">◇ Preview</span></td><td>Tester preview switch is on</td><td>“Preview: nothing you do is saved, on this device or your account.” Shown on <strong>every</strong> route.</td><td>Leave preview</td></tr>
+      <tr><td><span class="pill info">▢ This device only</span></td><td>No account (sample lesson)</td><td>“Saved on this device only. Clearing your browser or switching devices will lose it.”</td><td>Create an account to keep it · Download a copy</td></tr>
+      <tr><td><span class="pill info">… Saving</span></td><td>Request in flight for over 1 second</td><td>“Saving…”</td><td>None</td></tr>
+      <tr><td><span class="pill ok">✓ Saved</span></td><td>Server returned 2xx for this version</td><td>“Saved to your account · 2:14 pm”</td><td>None</td></tr>
+      <tr><td><span class="pill bad">! Not saved</span></td><td>5xx, timeout, or 409 lock</td><td>“Couldn’t save to your account. Your work is still here on this device.”</td><td>Try again · Download a copy</td></tr>
+      <tr><td><span class="pill warn">⌁ Offline</span></td><td><code>navigator.onLine</code> false or the network fails</td><td>“You’re offline. Your changes are kept on this device and will save when you reconnect.”</td><td>None (auto-retry)</td></tr>
+      <tr><td><span class="pill warn">⏻ Signed out</span></td><td>401 on a write while the UI believes you’re signed in</td><td>“You’ve been signed out, so this isn’t saving. Your work on this page is kept here.”</td><td>Sign in (returns you here, then saves)</td></tr>
+      <tr><td><span class="pill bad">⇄ Two versions</span></td><td>Server copy is newer than the one this device loaded</td><td>“This lesson was changed on another device.” Both versions are shown.</td><td>Keep this one · Keep the other · Keep both as entries</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col">
+    <h3>Behaviour rules</h3>
+    <ul>
+      <li><strong>Reload:</strong> restore the local draft first. Then compare it with the server copy by version; if they differ, show the two-versions state. Never silently replace the draft.</li>
+      <li><strong>Back and outline:</strong> leaving a step saves the draft locally first. The outline link never discards work.</li>
+      <li><strong>Log out:</strong> if anything is unsynced, the student sees “2 changes haven’t saved yet” with Save first / Download / Log out anyway. Local copies are then cleared, so the next person on a shared computer can’t see them.</li>
+      <li><strong>Cross-device:</strong> only work that reached “Saved” appears on another device. The resume card says when it was last saved.</li>
+      <li><strong>Lesson completion</strong> is recorded as done only after the server confirms it. Until then the dashboard says “Finished on this device, not yet saved”. This replaces today’s local-first <code>complete()</code>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="learning">
+  <h2>Learning states</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>State</th><th>Meaning</th><th>Counts toward</th></tr></thead>
+    <tbody>
+      <tr><td>Not started</td><td>No entry yet</td><td>Nothing</td></tr>
+      <tr><td>Attempted</td><td>First attempt saved; it can’t be edited after a hint is opened or feedback is given</td><td>Activities completed</td></tr>
+      <tr><td>Used hint 1–2 / Worked example</td><td>Recorded on that task, and shown to the student</td><td>Activities completed; <em>not</em> independent evidence</td></tr>
+      <tr><td>Submitted</td><td>Sent for feedback</td><td>—</td></tr>
+      <tr><td>Feedback pending</td><td>Only if an educator reviews; authored feedback is instant</td><td>—</td></tr>
+      <tr><td>Needs revision</td><td>One named criterion isn’t met yet</td><td>—</td></tr>
+      <tr><td>Revised</td><td>New entry added; earlier ones kept</td><td>Activities completed</td></tr>
+      <tr><td>Shown independently</td><td>Independent check met all criteria, with no hints or worked example available on that screen</td><td>Independent evidence</td></tr>
+    </tbody>
+  </table></div>
+  <p class="col meta">“Independent” means the product didn’t offer help on that screen. It can’t prove a student didn’t use AI elsewhere, and the copy says so.</p>
+</section>
+
+<section id="slice">
+  <h2>First slice: the survey lesson</h2>
+  <p class="col"><mark>Stand-in content.</mark> Your curriculum wasn’t attached, so I adapted the fictional Riverview survey from the local curriculum’s Evidence Court packet. Replace it with your lesson text before building.</p>
+  <div class="flow" aria-label="Slice flow"><span>Course outline</span><i>→</i><span>Lesson attempt</span><i>→</i><span>Hint</span><i>→</i><span>Feedback</span><i>→</i><span>Revision</span><i>→</i><span>Independent check</span><i>→</i><span>Saved return</span></div>
+
+  <div class="screens">
+    <div class="scr">
+      <div class="scr-h"><span>Step 2 of 7 · Claim 1 of 4</span><span class="pill info">▢ This device only</span></div>
+      <div class="scr-b">
+        <h4>An AI summary of the Riverview survey</h4>
+        <p><mark>Check claim 1:</mark> “Most students want the later start.” Decide on a verdict, cite a source card, and say why.</p>
+        <details open><summary>Sources (4)</summary>
+          <div class="src"><b>S1 · Who answered</b>240 of 1,200 students replied. Answering was voluntary.</div>
+          <div class="src"><b>S2 · Results</b>168 of 240 replies supported keeping the later start.</div>
+          <div class="src"><b>S3 · Attendance</b>Late arrivals: 250 before, 175 after.</div>
+          <div class="src"><b>S4 · Citation check</b>The “state report” named in the summary could not be found.</div>
+        </details>
+        <div class="entry"><small>First attempt · 2:09 pm</small>Supported. 70% said yes. (S2)</div>
+      </div>
+    </div>
+    <div class="scr">
+      <div class="scr-h"><span>Hint ladder</span><span>Hints used: 1</span></div>
+      <div class="scr-b">
+        <ol class="ladder">
+          <li class="open"><b>Hint 1 · Nudge.</b> Who answered the survey, and who didn’t?</li>
+          <li class="locked">Hint 2 · Narrower. Open after hint 1.</li>
+          <li class="locked">Hint 3 · Worked example on a different survey. Opening it means this claim won’t count as independent.</li>
+        </ol>
+        <p class="meta">Hints are part of practice, not a penalty. They’re recorded so your independent check means something.</p>
+      </div>
+    </div>
+    <div class="scr">
+      <div class="scr-h"><span>Feedback · Authored</span><span class="pill warn">Needs revision</span></div>
+      <div class="scr-b">
+        <div class="fb"><span class="crit">Criterion 3 of 4 · Explain the gap in your own words</span>Your verdict uses S2, but “most students” is about all 1,200. What does S1 change? Revise your entry. Your first attempt stays above it.</div>
+        <div class="entry"><small>First attempt · 2:09 pm</small>Supported. 70% said yes. (S2)</div>
+        <div class="entry rev"><small>Revision 1 · 2:13 pm</small>Unsupported as written. 168 is 70% of people who replied, but only 14% of all students (S1, S2). We don’t know what the other 960 think.</div>
+        <div class="btnrow"><span class="b1">Check revision</span><span class="b2">See model answer</span></div>
+        <p class="meta">“See model answer” appears only after you’ve submitted at least one attempt.</p>
+      </div>
+    </div>
+    <div class="scr">
+      <div class="scr-h"><span>Independent check</span><span>No hints on this screen</span></div>
+      <div class="scr-b">
+        <h4>The confident app</h4>
+        <p>A homework app answers a question and shows “96% confident”. A friend says that means it’s right 96% of the time. In 3–4 sentences: is your friend right, and what would you check before trusting the answer?</p>
+        <p class="meta">Hints and model answers are hidden here. The site can’t tell whether you used another tool, so this records only what you did on this page.</p>
+        <div class="btnrow"><span class="b1">Submit check</span><span class="b2">Back to outline (keeps your draft)</span></div>
+      </div>
+    </div>
+    <div class="scr">
+      <div class="scr-h"><span>Lesson summary</span><span class="pill ok">✓ Saved to your account · 2:21 pm</span></div>
+      <div class="scr-b">
+        <p><strong>4 of 4 claims checked.</strong> 2 on your own, 2 with hints.</p>
+        <p><span class="pill ok">✓ Shown independently</span> Confidence isn’t accuracy (independent check)</p>
+        <p class="meta">Next time you’ll land on: Lesson 8, step 1.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Rubric (authored, shared with the student)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Criterion</th><th>Met when</th></tr></thead>
+    <tbody>
+      <tr><td>1 · Verdict fits evidence</td><td>Chooses supported / contradicted / unsupported as written / can’t be checked, and it matches the sources</td></tr>
+      <tr><td>2 · Cites a source</td><td>Names the card(s) used</td></tr>
+      <tr><td>3 · Explains the gap</td><td>Says in their own words what the claim gets wrong or leaves out</td></tr>
+      <tr><td>4 · Shows the maths when it matters</td><td>e.g. 250 → 175 is a 30% drop, not 40%</td></tr>
+    </tbody>
+  </table></div>
+  <p class="col">Without a live AI coach, feedback is matched against authored patterns for common answers, plus a student self-check on criterion 3. The answer key is available to educators at any time, and to students only after they have submitted an attempt.</p>
+</section>
+
+<section id="copy">
+  <h2>Key student-facing copy</h2>
+  <div class="copy"><dl>
+    <dt>Entry headline</dt><dd>Learn to work with AI without handing over your thinking.</dd>
+    <dt>Entry support</dt><dd>Short, hands-on lessons. You try first, check the AI’s work, and decide what to keep. About 15–20 minutes each, as an estimate.</dd>
+    <dt>Sample CTA</dt><dd>Try a sample lesson (no account, nothing to buy)</dd>
+    <dt>Resume card</dt><dd>Pick up where you left off: <em>Survey claims</em>, claim 3 of 4. Last saved to your account Tuesday, 2:21 pm.</dd>
+    <dt>Overview line</dt><dd>12 activities done · 3 checks shown independently</dd>
+    <dt>Hint button</dt><dd>Show a hint (1 of 3)</dd>
+    <dt>Worked example warning</dt><dd>Seeing the worked example is fine for learning. This claim won’t count as shown independently.</dd>
+    <dt>Project consent</dt><dd>Show this project in the public gallery. Optional. You can turn this off later in Projects.</dd>
+    <dt>Who can see it</dt><dd>Only you and the Learning AI reviewers can see submitted projects. Nothing is public unless you choose the gallery and it’s approved.</dd>
+  </dl></div>
+</section>
+
+<section id="a11y">
+  <h2>Accessibility and privacy</h2>
+  <div class="col">
+    <ul>
+      <li><strong>Target:</strong> WCAG 2.2 AA. Test keyboard order, visible focus, a heading per step, labelled fields, 4.5:1 text contrast (measured on flat surfaces, no glass), reflow at 320px and 400% zoom, and 24px minimum targets (44px preferred).</li>
+      <li><strong>Announcements:</strong> the save chip and feedback use <code>role="status"</code>. Progress text updates with the same value as the graphic. The route-guard blank screen (<code>visibility:hidden</code> for up to 4s) is replaced by a visible “Checking your account…” message.</li>
+      <li><strong>No colour-only state:</strong> every pill has a symbol and words. Selected options get a check mark and <code>aria-pressed</code>.</li>
+      <li><strong>Motion:</strong> keep the existing reduced-motion handling. The reward medal’s infinite pulse stops under reduced motion.</li>
+      <li><strong>No drag-only interactions.</strong> Sorting claims uses buttons.</li>
+      <li><strong>Data minimisation:</strong> store attempts, hint levels opened, and criterion results. Don’t log keystrokes, timings per keypress, prompts sent elsewhere, or full sessions. Retire <code>/v2/</code> and its Google Analytics tag.</li>
+      <li><strong>Visibility:</strong> every saved response states who can see it.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="tests">
+  <h2>Acceptance tests</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Test</th><th>How to verify</th></tr></thead>
+    <tbody>
+      <tr><td>Sample with no external account</td><td>Fresh browser profile, so no cookies: entry → sample → finish, with no sign-up or third-party AI prompt</td></tr>
+      <tr><td>Returning student resumes the right stage</td><td>Test account: stop at claim 3 → new browser → sign in → the resume card links to claim 3</td></tr>
+      <tr><td>Count, fraction, graphic and label agree</td><td>Check script compares the DOM text, the bar width, and the <code>aria-valuenow</code>/label for 0, 1, 7 and 15 completions</td></tr>
+      <tr><td>Preview warning on every route</td><td>Preview on: visit every route, and the mode bar is present on each</td></tr>
+      <tr><td>Reload after a confirmed save</td><td>Wait for “Saved” → reload → response identical</td></tr>
+      <tr><td>Failed save never says Saved</td><td>Stub the API to 500 or a timeout: chip shows “Not saved”, and Retry works when the stub is removed</td></tr>
+      <tr><td>Expired session is recoverable</td><td>Delete the session cookie mid-lesson → write → “Signed out” → sign in → returns to the same step, and the queue drains</td></tr>
+      <tr><td>Initial attempt survives revision</td><td>Attempt → hint → revise → reload: both entries are present in order</td></tr>
+      <tr><td>Hints don’t count as independent</td><td>Use hint 1 on claim 1: the summary doesn’t list it under “Shown independently”</td></tr>
+      <tr><td>Project private by default</td><td>Submit without consent: not in the gallery endpoint. Consent, then withdraw: removed</td></tr>
+      <tr><td>Keyboard and mobile</td><td>Complete the slice by keyboard only, and at 375px and 320px</td></tr>
+      <tr><td>No tester data lost</td><td>Before and after, compare row counts and per-user progress for the two testers, read-only. Run against a local copy of the database, never production writes</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="plan">
+  <h2>Staged implementation plan</h2>
+  <div class="stage">
+    <div><span class="n">0</span><h3>Set the baseline (no user-visible change)</h3><ul><li>Choose a reviewed prototype baseline and keep unrelated experiments separate.</li><li>Run the prototype locally with fictional fixtures and record relevant interaction and backend checks.</li></ul></div>
+    <div><span class="n">1</span><h3>Truthful state layer</h3><ul><li>Save chip and mode bar on every route; completion only after server confirmation; the 401 → signed-out flow with return to the same step.</li><li>Fix the <code>?name=</code> prefill. Give the dashboard a real title.</li></ul></div>
+    <div><span class="n">2</span><h3>Vertical slice (stop for your review)</h3><ul><li>The survey lesson in the new workspace, behind its own lesson id: outline entry → attempts → hint ladder → authored feedback → revision → independent check → saved return.</li><li>Screenshots of every state at 375px and 1280px, test results, and local review steps.</li></ul></div>
+    <div><span class="n">3</span><h3>Entry and dashboard</h3><p>New entry page, resume card, consistent progress line, signed-out outline.</p></div>
+    <div><span class="n">4</span><h3>Projects, gallery and help</h3><p>Extra fields inside <code>artifact</code>, separate consent, a status display, and the FAQ page with audited copy.</p></div>
+    <div><span class="n">5</span><h3>Extend the workspace to the remaining lessons</h3><p>One arc at a time, each reviewed. Retire <code>/v2/</code>.</p></div>
+  </div>
+  <p class="col meta">No deploys, account creation, data migration or messages to testers at any stage without your explicit go-ahead.</p>
+</section>
+
+<section id="decisions">
+  <h2>Decisions only you can make</h2>
+  <ol class="decide">
+    <li><b>Share the curriculum, and pick the structure.</b> The site is hard-wired to 15 lessons in 3 arcs (<code>course-config.mjs</code>, server seed). Moving to 8 modules is a content and data change: either map the modules onto the existing lessons, or treat it as a separate migration.</li>
+    <li><b>Choose the free sample.</b> Keep “Use AI safely once”, or make the survey lesson the no-account sample.</li>
+    <li><b>Decide whether signed-out visitors may see the outline and gallery.</b></li>
+    <li><b>Decide who gives feedback.</b> Authored only (recommended for the slice), educator review (which adds a “pending” state), or a live AI coach later, with a provider and privacy review.</li>
+    <li><b>Before release:</b> verify account recovery and decide which legacy routes to retire.</li>
+    <li><b>Decide who approves projects for the gallery,</b> and whether the bullet-point preference comes back.</li>
+    <li><b>Approve Direction A (lab notebook),</b> or pick another.</li>
+  </ol>
+</section>
+
+<footer>Historical LearningAI design study. Visual directions and acceptance criteria are proposals, not claims about deployment status.</footer>
+</div>

@@ -1,0 +1,205 @@
+{
+  "id": "lai.ai-you-can-use.l15",
+  "version": 1,
+  "title": "Test it, improve it, own it",
+  "number": 15,
+  "sourceIds": [
+    "competencies",
+    "school"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l15.test",
+    "lai.ai-you-can-use.l15.decision",
+    "lai.ai-you-can-use.l15.transfer",
+    "lai.ai-you-can-use.l15.before",
+    "lai.ai-you-can-use.l15.tests",
+    "lai.ai-you-can-use.l15.after"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l15.test",
+    "lai.ai-you-can-use.l15.decision"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l15.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Test it, improve it, own it",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l15.intro",
+            "html": "<h3>Evaluate a project against criteria, revise it, and defend a final use decision.</h3><p>Check the project you actually made, not the one you hoped to make. Test a factual detail, a likely misunderstanding and an access need. Record a failure or limitation, make a revision, and retest. Your final decision may be use, revise further, or do not use. Explain why. A responsible conclusion can disagree with a tool, and a well-supported decision not to deploy can be stronger than a polished but unreliable result.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Use your Lesson 14 artifact. If unavailable, use this fallback: “Book swap Thursday at 15:30, room 4, free pizza.” Source card: Tuesday, 15:30–16:00, library, free entry; no food promised.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l15.test",
+            "title": "Which test gives useful evidence?",
+            "isRequired": true,
+            "correctAnswer": "criteria",
+            "choices": [
+              {
+                "value": "likes",
+                "text": "Ask only whether it looks impressive."
+              },
+              {
+                "value": "criteria",
+                "text": "Compare every claim with the source and ask whether the text alone communicates the event."
+              },
+              {
+                "value": "model",
+                "text": "Ask the same generator to guarantee perfection."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l15.test.feedback.likes",
+            "html": "<p class=\"feedback\" role=\"status\">Appearance does not check factual accuracy or access.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l15.test} = 'likes'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l15.test.feedback.criteria",
+            "html": "<p class=\"feedback\" role=\"status\">This checks facts and a defined access need.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l15.test} = 'criteria'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l15.test.feedback.model",
+            "html": "<p class=\"feedback\" role=\"status\">A guarantee is not independent evidence.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l15.test} = 'model'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l15.decision",
+            "title": "The draft still contains an unsupported promise. What is defensible?",
+            "isRequired": true,
+            "correctAnswer": "stop",
+            "choices": [
+              {
+                "value": "stop",
+                "text": "Remove it and retest, or withhold the draft until it can be checked."
+              },
+              {
+                "value": "ship",
+                "text": "Publish because most details are right."
+              },
+              {
+                "value": "hide",
+                "text": "Delete the limitation from the project card."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l15.decision.feedback.stop",
+            "html": "<p class=\"feedback\" role=\"status\">Both revision and non-use can be justified.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l15.decision} = 'stop'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l15.decision.feedback.ship",
+            "html": "<p class=\"feedback\" role=\"status\">The remaining error can still mislead people.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l15.decision} = 'ship'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l15.decision.feedback.hide",
+            "html": "<p class=\"feedback\" role=\"status\">That conceals rather than resolves the issue.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l15.decision} = 'hide'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l15.before",
+            "title": "Paste the draft you are testing, or the complete fallback notice.",
+            "isRequired": true,
+            "maxLength": 6000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 40,
+                "text": "Add at least 40 characters of work to submit."
+              }
+            ]
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l15.tests",
+            "title": "Record three actual checks and their results: factual accuracy, likely misunderstanding, and access without an image. Self-tests are valid; do not invent feedback.",
+            "isRequired": true,
+            "maxLength": 3000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 80,
+                "text": "Add at least 80 characters of work to submit."
+              }
+            ]
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l15.after",
+            "title": "Paste the revised artifact and identify the change made because of a test.",
+            "isRequired": true,
+            "maxLength": 6000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 60,
+                "text": "Add at least 60 characters of work to submit."
+              }
+            ]
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l15.transfer",
+            "title": "Submit a before/after pair, three test results, one remaining limitation, and a final use/revise/do-not-use decision. Explain what you can now do independently.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l15.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Tests actual claims and accessibility.</li><li>Shows a revision tied to evidence.</li><li>States remaining uncertainty honestly.</li><li>Justifies final decision, including non-use.</li><li>Explains independent learning without overstating skill.</li></ul><p>Peer feedback is optional and must be real if reported. Self-testing is acceptable; do not invent participants or claim certification.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

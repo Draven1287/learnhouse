@@ -1,0 +1,47 @@
+{
+  "repository": "learnhouse/learnhouse",
+  "commit": "c8515a6f1021a34ddfc34cb3d384e478e32f905e",
+  "reviewedOn": "2026-10-05",
+  "sources": [
+    {
+      "path": "apps/api/src/routers/trail.py",
+      "blobSha": "6c97fb3dd9a421ead75c6510d23625d92a08613d",
+      "url": "https://github.com/learnhouse/learnhouse/blob/c8515a6f1021a34ddfc34cb3d384e478e32f905e/apps/api/src/routers/trail.py"
+    },
+    {
+      "path": "apps/api/src/services/trail/trail.py",
+      "blobSha": "0ba31366fbd8c6ab55d19adb287514348226262e",
+      "url": "https://github.com/learnhouse/learnhouse/blob/c8515a6f1021a34ddfc34cb3d384e478e32f905e/apps/api/src/services/trail/trail.py"
+    },
+    {
+      "path": "apps/api/src/db/trail_steps.py",
+      "blobSha": "b981b7c0d2cdf3c442a95b8991356bb85a48648e",
+      "url": "https://github.com/learnhouse/learnhouse/blob/c8515a6f1021a34ddfc34cb3d384e478e32f905e/apps/api/src/db/trail_steps.py"
+    },
+    {
+      "path": "apps/api/src/db/trails.py",
+      "blobSha": "56f31ca4ff8a404eb698e5a6d9105f17be0f1a22",
+      "url": "https://github.com/learnhouse/learnhouse/blob/c8515a6f1021a34ddfc34cb3d384e478e32f905e/apps/api/src/db/trails.py"
+    },
+    {
+      "path": "apps/api/src/security/auth.py",
+      "blobSha": "6db592a6b62e926b1dd35f075db91d66f04efaa7",
+      "url": "https://github.com/learnhouse/learnhouse/blob/c8515a6f1021a34ddfc34cb3d384e478e32f905e/apps/api/src/security/auth.py"
+    },
+    {
+      "path": "docs/content/developers/api/authentication.mdx",
+      "blobSha": "6670e076817cc7181243ae1bd4d9bf5f76914c75",
+      "url": "https://github.com/learnhouse/learnhouse/blob/c8515a6f1021a34ddfc34cb3d384e478e32f905e/docs/content/developers/api/authentication.mdx"
+    },
+    {
+      "path": "docs/content/developers/migration/activity-types.mdx",
+      "blobSha": "998b82f0476fb0782365df9fdf902bb18706f282",
+      "url": "https://github.com/learnhouse/learnhouse/blob/c8515a6f1021a34ddfc34cb3d384e478e32f905e/docs/content/developers/migration/activity-types.mdx"
+    },
+    {
+      "path": "apps/api/src/router.py",
+      "blobSha": "6a0a747b231380846fcd091d4f6b3d2f7c2727f6",
+      "url": "https://github.com/learnhouse/learnhouse/blob/c8515a6f1021a34ddfc34cb3d384e478e32f905e/apps/api/src/router.py"
+    }
+  ]
+}

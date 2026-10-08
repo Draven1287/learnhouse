@@ -1,0 +1,118 @@
+<title>LearningAI Versions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..700&display=swap">
+<style>
+/* Every version of the LearningAI site, newest first, each openable live. */
+:root{--bg:#000;--text:#F4F4F2;--text-2:#D9D9D6;--muted:#8E8E8B;--line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.22);
+  --font:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;--gutter:max(20px,calc((100vw - 1200px)/2 + 32px));color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+::selection{background:transparent;color:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-inline:var(--gutter);padding-block:72px 120px}
+h1,h2{margin:0;font-stretch:125%;font-weight:300;text-transform:uppercase;letter-spacing:.02em;line-height:1.05;text-wrap:balance}
+h1{font-size:clamp(34px,5vw,64px)}
+a{color:inherit}
+:focus-visible{outline:1px solid var(--text);outline-offset:4px}
+.cap{font-stretch:125%;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);font-size:18px;max-width:42em;margin-top:20px}
+.v{padding-block:56px;border-top:1px solid var(--line);margin-top:56px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:48px;align-items:start}
+.v + .v{margin-top:0}
+.v h2{font-size:clamp(24px,2.6vw,34px);margin:10px 0 14px}
+.v p{color:var(--text-2);margin:0 0 14px;max-width:34em}
+.v ul{margin:0 0 14px;padding-left:18px;color:var(--muted);display:grid;gap:6px}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.shots a{display:block;border:1px solid var(--line-2);overflow:hidden}
+.shots img{display:block;width:100%;height:auto}
+.shots figcaption{padding:8px 10px}
+figure{margin:0}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.open{display:inline-flex;align-items:center;gap:12px;height:46px;padding:0 20px;border-radius:2px;background:var(--text);color:#000;text-decoration:none;font:500 11px var(--font);font-stretch:125%;letter-spacing:.18em;text-transform:uppercase}
+.open.ghost{background:transparent;color:var(--text);border:1px solid var(--line-2)}
+
+.list{display:grid;gap:0;border-top:1px solid var(--line);margin-top:24px}
+.list a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;padding:18px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.list a:hover b{text-decoration:underline;text-underline-offset:5px}
+.list b{font-weight:400}
+.list span.d{color:var(--muted);font-size:15px;display:block}
+.note{color:var(--muted);font-size:14.5px;margin-top:48px;max-width:46em}
+@media (max-width:860px){.v{grid-template-columns:1fr;gap:24px}}
+</style>
+
+<header>
+  <p class="cap">LearningAI · every version, newest first</p>
+  <h1>All the versions</h1>
+  <p class="lede">Every LearningAI design from these sessions, with screenshots, and each one opens live. Pick the parts you like (a Home, a lesson style, a menu), and they can be combined into the current site.</p>
+</header>
+
+<section class="v" aria-labelledby="now">
+  <div>
+    <span class="cap">Current · Oct 5</span>
+    <h2 id="now">Cockpit, new course</h2>
+    <p>The instrument dial on every page, the new menu where each word slides out on its own over the blurred page, and the "AI You Can Use" curriculum from the review package.</p>
+    <ul><li>Each lesson: learn, two choices with feedback, an optional detour, then "make it yours".</li><li>Settings has a "Start over" option that goes back to lesson 01.</li></ul>
+    <div class="btns"><a class="open" href="#" target="_blank" rel="noopener">Open live ›</a></div>
+  </div>
+  <div class="shots">
+    <figure><a href="shots/now-home.jpg"><img src="shots/now-home.jpg" alt="Current Home, signed out: greeting, the course dial at lesson 01 and a Start lesson 01 button."></a><figcaption class="cap">Home</figcaption></figure>
+    <figure><a href="shots/now-intro.jpg"><img src="shots/now-intro.jpg" alt="Current lesson cover: lesson 01 dial with four step segments and a Begin button."></a><figcaption class="cap">Lesson 01 cover</figcaption></figure>
+    <figure><a href="shots/now-lesson.jpg"><img src="shots/now-lesson.jpg" alt="Current lesson step: a choice question with the situation box, three answers and Correct feedback."></a><figcaption class="cap">Lesson 01 · step 2</figcaption></figure>
+  </div>
+</section>
+
+<section class="v" aria-labelledby="v2">
+  <div>
+    <span class="cap">Oct 4 · afternoon</span>
+    <h2 id="v2">Greeting and lesson track</h2>
+    <p>Before the cockpit: a large personal greeting, your next step, your rule from lesson 01, and a track of 15 dots in three rows. Previous course content.</p>
+    <ul><li>Lessons open with a scenario and a "Your first thought" box.</li><li>Test accounts work here (Sam is pre-selected).</li></ul>
+    <div class="btns"><a class="open" href="v2-greeting/index.html#home">Open live ›</a><a class="open ghost" href="v2-greeting/index.html#lesson-1">Lesson 01 ›</a></div>
+  </div>
+  <div class="shots">
+    <figure><a href="shots/v2-home.jpg"><img src="shots/v2-home.jpg" alt="Greeting version Home: Good evening, Sam, a Resume button, the lesson 01 rule, and three rows of lesson dots."></a><figcaption class="cap">Home</figcaption></figure>
+    <figure><a href="shots/v1-lesson.jpg"><img src="shots/v1-lesson.jpg" alt="Earlier lesson player: step 01 of 07, scenario text and a first-thought prompt."></a><figcaption class="cap">Lesson 01 (Oct 4 player)</figcaption></figure>
+  </div>
+</section>
+
+<section class="v" aria-labelledby="v1">
+  <div>
+    <span class="cap">Oct 4 · morning</span>
+    <h2 id="v1">Big numeral</h2>
+    <p>The first black-and-white version: greeting, a huge silver lesson number, a small tick track, and rows for your rule and your part. Previous course content.</p>
+    <div class="btns"><a class="open" href="v1-panels/index.html#home">Open live ›</a><a class="open ghost" href="v1-panels/index.html#lesson-1">Lesson 01 ›</a></div>
+  </div>
+  <div class="shots">
+    <figure><a href="shots/v1-home.jpg"><img src="shots/v1-home.jpg" alt="Big numeral version Home: Good evening, Sam, a Resume button and a large silver 02."></a><figcaption class="cap">Home</figcaption></figure>
+  </div>
+</section>
+
+<section class="v" aria-labelledby="concepts">
+  <div>
+    <span class="cap">Oct 4 · Home concepts</span>
+    <h2 id="concepts">Cockpit, Cover, Invitation</h2>
+    <p>Three Home ideas built side by side. You picked Cockpit. Cover is a magazine-cover Home. Invitation asks the lesson's question on Home with a box for your first thought.</p>
+    <div class="btns"><a class="open" href="concepts/concept-a-cockpit.html">Cockpit ›</a><a class="open ghost" href="concepts/concept-b-cover.html">Cover ›</a><a class="open ghost" href="concepts/concept-c-invitation.html">Invitation ›</a></div>
+  </div>
+  <div class="shots">
+    <figure><a href="concepts/concept-a-cockpit.html"><img src="shots/a-cockpit.jpg" alt="Concept A, Cockpit."></a><figcaption class="cap">A · Cockpit</figcaption></figure>
+    <figure><a href="concepts/concept-b-cover.html"><img src="shots/b-cover.jpg" alt="Concept B, Cover."></a><figcaption class="cap">B · Cover</figcaption></figure>
+    <figure><a href="concepts/concept-c-invitation.html"><img src="shots/c-invitation.jpg" alt="Concept C, Invitation."></a><figcaption class="cap">C · Invitation</figcaption></figure>
+  </div>
+</section>
+
+<section class="v" aria-labelledby="older">
+  <div>
+    <span class="cap">Earlier</span>
+    <h2 id="older">Other builds</h2>
+    <p>Separate pages from earlier in these sessions. They open in a new tab.</p>
+  </div>
+  <div class="list">
+    <a href="#" target="_blank" rel="noopener"><span><b>Student app</b><span class="d">Oct 3–4 · app-style teen UI with the landscape background</span></span><span class="cap">Open ›</span></a>
+    <a href="#" target="_blank" rel="noopener"><span><b>First site</b><span class="d">Oct 3 · the first website rebuild</span></span><span class="cap">Open ›</span></a>
+    <a href="#" target="_blank" rel="noopener"><span><b>Home directions comparison</b><span class="d">Oct 4 · the page where you picked Cockpit</span></span><span class="cap">Open ›</span></a>
+    <a href="#" target="_blank" rel="noopener"><span><b>Redesign handoff</b><span class="d">Oct 3 · audit and plan document</span></span><span class="cap">Open ›</span></a>
+    <a href="#" target="_blank" rel="noopener"><span><b>Design exploration</b><span class="d">July 19 · from an earlier session</span></span><span class="cap">Open ›</span></a>
+    <a href="#" target="_blank" rel="noopener"><span><b>Lesson 7 prototype</b><span class="d">July 19 · from an earlier session</span></span><span class="cap">Open ›</span></a>
+  </div>
+</section>
+
+<p class="note">The two Oct 4 versions use the previous course content and their own fake test accounts. Progress there stays in the browser and doesn't affect the current site.</p>

@@ -1,0 +1,160 @@
+{
+  "id": "lai.ai-you-can-use.l05",
+  "version": 1,
+  "title": "Give it the missing context",
+  "number": 5,
+  "sourceIds": [
+    "llm",
+    "children"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l05.context",
+    "lai.ai-you-can-use.l05.unknown",
+    "lai.ai-you-can-use.l05.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l05.context",
+    "lai.ai-you-can-use.l05.unknown"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l05.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Give it the missing context",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l05.intro",
+            "html": "<h3>Select relevant context and identify what remains unknown.</h3><p>Context is information available to the system while it works. Useful context narrows the task, but more text is not automatically better. Say what is known, what is uncertain, and what must not be assumed. Conversation context is different from a permanent change to a model. If the missing fact matters, ask the person responsible or leave it unresolved rather than accepting an invented detail.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>A fictional study group needs a plan. Known: 20 minutes, two algebra questions, no internet. Unknown: which question each learner finds difficult.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l05.context",
+            "title": "What should the brief add?",
+            "isRequired": true,
+            "correctAnswer": "relevant",
+            "choices": [
+              {
+                "value": "relevant",
+                "text": "The time, questions, offline requirement, and that difficulty is not yet known."
+              },
+              {
+                "value": "private",
+                "text": "Everyone’s home address and private messages."
+              },
+              {
+                "value": "assume",
+                "text": "Assume everyone has the same difficulty."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l05.context.feedback.relevant",
+            "html": "<p class=\"feedback\" role=\"status\">This guides the plan and identifies the missing information.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l05.context} = 'relevant'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l05.context.feedback.private",
+            "html": "<p class=\"feedback\" role=\"status\">These are unnecessary for the plan.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l05.context} = 'private'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l05.context.feedback.assume",
+            "html": "<p class=\"feedback\" role=\"status\">The scenario explicitly says that is unknown.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l05.context} = 'assume'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l05.unknown",
+            "title": "How should the plan handle the unknown difficulty?",
+            "isRequired": true,
+            "correctAnswer": "ask",
+            "choices": [
+              {
+                "value": "ask",
+                "text": "Begin with a quick check of which question needs help."
+              },
+              {
+                "value": "guess",
+                "text": "Invent a ranking of students."
+              },
+              {
+                "value": "ignore",
+                "text": "Spend all 20 minutes on a random question."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l05.unknown.feedback.ask",
+            "html": "<p class=\"feedback\" role=\"status\">Gather relevant information from participants.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l05.unknown} = 'ask'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l05.unknown.feedback.guess",
+            "html": "<p class=\"feedback\" role=\"status\">There is no evidence for that ranking.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l05.unknown} = 'guess'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l05.unknown.feedback.ignore",
+            "html": "<p class=\"feedback\" role=\"status\">The choice is not tied to the group’s need.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l05.unknown} = 'ignore'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l05.transfer",
+            "title": "Write three lines: known facts, one unknown, and a question that would resolve it. Include nothing personally identifying.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l05.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Separates known from unknown.</li><li>Asks a relevant question.</li><li>Avoids unnecessary personal details.</li></ul><p>A long chat may not retain or use every earlier detail; context limits and memory features differ by product.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

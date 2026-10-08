@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "mode": "fixture",
+  "courseId": "lai.ai-you-can-use",
+  "contentVersion": "2026-10-05-draft.2",
+  "upstream": {
+    "repository": "learnhouse/learnhouse",
+    "commit": "c8515a6f1021a34ddfc34cb3d384e478e32f905e"
+  },
+  "learnhouse": {
+    "orgId": 900001,
+    "courseId": 900002,
+    "courseUuid": "course_00000000-0000-4000-8000-000000000002"
+  },
+  "externalCourse": {
+    "system": "Claude/local course",
+    "status": "UNMAPPED",
+    "reportedLessonCounts": [
+      12,
+      14
+    ],
+    "verifiedLessonIds": [],
+    "reason": "External source inventory unavailable; never infer equivalence from lesson numbers."
+  },
+  "lessons": [
+    {
+      "lessonId": "lai.ai-you-can-use.l01",
+      "lessonVersion": 1,
+      "title": "Get your first useful result",
+      "sourceFile": "lessons/course-01.json",
+      "status": "FIXTURE_ONLY",
+      "chapterId": 900003,
+      "chapterUuid": "chapter_00000000-0000-4000-8000-000000000003",
+      "activityId": 900004,
+      "activityUuid": "activity_00000000-0000-4000-8000-000000000004",
+      "externalLessonIds": [],
+      "evidence": "Synthetic fixture only; never received from LearnHouse."
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l02",
+      "lessonVersion": 1,
+      "title": "How did we get here?",
+      "sourceFile": "lessons/course-02.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l03",
+      "lessonVersion": 1,
+      "title": "What is happening inside the chat?",
+      "sourceFile": "lessons/course-03.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l04",
+      "lessonVersion": 1,
+      "title": "What is prompt engineering?",
+      "sourceFile": "lessons/course-04.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l05",
+      "lessonVersion": 1,
+      "title": "Give it the missing context",
+      "sourceFile": "lessons/course-05.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l06",
+      "lessonVersion": 1,
+      "title": "Show what good looks like",
+      "sourceFile": "lessons/course-06.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l07",
+      "lessonVersion": 1,
+      "title": "Your first answer is a draft",
+      "sourceFile": "lessons/course-07.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l08",
+      "lessonVersion": 1,
+      "title": "Make AI your study coach",
+      "sourceFile": "lessons/course-08.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l09",
+      "lessonVersion": 1,
+      "title": "Make something that sounds like you",
+      "sourceFile": "lessons/course-09.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l10",
+      "lessonVersion": 1,
+      "title": "Check the part that matters",
+      "sourceFile": "lessons/course-10.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l11",
+      "lessonVersion": 1,
+      "title": "Give AI the right material",
+      "sourceFile": "lessons/course-11.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l12",
+      "lessonVersion": 1,
+      "title": "Turn a big task into small steps",
+      "sourceFile": "lessons/course-12.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l13",
+      "lessonVersion": 1,
+      "title": "Stay in charge",
+      "sourceFile": "lessons/course-13.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l14",
+      "lessonVersion": 1,
+      "title": "Make something useful",
+      "sourceFile": "lessons/course-14.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    },
+    {
+      "lessonId": "lai.ai-you-can-use.l15",
+      "lessonVersion": 1,
+      "title": "Test it, improve it, own it",
+      "sourceFile": "lessons/course-15.json",
+      "status": "UNMAPPED",
+      "chapterId": null,
+      "chapterUuid": null,
+      "activityId": null,
+      "activityUuid": null,
+      "externalLessonIds": [],
+      "evidence": null
+    }
+  ]
+}

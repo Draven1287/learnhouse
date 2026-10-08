@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {Model} from 'survey-core';
+const lesson=JSON.parse(readFileSync(new URL('../lessons/message-to-judgment.json',import.meta.url)));
+test('stable IDs map to authored questions',()=>{const s=new Model(lesson.survey);for(const id of lesson.activityIds)assert.ok(s.getQuestionByName(id));});
+test('direct verification skips detour; other decisions show it',()=>{const s=new Model(lesson.survey);s.setValue('first_move','verify');assert.equal(s.pages.find(p=>p.name==='detour').isVisible,false);for(const choice of ['share','ask']){s.setValue('first_move',choice);assert.equal(s.pages.find(p=>p.name==='detour').isVisible,true);}});
+test('core checks score correct and incorrect answers',()=>{const s=new Model(lesson.survey);s.setValue('route','local');assert.equal(s.getQuestionByName('route').isAnswerCorrect(),false);s.setValue('route','cloud');assert.equal(s.getQuestionByName('route').isAnswerCorrect(),true);s.setValue('verdict','qualified');assert.equal(s.getQuestionByName('verdict').isAnswerCorrect(),true);});
+test('reflection requires meaningful minimum length',()=>{const s=new Model(lesson.survey);const q=s.getQuestionByName('explanation');s.setValue('explanation','short');assert.equal(q.validate(),false);s.setValue('explanation','Inference and training are different; I would check the service policy.');assert.equal(q.validate(),true);});
+test('serialized answers restore branch and scoring',()=>{const s=new Model(lesson.survey);s.data={route:'cloud',first_move:'verify',verdict:'qualified'};const restored=new Model(lesson.survey);restored.data=JSON.parse(JSON.stringify(s.data));assert.equal(restored.pages.find(p=>p.name==='detour').isVisible,false);assert.equal(restored.getQuestionByName('route').isAnswerCorrect(),true);});

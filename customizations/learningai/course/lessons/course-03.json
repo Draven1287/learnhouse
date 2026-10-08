@@ -1,0 +1,197 @@
+{
+  "id": "lai.ai-you-can-use.l03",
+  "version": 1,
+  "title": "What is happening inside the chat?",
+  "number": 3,
+  "sourceIds": [
+    "llm",
+    "nist"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l03.route",
+    "lai.ai-you-can-use.l03.verify",
+    "lai.ai-you-can-use.l03.evidence_check",
+    "lai.ai-you-can-use.l03.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l03.route",
+    "lai.ai-you-can-use.l03.verify"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l03.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "What is happening inside the chat?",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.intro",
+            "html": "<h3>Trace a typical cloud-chat request and separate generating a reply from checking a claim.</h3><p>In a typical cloud chat, the app sends your request over a network to a service. The server prepares input for model inference, then sends output back to the app. A text model processes tokens, which can be words or parts of words, and generates output using learned patterns and available context. This can produce useful text or plausible errors. Some apps run models locally or add search tools; neither a confident tone nor a reply alone proves that a search or fact-check happened.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Fictional chat: you send “hi,” then ask when the club meets. The reply says, “Definitely Friday at 4.” You supplied no timetable and see no source.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l03.route",
+            "title": "Which route fits the cloud example?",
+            "isRequired": true,
+            "correctAnswer": "cloud",
+            "choices": [
+              {
+                "value": "cloud",
+                "text": "App → network → server → model inference → reply back."
+              },
+              {
+                "value": "local",
+                "text": "Every app always computes the answer entirely on your phone."
+              },
+              {
+                "value": "search",
+                "text": "Every reply is copied from a web search."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.route.feedback.cloud",
+            "html": "<p class=\"feedback\" role=\"status\">Yes. This is a simplified route, not a map of every service.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.route} = 'cloud'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.route.feedback.local",
+            "html": "<p class=\"feedback\" role=\"status\">On-device models exist, but the scenario specifies a cloud service.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.route} = 'local'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.route.feedback.search",
+            "html": "<p class=\"feedback\" role=\"status\">Generation does not require a web search; tool use varies.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.route} = 'search'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l03.verify",
+            "title": "What should you do before sharing the meeting time?",
+            "isRequired": true,
+            "correctAnswer": "source",
+            "choices": [
+              {
+                "value": "share",
+                "text": "Share it because it says definitely."
+              },
+              {
+                "value": "repeat",
+                "text": "Ask the same chat until it repeats Friday."
+              },
+              {
+                "value": "source",
+                "text": "Check the club’s current timetable or ask its organizer."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.verify.feedback.share",
+            "html": "<p class=\"feedback\" role=\"status\">Confidence is wording, not evidence of the timetable.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.verify} = 'share'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.verify.feedback.repeat",
+            "html": "<p class=\"feedback\" role=\"status\">Consistency alone does not independently verify the claim.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.verify} = 'repeat'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.verify.feedback.source",
+            "html": "<p class=\"feedback\" role=\"status\">Use a source that actually knows the schedule and check its date.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.verify} = 'source'"
+          }
+        ]
+      },
+      {
+        "name": "detour",
+        "title": "Take a closer look",
+        "visibleIf": "{lai.ai-you-can-use.l03.verify} notempty and {lai.ai-you-can-use.l03.verify} != 'source'",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l03.evidence_check",
+            "title": "What would independently check the timetable claim?",
+            "isRequired": true,
+            "correctAnswer": "official",
+            "choices": [
+              {
+                "value": "repeat",
+                "text": "Repeating the same question."
+              },
+              {
+                "value": "official",
+                "text": "The current timetable or responsible organizer."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.evidence_check.feedback.repeat",
+            "html": "<p class=\"feedback\" role=\"status\">Repetition is not an independent timetable source.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.evidence_check} = 'repeat'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.evidence_check.feedback.official",
+            "html": "<p class=\"feedback\" role=\"status\">That source can establish the meeting time.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.evidence_check} = 'official'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l03.transfer",
+            "title": "Explain where the request travels and why the meeting time remains unverified. Name the source you would consult or explain why you would withhold the claim.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Distinguishes app/network/service/model.</li><li>Does not equate confident generation with verified truth.</li><li>Names a relevant independent check or justified decision not to share.</li></ul><p>This is a simplified cloud route. Chat retention, later training use, search access and on-device operation depend on the product and settings.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,223 @@
+LearningAI lesson and video plan
+AI and the Natural Resources Behind It
+
+Prepared for high-school learners at LearningAI (learningai4you.com)
+Research checked 7 October 2026
+Status: Content draft for review. No video has been generated or published.
+
+PURPOSE AND LESSON PLAN
+
+Students will trace an AI task to its physical infrastructure and evaluate environmental claims without assuming every prompt has the same footprint. This is a 20–25 minute lesson requiring no AI account. Suggested sequence: opening question (2 minutes), video (about 2½ minutes), reading and discussion (6 minutes), claim-check activity (6 minutes), knowledge checks and reflection (5–8 minutes).
+
+Opening question: “When you ask an AI tool a question, what happens beyond your screen?” Have students sketch an initial answer. Return to it after the video and add missing physical resources.
+
+Learning objectives
+By the end, students can:
+1. Trace AI resource use through hardware production, model training, and inference.
+2. Distinguish electricity use, greenhouse-gas emissions, water withdrawal, and water consumption.
+3. Explain at least three reasons per-prompt environmental estimates differ.
+4. Identify a useful student action and a useful provider or policy action without claiming a precise personal footprint.
+
+STUDENT LESSON
+
+1. AI runs on physical equipment
+
+Many online AI services run on servers in data centers. Some AI also runs on a phone or computer. Either way, processors, memory, and other equipment need electricity. Cooling and supporting infrastructure can use additional energy. AI is only one of the workloads hosted in data centers, so a statistic about all data centers should not be presented as a statistic about AI alone. [S1, S2]
+
+Electricity is an energy carrier: generating it uses different sources, including wind, sunlight, flowing water, nuclear fuel, and fossil fuels. The amount of electricity an AI system uses and the emissions associated with that electricity are different measurements. The local power supply helps determine the emissions associated with operation. [S3]
+
+2. Resources are used before and after the answer
+
+Training adjusts a model using examples. Inference uses an already-trained model to produce an output. A normal request usually triggers inference, rather than retraining the whole model. Both stages require computation. Development can include repeated experiments and updates, while inference is repeated whenever people use the service. The balance depends on the model and how widely and how long it is used; neither stage is always the larger lifetime contributor. [S4, S5]
+
+The hardware has its own life cycle. Extracting raw materials, manufacturing equipment, and disposing of electronic waste can affect water, ecosystems, and communities. Looking only at electricity during an answer misses these impacts. Using and maintaining equipment longer, where practical, is one part of addressing the full life cycle. [S6]
+
+3. Why water enters the picture
+
+Some data centers use water in cooling systems. Where cooling relies on evaporation, some water leaves as vapor. Other designs use different combinations of air, liquid loops, and heat-removal equipment. Water may also be used at power plants supplying the electricity. Direct water use at a data center and indirect water use through electricity production are different parts of the accounting. A design that lowers one impact may not lower every impact. [S2, S7]
+
+Withdrawal means taking water from a source. Consumption is the portion no longer immediately available in the local water environment, for example because it evaporated. Consumption does not mean water molecules vanished from Earth. Equal volumes can have different consequences depending on local availability, season, and competing needs. [S8, S7]
+
+4. Why there is no universal water or energy number per prompt
+
+A useful estimate must say what it covers. Ask:
+- Which model, hardware, and task? A short text answer and a generated video are different workloads.
+- How much input and output, and how much computation?
+- Which place, time period, electricity supply, and cooling design?
+- Does it include only an active accelerator, or also supporting machines, idle capacity, and cooling?
+- Is it an average or a median? Does it include training or manufacturing?
+- For water, does it include direct cooling, electricity generation, or both?
+
+Published measurements can be valuable without describing every user's request. Differences in boundaries can make two honest estimates unsuitable for direct comparison. A per-request estimate also is not necessarily a measurement of the extra resource use caused by one additional request. [S4, S5, S7]
+
+5. What responsible use can look like
+
+For a school task, decide what you need before generating. Reuse an adequate result rather than automatically producing many alternatives. Use a simpler tool when it meets the learning goal. These are practical habits, not a guarantee of a measurable amount saved.
+
+Providers and public decision-makers also have important choices: efficient systems, cleaner electricity, appropriate cooling, local water planning, hardware life cycles, and transparent reporting. Judge both the benefit of a use and its costs. More efficient individual requests can coexist with rising total demand if use grows. [S1, S6, S7]
+
+CLASSROOM CLAIM-CHECK ACTIVITY
+
+Hypothetical headline: “Every AI question uses exactly one cup of water.”
+
+In pairs, write three questions you would ask before accepting it. Then rewrite the headline so it could responsibly introduce a particular study. Do not invent a replacement measurement.
+
+Example rewrite: “A study estimates water consumption for a specified AI workload under stated operating conditions; it does not establish a fixed amount for every question.”
+
+Success criteria: identifies the model or workload, asks about direct versus indirect water and accounting boundaries, and checks the date, location, and method. A student may also question whether the quantity is measured or modeled, average or median, and whether the source is independently reviewed.
+
+THREE KNOWLEDGE CHECKS
+
+1. A trained model writes an answer to a new question. What is this operation called?
+A. Inference
+B. Mining
+C. Training the entire model from scratch
+Answer: A. Inference applies a trained model. Training is a different process. A service may later use interaction data for model improvement, depending on its practices, but that does not mean every answer retrains the whole model. [S4, S5]
+
+2. A facility withdraws 100 liters in a simplified example, returns 80 liters to the same local water environment, and loses 20 liters through evaporation. What does this illustrate?
+A. Withdrawal and consumption are both 100 liters
+B. Withdrawal is 100 liters and consumption is 20 liters
+C. Water is destroyed when it evaporates
+Answer: B. The example distinguishes the water taken from the source from the portion no longer immediately available locally. These are invented teaching quantities, not measurements of an AI facility. [S8]
+
+3. Two reports give different energy-per-prompt estimates. What should you do first?
+A. Assume the larger number is more honest
+B. Average the estimates and use the result for every AI tool
+C. Compare workloads, dates, hardware, and measurement boundaries
+Answer: C. An active-chip measurement and a full serving-system estimate can count different things. Different workloads also need not consume the same energy. Neither disagreement nor numerical precision alone proves which estimate is appropriate. [S4, S5]
+
+TWO REFLECTION PROMPTS
+
+1. Your class wants 30 AI-generated images for a presentation. What educational benefit would justify generating them? Propose a plan that meets the goal while avoiding unnecessary generation, and state what you would need to know before claiming a specific resource saving.
+
+2. A proposed data center could bring jobs but would also need electricity and cooling. Whose perspectives and what local evidence should a public discussion include? Consider water availability, grid capacity, public reporting, and who receives the benefits and bears the costs.
+
+VIDEO SCRIPT AND SCENE PLAN
+
+Working title: What Powers an AI Answer
+Target audience: Grades 9–12
+Target runtime: 150 seconds. 331 narration words, with pauses for diagrams.
+Format: 16:9 conceptual animation; captions and a full transcript; no generated factual charts.
+
+LTX production guidance
+These are plain-language shot prompts suitable for adaptation to an LTX text-to-video workflow, not a tested API payload. Check the chosen model's supported duration, resolution, and audio capabilities before generation. Each 15-second editorial scene can be assembled from two or three short clips if needed. Add narration, captions, labels, arrows, and source credits in the editor; do not depend on generated video to render exact text. Maintain the same palette and server design throughout. Avoid documentary-style footage that could be mistaken for a real facility. All infrastructure illustrations are conceptual and not to scale.
+
+Shared visual style
+Clean educational 2D/2.5D animation, navy outlines, warm off-white background, teal for computing equipment, amber for electricity, blue for water. Slow camera movement, strong contrast, large simple shapes, no flashing effects. Depict processes with shapes and motion as well as color. No logos, celebrity likenesses, readable generated text, numerical gauges, factual maps, or pie/bar charts. Keep the lower fifth clear for captions. Abstract dots indicate movement only, never amounts.
+
+Scene 1 | 00:00–00:15 | Beyond the screen
+Narration: “An AI answer appears on your screen, but its story starts with physical equipment. Many services use computers in data centers. Others run on your device. All of them need energy.”
+LTX prompt: “A stylized laptop on a desk displays a simple empty speech bubble. Slowly pull back to reveal a small conceptual server building connected by a dotted path, then a phone beside the laptop. Minimal educational motion graphics, warm background, no readable text.”
+Editor overlay: “AI uses physical infrastructure”
+Evidence: S1, S5.
+
+Scene 2 | 00:15–00:30 | Electricity and emissions
+Narration: “Electricity powers processors, memory, and cooling equipment. Its environmental impact depends partly on how that electricity is generated. Energy use and greenhouse-gas emissions are related measurements, but they do not mean the same thing.”
+LTX prompt: “A teal server cabinet receives amber pulses from a simple power line. Separate generic wind turbine, solar panel, and conventional power-plant icons enter the composition. Camera remains steady. No smoke clouds from server cabinet, no proportions or rankings implied.”
+Editor overlay: “Electricity use ≠ emissions”
+Evidence: S1, S3.
+
+Scene 3 | 00:30–00:45 | Training and inference
+Narration: “Training adjusts a model using examples. Inference uses a trained model to make an output. Asking a question usually means inference. It does not mean the entire model trains again for every answer.”
+LTX prompt: “On the left, abstract example cards enter a network of adjustable nodes. On the right, a matching stable network receives one blank question card and produces a blank answer card. Two clearly separated panels, simple smooth motion, no brain imagery.”
+Editor overlay: “Training: learning patterns” and “Inference: using the model”
+Evidence: S4, S5.
+
+Scene 4 | 00:45–01:00 | Many uses add up
+Narration: “Both stages use resources. Training can be intensive, while inference repeats across many users. Which contributes more over a model's lifetime depends on the system and its use. There is no universal split.”
+LTX prompt: “Return to the stable node network and server cabinet. Small blank request cards arrive in a gentle repeated sequence from several generic device icons. Camera slowly widens. Use no counters, chart axes, or proportional comparison with training.”
+Editor overlay: “Both stages matter”
+Evidence: S4, S5.
+
+Scene 5 | 01:00–01:15 | Cooling and water
+Narration: “Some cooling systems consume water through evaporation. Water may also be used to generate the electricity a facility buys. These are direct and indirect impacts. Cooling designs differ, so water use differs too.”
+LTX prompt: “A simplified cutaway shows a server cabinet beside a separate cooling unit with recirculating blue paths and a few blue vapor symbols rising from an exterior evaporative section. A distant power-plant icon sits in a separate panel. No liquid touches exposed electronics.”
+Editor overlay: “Direct: facility cooling” and “Indirect: electricity supply”
+Evidence: S2, S7.
+
+Scene 6 | 01:15–01:30 | Withdrawal and consumption
+Narration: “Water withdrawal means taking water from a source. Consumption is the part no longer immediately available locally, for example after evaporation. The water still exists, but local communities and ecosystems may have less available.”
+LTX prompt: “Conceptual blue stream with one branch entering an abstract facility. One blue path returns to the stream while separate vapor symbols rise upward. Stable wide view. Flow widths equal for illustration only, no numerical amounts, no dry or catastrophic landscape.”
+Editor overlay: “Withdrawal and consumption are different” and small “Conceptual diagram”
+Evidence: S8.
+
+Scene 7 | 01:30–01:45 | Hardware life cycle
+Narration: “There is also a footprint before the first prompt. Raw materials must be extracted and equipment manufactured. Eventually, electronics need reuse or responsible recycling. An electricity-only estimate leaves parts of this life cycle out.”
+LTX prompt: “Slow horizontal camera move across a conceptual sequence: rock fragments, a simple factory, a computer chip, a server cabinet, a repair workbench, and an electronics recycling bin. Consistent flat illustration, no specific mineral labels, no implication that recycling recovers everything.”
+Editor overlay: “Materials → Manufacturing → Use → Reuse or recycling”
+Evidence: S6.
+
+Scene 8 | 01:45–02:00 | Read estimates carefully
+Narration: “So be cautious with claims that every prompt uses one fixed amount. Ask: Which model and task? Where and when? Does the estimate include cooling, power generation, training, and hardware? The boundaries matter.”
+LTX prompt: “Two neutral blank report cards float beside a simple server icon. A magnifying glass moves from one card to the other while small calendar, location-pin, chip, and water-drop icons appear. Calm investigative tone, no numbers or winning report.”
+Editor overlay: “Which task? Which date? What is counted?”
+Evidence: S4, S5, S7.
+
+Scene 9 | 02:00–02:15 | Purposeful use
+Narration: “For schoolwork, decide what you need, reuse useful results, and choose a simpler tool when it works. Providers also make major choices about efficient equipment, electricity, cooling, and transparency. Responsibility exists at several levels.”
+LTX prompt: “A generic student desk contains a notebook, calculator, and laptop. A small set of blank project cards is organized into a neat group. Transition to a server technician checking simple equipment icons. No product brands, no readable screens, no quantitative savings.”
+Editor overlay: “Choose tools with purpose”
+Evidence: Practical recommendations; system levers S1, S6, S7.
+
+Scene 10 | 02:15–02:30 | Closing question
+Narration: “AI can be useful, and its resource needs deserve careful measurement. When you see an environmental claim, ask what was measured, what was left out, and whether the benefit justifies the use.”
+LTX prompt: “A balanced composition of a laptop, server cabinet, water-drop icon, energy icon, and materials icon. Camera settles into a clean wide frame with generous empty central space for an editor-added closing question. Neutral optimistic educational mood, no balance scale implying measured equivalence.”
+Editor overlay: “What was measured? What was left out?” followed by “LearningAI”
+Evidence: S6; closing evaluation prompt is an instructional synthesis.
+
+SOURCE REGISTER AND CAVEATS
+
+S1. International Energy Agency, Energy and AI, Energy demand from AI (2025).
+https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai
+Supports data-center infrastructure, electricity, cooling, and the distinction between AI and other data-center workloads. Aggregate demand estimates are not per-prompt measurements. No forecast numbers are used in this lesson.
+
+S2. Lawrence Berkeley National Laboratory, 2024 United States Data Center Energy Usage Report (19 December 2024).
+https://bies.lbl.gov/publications/2024-lbnl-data-center-energy-usage-report
+Report: https://eta-publications.lbl.gov/sites/default/files/2024-12/lbnl-2024-united-states-data-center-energy-usage-report.pdf
+Supports separate direct and indirect water accounting. Covers United States data centers generally, not only AI. Use the 2025 update for any later quantitative U.S. trend exhibit; this lesson relies on stable concepts, not old totals.
+
+S3. International Energy Agency, Energy and AI, Energy supply for AI (2025).
+https://www.iea.org/reports/energy-and-ai/energy-supply-for-ai/
+Supports the importance of electricity generation mix. Annual renewable procurement is not proof that a facility runs on carbon-free electricity at every hour. The lesson makes no provider-specific clean-power claim.
+
+S4. Luccioni, Jernite and Strubell, Power Hungry Processing: Watts Driving the Cost of AI Deployment? (FAccT 2024).
+https://arxiv.org/abs/2311.16863
+Published paper: https://facctconference.org/static/papers24/facct24-6.pdf
+Primary experimental research comparing inference workloads. Results refer to tested tasks, models, and experimental conditions, not every present-day AI service. Supports distinguishing training from repeated inference and avoiding universal task equivalences.
+
+S5. Elsworth and colleagues, Measuring the environmental impact of delivering AI at Google Scale (August 2025).
+https://arxiv.org/abs/2508.15734
+Methodology: https://arxiv.org/html/2508.15734v1
+Provider-authored primary study of Gemini Apps serving, not an independent industry-wide audit. Distinguishes accelerators, host equipment, idle capacity, and overhead. An operational inference boundary is not a complete life-cycle boundary. Avoid presenting its cooling-water result as total supply-chain water or applying its median to every prompt. Company summary expressly says its data and claims were not independently verified:
+https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference
+
+S6. United Nations Environment Programme, AI has an environmental problem. Here’s what the world can do about that (original story September 2024, republished November 2025).
+https://www.unep.org/news-and-stories/story/ai-has-environmental-problem-heres-what-world-can-do-about
+Primary institutional synthesis on infrastructure, materials, electronic waste, environmental benefits, and environmental risks. It does not provide a universal inventory of materials in every AI chip. Do not conflate all critical minerals with rare-earth elements.
+
+S7. Google, environmental inference methodology and operational cooling discussion (August 2025), read alongside Berkeley Lab water accounting in S2.
+https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference
+https://arxiv.org/html/2508.15734v1
+Supports date, location, system, cooling, and measurement-boundary caveats. Read provider claims as provider reports. For direct versus indirect water, use Berkeley Lab rather than assuming Google’s cooling-water metric includes power-station water.
+
+S8. U.S. Geological Survey, Water Science Glossary.
+https://www.usgs.gov/water-science-school/science/water-science-glossary
+Supports water withdrawal, consumption, and evaporation terminology. The lesson uses an explicitly hypothetical 100-liter arithmetic example; it is not an AI usage estimate.
+
+Additional current-trend reference, if a later lesson adds dated numbers
+IEA, Key Questions on Energy and AI (2026): https://www.iea.org/reports/key-questions-on-energy-and-ai
+Recheck the latest edition before publication and preserve geographic, temporal, and sector boundaries. Historical values, forecasts, and scenario ranges need distinct labels.
+
+EDITORIAL AND ACCESSIBILITY CHECKLIST
+
+- Preserve “some” for evaporative cooling; not every facility uses the same design.
+- Never claim all data-center resource use is AI resource use.
+- Never equate electricity use with emissions, withdrawal with consumption, or a median with an arithmetic average.
+- Do not use a bottle-per-prompt constant or compare AI with food without matching geography, lifecycle scope, and methodology.
+- Do not infer a fixed total by multiplying a reported median by request count. Even an average requires a matching workload and boundary.
+- Do not claim that lower per-request resource use guarantees lower total demand.
+- Show no made-up numerical environmental chart, meter, map, or visual proportion.
+- Add accurate captions, a readable transcript, and meaningful non-color cues. Review all technical labels as editor-added text.
+- Treat the scene timings as an editing plan, not a promise of generated clip length. Time the recorded narration and adjust pauses.
+- Fact-check the final assembled video against this script; animation generation can introduce misleading pipes, flows, labels, or causality.
+- Keep the student-facing lesson, teacher answers, and production guidance distinct in the published course.

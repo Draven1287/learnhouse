@@ -1,0 +1,159 @@
+{
+  "id": "lai.ai-you-can-use.l07",
+  "version": 1,
+  "title": "Your first answer is a draft",
+  "number": 7,
+  "sourceIds": [
+    "nist"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l07.revise",
+    "lai.ai-you-can-use.l07.audit",
+    "lai.ai-you-can-use.l07.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l07.revise",
+    "lai.ai-you-can-use.l07.audit"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l07.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Your first answer is a draft",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l07.intro",
+            "html": "<h3>Revise unsupported wording and track what changed.</h3><p>Treat a draft as material to inspect. Separate factual accuracy, clarity, and tone; a change can improve one while harming another. Keep the original, mark the revision, and explain why it is better. Disagree with a suggestion when the evidence supports you. A second AI opinion can be a useful challenge but is not an independent source by itself.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Fictional survey: 12 of 20 club members liked a proposed time. Draft: “Everyone agrees this is the perfect time.”</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l07.revise",
+            "title": "Which revision preserves the evidence?",
+            "isRequired": true,
+            "correctAnswer": "precise",
+            "choices": [
+              {
+                "value": "all",
+                "text": "Nearly everyone agrees, so no discussion is needed."
+              },
+              {
+                "value": "precise",
+                "text": "12 of 20 respondents liked this time; ask about barriers before deciding."
+              },
+              {
+                "value": "none",
+                "text": "Nobody likes this time."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l07.revise.feedback.all",
+            "html": "<p class=\"feedback\" role=\"status\">Eight of twenty did not agree; the conclusion goes beyond the data.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l07.revise} = 'all'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l07.revise.feedback.precise",
+            "html": "<p class=\"feedback\" role=\"status\">This reports the count and leaves room for disagreement.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l07.revise} = 'precise'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l07.revise.feedback.none",
+            "html": "<p class=\"feedback\" role=\"status\">That contradicts the count.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l07.revise} = 'none'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l07.audit",
+            "title": "What belongs in a revision note?",
+            "isRequired": true,
+            "correctAnswer": "reason",
+            "choices": [
+              {
+                "value": "reason",
+                "text": "Changed “everyone” to 12 of 20 because the original overstated the survey."
+              },
+              {
+                "value": "pretty",
+                "text": "The new version sounds smarter."
+              },
+              {
+                "value": "erase",
+                "text": "Delete all record of the original."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l07.audit.feedback.reason",
+            "html": "<p class=\"feedback\" role=\"status\">This ties the edit to evidence.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l07.audit} = 'reason'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l07.audit.feedback.pretty",
+            "html": "<p class=\"feedback\" role=\"status\">Style alone does not justify the factual correction.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l07.audit} = 'pretty'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l07.audit.feedback.erase",
+            "html": "<p class=\"feedback\" role=\"status\">Keeping a comparison makes reasoning reviewable.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l07.audit} = 'erase'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l07.transfer",
+            "title": "Write an alternative honest summary. Explain a remaining limitation of this small survey.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l07.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Reports 12/20 accurately.</li><li>Avoids claiming universal agreement.</li><li>Notes a limitation such as nonresponse, group size, or unasked reasons.</li></ul><p>The scenario is fictional; it does not estimate any real school’s preferences.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

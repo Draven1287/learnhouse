@@ -1,0 +1,159 @@
+{
+  "id": "lai.ai-you-can-use.l08",
+  "version": 1,
+  "title": "Make AI your study coach",
+  "number": 8,
+  "sourceIds": [
+    "school"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l08.help",
+    "lai.ai-you-can-use.l08.test",
+    "lai.ai-you-can-use.l08.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l08.help",
+    "lai.ai-you-can-use.l08.test"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l08.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Make AI your study coach",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l08.intro",
+            "html": "<h3>Choose assistance that preserves independent practice and follows assignment rules.</h3><p>Learning includes trying, recalling, explaining and finding your own gaps. A tool can offer a hint or a practice question, but it can also do the thinking you were meant to practice. Decide what skill you are learning before choosing assistance. Follow the assignment’s rules and describe permitted help honestly. If rules are unclear, ask the teacher; a tool cannot authorize its own use.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Fictional teacher rule: you may request one hint, but the explanation submitted must be your own. You are stuck on a fractions problem.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l08.help",
+            "title": "Which request fits the rule?",
+            "isRequired": true,
+            "correctAnswer": "hint",
+            "choices": [
+              {
+                "value": "answer",
+                "text": "Write my final explanation so I can submit it unchanged."
+              },
+              {
+                "value": "hint",
+                "text": "Give one hint without the answer; then I will attempt it myself."
+              },
+              {
+                "value": "hide",
+                "text": "Solve it and tell me how to hide the use."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l08.help.feedback.answer",
+            "html": "<p class=\"feedback\" role=\"status\">That replaces the required independent explanation.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l08.help} = 'answer'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l08.help.feedback.hint",
+            "html": "<p class=\"feedback\" role=\"status\">This fits the stated permission and preserves a next thinking step.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l08.help} = 'hint'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l08.help.feedback.hide",
+            "html": "<p class=\"feedback\" role=\"status\">Concealment does not satisfy the rule.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l08.help} = 'hide'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l08.test",
+            "title": "How can you check that you learned something?",
+            "isRequired": true,
+            "correctAnswer": "attempt",
+            "choices": [
+              {
+                "value": "copy",
+                "text": "Reread the polished answer only."
+              },
+              {
+                "value": "attempt",
+                "text": "Try a similar problem without help and explain the steps."
+              },
+              {
+                "value": "confidence",
+                "text": "Ask whether the AI thinks you understand."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l08.test.feedback.copy",
+            "html": "<p class=\"feedback\" role=\"status\">Recognition is not the same as explaining it yourself.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l08.test} = 'copy'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l08.test.feedback.attempt",
+            "html": "<p class=\"feedback\" role=\"status\">This gives evidence of independent understanding.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l08.test} = 'attempt'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l08.test.feedback.confidence",
+            "html": "<p class=\"feedback\" role=\"status\">Its reassurance is not a demonstration.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l08.test} = 'confidence'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l08.transfer",
+            "title": "Name a task where you would use a hint and a task you would do without AI. Explain your learning reason, not just convenience.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l08.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Respects the fictional rule.</li><li>Identifies independent thinking to preserve.</li><li>Justifies a non-AI choice or a tightly bounded use.</li></ul><p>Real schools and assignments have different rules. This lesson does not grant permission to use any external service.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}

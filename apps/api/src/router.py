@@ -29,7 +29,7 @@ from src.routers.media import media as media_router_module
 from src.routers.courses import migration as migration_router_module
 from src.routers.communities import communities as communities_router_module
 from src.routers.communities import discussions as discussions_router_module
-from src.routers.courses.activities import activities, blocks
+from src.routers.courses.activities import activities, blocks, learningai
 from src.routers.podcasts import podcasts as podcasts_router_module
 from src.routers.podcasts import episodes as episodes_router_module
 from src.routers.boards import boards as boards_router_module
@@ -65,6 +65,7 @@ async def get_non_api_token_user(user = Depends(get_current_user)):
 require_authenticated_user = get_authenticated_non_api_token_user
 
 # API Routes
+v1_router.include_router(learningai.router, prefix="/learningai", tags=["learningai"])
 v1_router.include_router(
     users.router,
     prefix="/users",

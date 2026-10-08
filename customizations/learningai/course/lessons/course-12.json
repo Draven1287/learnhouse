@@ -1,0 +1,160 @@
+{
+  "id": "lai.ai-you-can-use.l12",
+  "version": 1,
+  "title": "Turn a big task into small steps",
+  "number": 12,
+  "sourceIds": [
+    "energy",
+    "water"
+  ],
+  "activityIds": [
+    "lai.ai-you-can-use.l12.workflow",
+    "lai.ai-you-can-use.l12.resources",
+    "lai.ai-you-can-use.l12.transfer"
+  ],
+  "coreActivityIds": [
+    "lai.ai-you-can-use.l12.workflow",
+    "lai.ai-you-can-use.l12.resources"
+  ],
+  "reflectionId": "lai.ai-you-can-use.l12.transfer",
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "survey": {
+    "showQuestionNumbers": "off",
+    "showProgressBar": "top",
+    "progressBarType": "questions",
+    "textUpdateMode": "onTyping",
+    "pageNextText": "Continue",
+    "pagePrevText": "Back",
+    "completeText": "Finish lesson",
+    "showCompletedPage": false,
+    "clearInvisibleValues": "onHiddenContainer",
+    "pages": [
+      {
+        "name": "understand",
+        "title": "Turn a big task into small steps",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l12.intro",
+            "html": "<h3>Design a workflow with checkpoints and proportionate resource use.</h3><p>Break a task into a goal, inputs, draft, checks and a human decision. Use the simplest method that does the job well. AI services use computing infrastructure; electricity and water impacts vary with model, task, hardware, power supply and cooling. Training and repeated use both matter, and wider benefits or harms depend on the application. A fixed universal water-per-prompt number hides these differences. Compare options honestly without pretending you can calculate an exact footprint from a chat counter.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Fictional task: produce a one-page club guide. You already have verified rules. Options: edit a template, request one text outline, or produce a short animated guide. Compare the options with the same audience and task; do not assume extra media is necessary.</p></div>"
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l12.workflow",
+            "title": "Which sequence makes review possible?",
+            "isRequired": true,
+            "correctAnswer": "review",
+            "choices": [
+              {
+                "value": "review",
+                "text": "Set goal → use permitted facts → draft → check facts/accessibility → approve."
+              },
+              {
+                "value": "publish",
+                "text": "Draft → polish the wording → publish, without checking the source facts."
+              },
+              {
+                "value": "repeat",
+                "text": "Generate endlessly until something feels right."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l12.workflow.feedback.review",
+            "html": "<p class=\"feedback\" role=\"status\">This assigns checks before publication.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l12.workflow} = 'review'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l12.workflow.feedback.publish",
+            "html": "<p class=\"feedback\" role=\"status\">Polishing does not replace a factual check.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l12.workflow} = 'publish'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l12.workflow.feedback.repeat",
+            "html": "<p class=\"feedback\" role=\"status\">Choose a stopping rule tied to the goal.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l12.workflow} = 'repeat'"
+          }
+        ]
+      },
+      {
+        "name": "decide",
+        "title": "Make a decision",
+        "elements": [
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l12.resources",
+            "title": "Which resource claim is defensible?",
+            "isRequired": true,
+            "correctAnswer": "proportionate",
+            "choices": [
+              {
+                "value": "fixed",
+                "text": "Every AI message uses exactly the same amount of water."
+              },
+              {
+                "value": "proportionate",
+                "text": "Use the template or a limited text draft if useful; avoid needless media and state that exact impact is unknown."
+              },
+              {
+                "value": "zero",
+                "text": "Digital work has no physical resource costs."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l12.resources.feedback.fixed",
+            "html": "<p class=\"feedback\" role=\"status\">Impacts depend on infrastructure, workload and accounting assumptions.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l12.resources} = 'fixed'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l12.resources.feedback.proportionate",
+            "html": "<p class=\"feedback\" role=\"status\">A proportionate workflow can avoid waste without inventing precision.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l12.resources} = 'proportionate'"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l12.resources.feedback.zero",
+            "html": "<p class=\"feedback\" role=\"status\">Computing relies on physical equipment and energy.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l12.resources} = 'zero'"
+          }
+        ]
+      },
+      {
+        "name": "transfer",
+        "title": "Make the reasoning yours",
+        "elements": [
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l12.transfer",
+            "title": "Draw or describe a five-step workflow for the guide. Name a non-AI option, a stopping rule, and what information you would need for a fair environmental comparison.",
+            "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
+            "isRequired": true,
+            "maxLength": 2000,
+            "validators": [
+              {
+                "type": "text",
+                "minLength": 30,
+                "text": "Add enough reasoning to review (at least 30 characters)."
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l12.rubric",
+            "html": "<p><strong>Self-check</strong></p><ul><li>Includes a factual check and human approval.</li><li>Uses a proportionate method and stopping rule.</li><li>Names relevant footprint uncertainty rather than a universal rate.</li></ul><p>IEA figures are aggregate estimates/projections; the water paper models particular cases. Neither gives a universal measured footprint for your prompt.</p>"
+          }
+        ]
+      }
+    ]
+  }
+}
