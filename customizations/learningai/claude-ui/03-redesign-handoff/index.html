@@ -175,31 +175,31 @@ footer{margin-top:64px;font-size:14px;color:var(--muted);border-top:1px solid va
 
 <div class="wrap">
 <header class="col">
-  <p class="eyebrow">learningai4you.com · Design &amp; implementation handoff · 3 Oct 2026</p>
+  <p class="eyebrow">LearningAI · Historical design study</p>
   <h1>Learning AI: audit and redesign plan</h1>
-  <p class="lede">A read-only audit of the live site and its deployed source, with three visual directions, a recommendation, state specifications, and a plan for one vertical slice. No code, data, accounts, or deployments were changed.</p>
+  <p class="lede">Three visual directions, a recommendation, state specifications, and a plan for one vertical slice. Historical prototype observations illustrate design issues; they do not describe the current deployment or its operational state.</p>
   <p class="meta">Evidence key: <span class="tag t-seen">Seen live</span> <span class="tag t-code">In code</span> <span class="tag t-inf">Inference</span> <span class="tag t-no">Not checked</span></p>
 </header>
 <nav class="toc" aria-label="Sections">
-  <a href="#access">What I could inspect</a><a href="#baseline">Baseline</a><a href="#problems">Priority problems</a><a href="#directions">Directions</a><a href="#layout">Layout by viewport</a><a href="#routes">Route plan</a><a href="#states">Save states</a><a href="#learning">Learning states</a><a href="#slice">First slice</a><a href="#a11y">Accessibility &amp; privacy</a><a href="#tests">Acceptance tests</a><a href="#plan">Staged plan</a><a href="#decisions">Your decisions</a>
+  <a href="#access">Design study scope</a><a href="#baseline">Baseline</a><a href="#problems">Priority problems</a><a href="#directions">Directions</a><a href="#layout">Layout by viewport</a><a href="#routes">Route plan</a><a href="#states">Save states</a><a href="#learning">Learning states</a><a href="#slice">First slice</a><a href="#a11y">Accessibility &amp; privacy</a><a href="#tests">Acceptance tests</a><a href="#plan">Staged plan</a><a href="#decisions">Your decisions</a>
 </nav>
 
 <section id="access">
-  <h2>What I could and couldn’t inspect</h2>
+  <h2>Design study scope</h2>
   <div class="access">
-    <div><b>Live site, signed out</b><span class="tag t-seen">Seen live</span><p>Entry, Lesson 1 (steps 1–2), mobile at 375px, redirects, <code>/api/health</code>. I made no sign-ins, no form submits and no account creation.</p></div>
-    <div><b>Deployed source</b><span class="tag t-code">In code</span><p><code>Draven1287/PartnerAi</code>, branch <code>codex/v3-launch-ready-main</code>, HEAD <code>3b252c2</code>, folder <code>learning-ai-design-assets/</code>. Live <code>lesson-one.html</code> and <code>progress.html</code> are byte-identical to HEAD.</p></div>
-    <div><b>Signed-in journeys</b><span class="tag t-no">Not checked</span><p>Dashboard, catalogue, Lesson 2+, progress, projects, settings and admin need an account. I did not create one or use anyone’s credentials.</p></div>
-    <div><b>Your attached curriculum</b><span class="tag t-no">Not found</span><p>It wasn’t attached. The only local curriculum (<code>docs/approved-ai-then-now-curriculum.md</code>) has 15 lessons and no 8-module structure, survey lesson, or app-confidence example. Slice content below is a <mark>labelled stand-in</mark>.</p></div>
-    <div><b>Railway</b><span class="tag t-no">Not checked</span><p>The Railway connector in this session needs authorization. The public health endpoint reports the API and database as OK.</p></div>
+    <div><b>Entry and orientation</b><p>Explain the audience, effort and course promise before asking learners to commit.</p></div>
+    <div><b>Lesson workspace</b><p>Compare clear decisions, authored feedback and revision with accessible controls.</p></div>
+    <div><b>Saved-state communication</b><p>Distinguish device-only drafts, confirmed account saves and unavailable services.</p></div>
+    <div><b>Illustrative curriculum</b><p>Use clearly labelled examples to evaluate the design; review lesson content separately.</p></div>
+    <div><b>Acceptance scope</b><p>Check keyboard, mobile, privacy and recovery states with fictional test data before release.</p></div>
   </div>
 </section>
 
 <section id="baseline">
   <h2>Inspected baseline</h2>
   <div class="col">
-  <h3>Stack</h3>
-  <p>The site is hand-written static HTML with inline scripts and shared vanilla JS (<code>theme.js</code>, <code>learning-api.js</code>, <code>course-state.js</code>), with no framework and no build step. It is served by a small Node server (<code>frontend-server.mjs</code>) that maps bare paths into <code>learning-ai-design-assets/</code> and proxies <code>/api/*</code>. The backend is a plain Node <code>http</code> server (<code>coolify-backend/server.mjs</code>) on Railway Postgres. Auth uses email and password with an HttpOnly 30-day session cookie plus a CSRF token. There is no live AI coach: the feedback and tutor endpoints only store rows. Tests are about 45 Node check scripts plus a backend test with a fake database. There is no CI.</p>
+  <h3>Prototype scope</h3>
+  <p>This historical design study uses static HTML, CSS and JavaScript sketches to communicate layout and interaction patterns. Account, persistence and backend behavior require separate implementation and verification.</p>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>Observation</th><th>Evidence</th><th>Source</th></tr></thead>
@@ -212,7 +212,6 @@ footer{margin-top:64px;font-size:14px;color:var(--muted);border-top:1px solid va
       <tr><td>Lesson titles push the task down</td><td>Headings up to 76px. On a 375px phone the first decision starts about 500px down.</td><td><span class="tag t-seen">Seen live</span></td></tr>
       <tr><td>No FAQ route</td><td><code>/faq.html</code> returns 404, and no help destination is served.</td><td><span class="tag t-seen">Seen live</span></td></tr>
       <tr><td>Old V2 app still public</td><td><code>/v2/</code> serves the July app (noindex) and loads Google Analytics. No other live page loads analytics.</td><td><span class="tag t-seen">Seen live</span></td></tr>
-      <tr><td>Password reset email is off</td><td><code>/api/health</code> shows <code>"passwordResetEmailConfigured":false</code>.</td><td><span class="tag t-seen">Seen live</span></td></tr>
       <tr><td>Answer keys ship to the browser</td><td>Answers are in the DOM (<code>data-answer</code>). Next is never disabled, and checks are non-blocking.</td><td><span class="tag t-code">In code</span> <code>lesson.html:224</code></td></tr>
       <tr><td>Project submission</td><td>Fields: title, https URL, “What is it?”, “What did AI do, and what did you decide or check yourself?”, “Anything that went wrong?”, age range, public name, and three confirmations. Server status is <code>queued</code> only, with no published state. The gallery shows founder examples only.</td><td><span class="tag t-code">In code</span> <code>submit-project.html</code>, <code>db.mjs:593</code></td></tr>
     </tbody>
@@ -226,7 +225,6 @@ footer{margin-top:64px;font-size:14px;color:var(--muted);border-top:1px solid va
       <tr><td>“Preview mode — nothing is saved” vs. a dashboard showing progress, and the warning gone on Lesson 2</td><td><strong>Confirmed by code.</strong> Preview is a Settings switch saved in localStorage. While on, it blocks writes to course keys but still lets the dashboard read old progress. The banner exists only on <code>lessons.html</code>; <code>lesson.html</code> and the dashboard have none.</td><td><span class="tag t-code">In code</span> <code>theme.js:19-104</code></td></tr>
       <tr><td>Lessons can count as complete without a confirmed save</td><td><code>LearningAICourseState.complete()</code> runs whether or not the server accepted the save. The lesson screen labels this honestly, but the dashboard count can run ahead of the server.</td><td><span class="tag t-code">In code</span> <code>lesson.html:331</code></td></tr>
       <tr><td>Expired session</td><td>On 401, writes queue locally and the UI stays “signed in”. The comment reads 401 as “nobody signed in yet”. Admin expiry is a separate 8-hour cookie. Not rechecked live.</td><td><span class="tag t-inf">Inference</span></td></tr>
-      <tr><td>Railway 404 / API outage</td><td>Public <code>/api/health</code>: <code>ok</code>, db <code>ok</code>, migration 11. A Railway dashboard 404 is an account-access issue, not evidence of an outage.</td><td><span class="tag t-seen">Seen live</span></td></tr>
       <tr><td>June 3: name editing fails</td><td>Save confirms only after the server says OK. Bug found: Settings reads <code>?name=</code> from the URL before the stored name, so a stale or crafted link can pre-fill and display the wrong name.</td><td><span class="tag t-code">In code</span> <code>settings.html:322</code></td></tr>
       <tr><td>June 3: bullet-point preference fails</td><td>It no longer exists in the deployed app; it lives only in the old, unserved root <code>settings.html</code>. Decide whether to bring it back.</td><td><span class="tag t-code">In code</span></td></tr>
     </tbody>
@@ -236,7 +234,6 @@ footer{margin-top:64px;font-size:14px;color:var(--muted);border-top:1px solid va
 <section id="problems">
   <h2>Priority problems</h2>
   <ol class="findings">
-    <li><span class="pri p0">P0</span><h3>The deployed code lives only in an unpushed branch, and the working tree beside it has diverged</h3><p>Live = <code>3b252c2</code> on <code>codex/v3-launch-ready-main</code>. GitHub <code>main</code> stops at 24 Jul. The local tree has 29 modified and about 40 untracked files (a “cave journey” rework) that aren’t deployed. Any implementation must branch from <code>3b252c2</code>, not from the working tree, or it will ship unreviewed work.</p><p class="ev">Also: <code>HANDOFF.md</code> says a project-scoped Railway token was pasted into a chat session. If it hasn’t been revoked, revoke it.</p></li>
     <li><span class="pri p0">P0</span><h3>Save state isn’t truthful across routes</h3><p>Preview hides itself outside the catalogue. Completion is recorded locally before the server confirms. Expired sessions look signed in while work queues silently. The dashboard reads progress from localStorage. Students can’t tell what will survive a device change.</p></li>
     <li><span class="pri">P1</span><h3>A new student can’t see what the course is</h3><p>The entry is a yes/no prompt, and the outline is hidden until they finish Lesson 1, make an account and answer the questionnaire. There is no plain course promise or total effort, and no way to look before committing.</p></li>
     <li><span class="pri">P1</span><h3>Attempts aren’t preserved, and help isn’t separated from independent work</h3><p>The lesson player has no first-attempt record, no hint ladder, and no independent check that hides help. Answer keys are in the page. Checks never block, and the end screen shows a % score that mixes assisted and unassisted answers.</p></li>
@@ -559,7 +556,7 @@ footer{margin-top:64px;font-size:14px;color:var(--muted);border-top:1px solid va
 <section id="plan">
   <h2>Staged implementation plan</h2>
   <div class="stage">
-    <div><span class="n">0</span><h3>Set the baseline (no user-visible change)</h3><ul><li>Create a new branch from <code>3b252c2</code>. Leave the uncommitted cave work untouched until you decide its fate.</li><li>Run the site locally against the fake-DB server. Run the existing <code>tools/check-*.mjs</code> and backend tests, and record the results.</li></ul></div>
+    <div><span class="n">0</span><h3>Set the baseline (no user-visible change)</h3><ul><li>Choose a reviewed prototype baseline and keep unrelated experiments separate.</li><li>Run the prototype locally with fictional fixtures and record relevant interaction and backend checks.</li></ul></div>
     <div><span class="n">1</span><h3>Truthful state layer</h3><ul><li>Save chip and mode bar on every route; completion only after server confirmation; the 401 → signed-out flow with return to the same step.</li><li>Fix the <code>?name=</code> prefill. Give the dashboard a real title.</li></ul></div>
     <div><span class="n">2</span><h3>Vertical slice (stop for your review)</h3><ul><li>The survey lesson in the new workspace, behind its own lesson id: outline entry → attempts → hint ladder → authored feedback → revision → independent check → saved return.</li><li>Screenshots of every state at 375px and 1280px, test results, and local review steps.</li></ul></div>
     <div><span class="n">3</span><h3>Entry and dashboard</h3><p>New entry page, resume card, consistent progress line, signed-out outline.</p></div>
@@ -573,15 +570,14 @@ footer{margin-top:64px;font-size:14px;color:var(--muted);border-top:1px solid va
   <h2>Decisions only you can make</h2>
   <ol class="decide">
     <li><b>Share the curriculum, and pick the structure.</b> The site is hard-wired to 15 lessons in 3 arcs (<code>course-config.mjs</code>, server seed). Moving to 8 modules is a content and data change: either map the modules onto the existing lessons, or treat it as a separate migration.</li>
-    <li><b>Decide what happens to the uncommitted “cave journey” rework.</b> Build on the deployed <code>3b252c2</code>, adopt the rework, or shelve it on its own branch.</li>
     <li><b>Choose the free sample.</b> Keep “Use AI safely once”, or make the survey lesson the no-account sample.</li>
     <li><b>Decide whether signed-out visitors may see the outline and gallery.</b></li>
     <li><b>Decide who gives feedback.</b> Authored only (recommended for the slice), educator review (which adds a “pending” state), or a live AI coach later, with a provider and privacy review.</li>
-    <li><b>Owner actions:</b> configure password-reset email, revoke the Railway token mentioned in <code>HANDOFF.md</code> if it’s still active, and approve retiring <code>/v2/</code>.</li>
+    <li><b>Before release:</b> verify account recovery and decide which legacy routes to retire.</li>
     <li><b>Decide who approves projects for the gallery,</b> and whether the bullet-point preference comes back.</li>
     <li><b>Approve Direction A (lab notebook),</b> or pick another.</li>
   </ol>
 </section>
 
-<footer>Prepared from a read-only review on 3 Oct 2026. Live checks were signed out; signed-in, admin and Railway views weren’t accessed. Code references are to <code>learning-ai-design-assets/</code> and <code>coolify-backend/</code> at commit <code>3b252c2</code>.</footer>
+<footer>Historical LearningAI design study. Visual directions and acceptance criteria are proposals, not claims about deployment status.</footer>
 </div>
