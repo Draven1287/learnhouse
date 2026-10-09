@@ -76,7 +76,8 @@ function AuthenticatedLesson({ activity, token }: { activity: { activity_uuid: s
       </fieldset>)}
       <label htmlFor="lai-reflection">{lesson.transfer.prompt}</label>
       <textarea id="lai-reflection" maxLength={2000} rows={7} value={state.answers[lesson.transfer.id] || ''} onChange={event => answer(lesson.transfer.id, event.target.value)} />
-      <p>Practice text only. Saved to your account when you choose Save or Submit. Reviewed by you or an educator; not AI graded.</p>
+      <p>Use fictional practice details. Do not include names, contact details, or other personal information. Use a role such as club organizer.</p>
+      <p>Save progress or Submit sends your answers to the server and stores them with your account. Review your answers before submitting: submitted work cannot be edited in this pilot. Review the reasoning yourself or with an educator; it is not AI graded.</p>
       <p>Self-check</p><ul>{lesson.transfer.rubric.map(line => <li key={line}>{line}</li>)}</ul><p>{lesson.uncertainty}</p>
     </fieldset>
     {!state.completed && <div className={styles.actions}><button disabled={busy} onClick={() => persist()}>Save progress</button><button disabled={busy || !required} onClick={() => persist(true)}>Submit lesson</button></div>}

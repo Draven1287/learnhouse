@@ -1,5 +1,6 @@
 """Dependency-free tests of actual submission rules; run via unittest discovery."""
 import importlib.util
+import json
 from pathlib import Path
 from types import SimpleNamespace
 import unittest
@@ -10,6 +11,16 @@ c = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(c)
 
 class ContractTests(unittest.TestCase):
+    def test_integrated_reflection_matches_canonical_curriculum(self):
+        root = Path(__file__).resolve().parents[5]
+        manifest = json.loads((root / 'customizations/learningai/course/curriculum/course-manifest.json').read_text())
+        authored = next(lesson for lesson in manifest['lessons'] if lesson['id'] == c.LESSON_ID)
+        self.assertEqual(c.LESSON['transfer'], authored['transfer'])
+        self.assertEqual(c.LESSON['completionPolicy'], authored['completionPolicy'])
+        portable = json.loads((root / 'customizations/learningai/course/lessons/course-01.json').read_text())
+        reflection = next(element for page in portable['survey']['pages'] for element in page['elements'] if element['name'] == c.LESSON['transfer']['id'])
+        self.assertEqual(reflection['title'], c.LESSON['transfer']['prompt'])
+
     def setUp(self):
         self.first, self.second = [a['id'] for a in c.LESSON['activities']]
         self.branch = c.LESSON['branchActivity']['id']

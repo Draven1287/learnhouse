@@ -81,13 +81,13 @@ What should guide a revised plan?
 
 **Reflection / transfer**
 
-Write a two-sentence replacement plan. Name one constraint it meets and one person you would ask before running it. You may reject AI entirely.
+Write a short replacement plan. Explain how it meets all three constraints: 10 minutes, no spending money, and no phones. Choose AI, a checklist, a person, or no tool and explain why that choice fits. Identify a role to consult, such as the club organizer, rather than a real person’s name.
 
 **Review rubric (0–2 per item)**
 
 - Plan fits 10 minutes, no money, and no phones.
-- Explains a concrete revision or justified rejection.
-- Identifies an inclusion check or participant to consult.
+- Justifies why AI, a checklist, a person, or no tool fits the task.
+- Identifies an inclusion check and a role to consult without personal information.
 
 **Uncertainty and scope:** A proposed activity is not proven successful until tried with its actual participants.
 
@@ -385,7 +385,7 @@ Fictional survey: 12 of 20 club members liked a proposed time. Draft: “Everyon
 
 Which revision preserves the evidence?
 
-- **all — Nearly everyone agrees, so no discussion is needed.** Feedback: Eight of twenty did not agree; the conclusion goes beyond the data.
+- **all — Nearly everyone agrees, so no discussion is needed.** Feedback: The evidence does not establish unanimous support; the conclusion goes beyond the data.
 - **precise — 12 of 20 respondents liked this time; ask about barriers before deciding.** Feedback: This reports the count and leaves room for disagreement.
 - **none — Nobody likes this time.** Feedback: That contradicts the count.
 
