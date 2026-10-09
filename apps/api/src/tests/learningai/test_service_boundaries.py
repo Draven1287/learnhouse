@@ -17,7 +17,9 @@ class Result:
     def first(self): return self.value
 
 class DB:
-    def __init__(self, values): self.values = iter(values); self.statements = []
+    def __init__(self, values):
+        self.values = iter(values)
+        self.statements = []
     async def execute(self, statement):
         self.statements.append(statement)
         return Result(next(self.values))
@@ -52,7 +54,8 @@ async def test_cross_org_member_denied(resources):
 
 @pytest.mark.asyncio
 async def test_mismatched_activity_course_org_denied(resources):
-    activity, course, _ = resources; course.org_id = 99
+    activity, course, _ = resources
+    course.org_id = 99
     with pytest.raises(HTTPException) as error:
         await service.context(Obj(), Obj(id=1), activity.activity_uuid, DB([activity, course]))
     assert error.value.status_code == 404
@@ -61,7 +64,8 @@ async def test_mismatched_activity_course_org_denied(resources):
 async def test_locked_and_paid_activity_denied(resources):
     activity, course, readable = resources
     for attribute, value in [('is_locked', True), ('content', {'paid_access':False})]:
-        readable.is_locked=False; readable.content=activity.content
+        readable.is_locked=False
+        readable.content=activity.content
         setattr(readable, attribute, value)
         with pytest.raises(HTTPException) as error:
             await service.context(Obj(), Obj(id=1), activity.activity_uuid, DB([activity, course, Obj()]))
@@ -94,28 +98,34 @@ async def test_read_does_not_create_attempt(resources, monkeypatch):
     db = Obj(add=AsyncMock(), commit=AsyncMock())
     result = await service.read(Obj(), Obj(id=1), activity.activity_uuid, db)
     assert result['state']['revision'] == 0 and not result['state']['completed']
-    db.add.assert_not_called(); db.commit.assert_not_called()
+    db.add.assert_not_called()
+    db.commit.assert_not_called()
 
 @pytest.fixture
 def api():
-    app = FastAPI(); app.include_router(learningai.router, prefix='/learningai')
+    app = FastAPI()
+    app.include_router(learningai.router, prefix='/learningai')
     app.dependency_overrides[learningai.get_db_session] = lambda: Obj()
     return app
 
 def test_anonymous_route_rejected(api, monkeypatch):
     # Real authentication dependency; missing bearer token must not reach state storage.
-    spy = AsyncMock(); monkeypatch.setattr(service, 'read', spy)
+    spy = AsyncMock()
+    monkeypatch.setattr(service, 'read', spy)
     with TestClient(api) as client:
         response = client.get('/learningai/activity_local/state')
-    assert response.status_code in (401,403); spy.assert_not_called()
+    assert response.status_code in (401,403)
+    spy.assert_not_called()
 
 def test_payload_identity_and_unknown_fields_rejected(api, monkeypatch):
     api.dependency_overrides[get_authenticated_non_api_token_user] = lambda: Obj(id=1)
     api.dependency_overrides[learningai.get_db_session] = lambda: Obj()
-    spy = AsyncMock(); monkeypatch.setattr(service, 'write', spy)
+    spy = AsyncMock()
+    monkeypatch.setattr(service, 'write', spy)
     with TestClient(api) as client:
         response = client.put('/learningai/activity_local/state', json={'answers':{},'page':0,'revision':0,'user_id':2})
-    assert response.status_code == 422; spy.assert_not_called()
+    assert response.status_code == 422
+    spy.assert_not_called()
 
 @pytest.mark.parametrize('token_type', ['ordinary', 'superadmin'])
 @pytest.mark.parametrize('method', ['GET', 'PUT', 'POST'])
@@ -124,7 +134,9 @@ def test_api_token_cannot_impersonate_learner(api, monkeypatch, token_type, meth
     from src.security import auth
     token = APITokenUser(id=1, org_id=10) if token_type == 'ordinary' else SuperadminAPITokenUser(id=1)
     monkeypatch.setattr(auth, 'get_authenticated_user', AsyncMock(return_value=token))
-    spy = AsyncMock(); monkeypatch.setattr(service, 'read', spy); monkeypatch.setattr(service, 'write', spy)
+    spy = AsyncMock()
+    monkeypatch.setattr(service, 'read', spy)
+    monkeypatch.setattr(service, 'write', spy)
     with TestClient(api) as client:
         response = client.request(method, '/learningai/activity_local/' + ('submit' if method == 'POST' else 'state'), json={'answers':{},'page':0,'revision':0} if method != 'GET' else None)
     assert response.status_code == 403
@@ -141,7 +153,8 @@ async def test_pilot_disabled_before_resource_lookup(resources, monkeypatch):
 @pytest.mark.parametrize('field,value', [('published',False), ('activity_type','TYPE_VIDEO')])
 @pytest.mark.asyncio
 async def test_unsupported_or_unpublished_activity_denied(resources, field, value):
-    activity, _, _ = resources; setattr(activity, field, value)
+    activity, _, _ = resources
+    setattr(activity, field, value)
     with pytest.raises(HTTPException) as error:
         await service.context(Obj(), Obj(id=1), 'fixture', DB([activity]))
     assert error.value.status_code == 404
@@ -151,7 +164,8 @@ def test_invalid_session_never_reads_saved_answers(api, monkeypatch, case):
     import jwt
     from src.security.security import SECRET_KEY, ALGORITHM
     token = 'fictional.invalid.token' if case == 'malformed' else jwt.encode({'sub':'fictional-user','exp':1}, SECRET_KEY, algorithm=ALGORITHM)
-    spy = AsyncMock(); monkeypatch.setattr(service,'read',spy)
+    spy = AsyncMock()
+    monkeypatch.setattr(service,'read',spy)
     with TestClient(api) as client:
         response=client.get('/learningai/activity_local/state',headers={'Authorization':'Bearer '+token})
     assert response.status_code in (401,403)

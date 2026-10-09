@@ -1,7 +1,6 @@
 """Real SQLite fixture checks for completion helpers/migration; not row-lock proof."""
 import importlib.util
 from pathlib import Path
-from unittest.mock import patch
 import pytest
 from sqlalchemy import create_engine, inspect
 from alembic.migration import MigrationContext
@@ -38,7 +37,8 @@ async def test_answer_and_step_rollback_together(db,admin_user,activity,course):
 async def test_generic_completion_and_reset_cannot_bypass(db,admin_user,activity,course,mock_request):
     activity.activity_type='TYPE_CUSTOM'
     activity.content={'learningai':{'lesson_id':'lai.ai-you-can-use.l01'}}
-    db.add(activity);await db.commit()
+    db.add(activity)
+    await db.commit()
     for function,arg in [(trail_service.add_activity_to_trail,activity.activity_uuid),(trail_service.remove_activity_from_trail,activity.activity_uuid),(trail_service.remove_course_from_trail,course.course_uuid)]:
         with pytest.raises(HTTPException) as error:
             await function(mock_request,admin_user,arg,db)
@@ -48,7 +48,8 @@ async def test_generic_completion_and_reset_cannot_bypass(db,admin_user,activity
 def test_migration_upgrade_downgrade_in_fixture():
     path=Path(__file__).resolve().parents[3]/'migrations/versions/c2d3e4f5a6b7_learningai_first_lesson.py'
     spec=importlib.util.spec_from_file_location('migration_learningai',path)
-    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
     engine=create_engine('sqlite://')
     with engine.begin() as conn:
         with Operations.context(MigrationContext.configure(conn)):
