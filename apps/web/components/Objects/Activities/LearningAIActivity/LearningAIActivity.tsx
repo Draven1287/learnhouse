@@ -6,13 +6,14 @@ import { useQueryClient } from '@tanstack/react-query'
 import { queryKeys } from '@/lib/query/keys'
 import { useOrg } from '@components/Contexts/OrgContext'
 import styles from './lesson.module.css'
+import LearningAIReviewVideo, { LearningAIReviewMedia } from './LearningAIReviewVideo'
 
 type Choice = { value: string; text: string; feedback: string }
 type Activity = { id: string; prompt: string; choices: Choice[]; visibleIfActivity?: string; visibleIfNotEqual?: string }
 type Lesson = { id: string; title: string; explanation: string; scenario: string; activities: Activity[]; branchActivity: Activity; transfer: { id: string; prompt: string; rubric: string[] }; uncertainty: string }
 const empty: LessonState = { answers: {}, page: 0, revision: 0, completed: false }
 
-export default function LearningAIActivity({ activity }: { activity: { activity_uuid: string } }) {
+export default function LearningAIActivity({ activity }: { activity: { activity_uuid: string; reviewMedia?: LearningAIReviewMedia } }) {
   const session = useLHSession() as any
   const token = session?.data?.tokens?.access_token
   const actor = session?.data?.user?.id
@@ -21,7 +22,7 @@ export default function LearningAIActivity({ activity }: { activity: { activity_
   return <AuthenticatedLesson key={`${actor}:${activity.activity_uuid}:${token}`} activity={activity} token={token} />
 }
 
-function AuthenticatedLesson({ activity, token }: { activity: { activity_uuid: string }; token: string }) {
+function AuthenticatedLesson({ activity, token }: { activity: { activity_uuid: string; reviewMedia?: LearningAIReviewMedia }; token: string }) {
   const org = useOrg() as any
   const query = useQueryClient()
   const [lesson, setLesson] = useState<Lesson | null>(null)
@@ -69,6 +70,7 @@ function AuthenticatedLesson({ activity, token }: { activity: { activity_uuid: s
   const required = checks.every(check => !!state.answers[check.id]) && (state.answers[lesson.transfer.id] || '').trim().length >= 30
   return <section className={styles.lesson} aria-label={lesson.title}>
     <h1>{lesson.title}</h1><p>{lesson.explanation}</p>
+    {process.env.NODE_ENV === 'development' && activity.reviewMedia && <LearningAIReviewVideo media={activity.reviewMedia} />}
     <aside aria-label="The situation">{lesson.scenario}</aside>
     <fieldset disabled={busy || state.completed}>
       <legend>Make a decision and explain it</legend>
