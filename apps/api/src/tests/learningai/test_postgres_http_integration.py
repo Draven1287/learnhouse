@@ -243,3 +243,18 @@ async def test_real_course_group_rbac_and_cookie_session(http_fixture,pg_factory
     async with pg_factory() as db:
         record=(await db.execute(select(LearningAIAttempt))).scalars().one()
         assert record.user_id==3
+
+
+@pytest.mark.asyncio
+async def test_optional_vector_failure_preserves_core_bootstrap(pg_factory, monkeypatch):
+    from src.core.events.schema import bootstrap_schema
+    engine = pg_factory.kw['bind']
+    async with engine.begin() as connection:
+        available = await connection.scalar(text("SELECT EXISTS (SELECT 1 FROM pg_available_extensions WHERE name='vector')"))
+        if available:
+            pytest.skip('This acceptance case requires PostgreSQL without optional pgvector')
+        await connection.run_sync(bootstrap_schema)
+        # Real missing-extension DDL must roll back only its savepoint.
+        assert await connection.scalar(text('SELECT 1')) == 1
+        assert await connection.scalar(text("SELECT to_regclass('learningai_attempt')")) is not None
+        assert await connection.scalar(text("SELECT to_regclass('course_embedding')")) is None

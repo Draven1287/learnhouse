@@ -4,7 +4,7 @@ import os
 import importlib
 from config.config import get_learnhouse_config
 from fastapi import FastAPI
-from sqlmodel import SQLModel, Session
+from sqlmodel import Session
 from sqlalchemy import event
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -382,20 +382,9 @@ def _is_transient_connect_error(exc: BaseException) -> bool:
 
 
 async def _bootstrap_schema():
+    from src.core.events.schema import bootstrap_schema
     async with engine.begin() as conn:
-        # Enable pgvector extension for vector similarity search (optional — RAG feature)
-        try:
-            from sqlalchemy import text
-            await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
-        except Exception as e:
-            logging.warning(
-                "pgvector extension not available — RAG features will be disabled. "
-                "Install pgvector on your PostgreSQL server to enable course chatbot. "
-                "Error: %s", e
-            )
-        # Create all tables
-        if not is_testing:
-            await conn.run_sync(SQLModel.metadata.create_all)
+        await conn.run_sync(lambda sync: bootstrap_schema(sync, create_tables=not is_testing))
 
 
 async def connect_to_db(app: FastAPI):
