@@ -66,7 +66,7 @@
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l07.revise.feedback.all",
-            "html": "<p class=\"feedback\" role=\"status\">Eight of twenty did not agree; the conclusion goes beyond the data.</p>",
+            "html": "<p class=\"feedback\" role=\"status\">The evidence does not establish unanimous support; the conclusion goes beyond the data.</p>",
             "visibleIf": "{lai.ai-you-can-use.l07.revise} = 'all'"
           },
           {

@@ -118,7 +118,7 @@ async def test_connect_to_db_runs_create_all_when_not_testing(monkeypatch):
         monkeypatch.setattr(database, "is_testing", False)
         monkeypatch.setattr(
             "sqlmodel.SQLModel.metadata.create_all",
-            lambda bind: create_all_calls.append(bind),
+            lambda bind, **kwargs: create_all_calls.append((bind, kwargs)),
         )
         await database.connect_to_db(app)
     finally:
@@ -126,6 +126,7 @@ async def test_connect_to_db_runs_create_all_when_not_testing(monkeypatch):
 
     assert app.db_engine is database.engine
     assert len(create_all_calls) == 1
+    assert all(table.name != "course_embedding" for table in create_all_calls[0][1]["tables"])
 
 
 @pytest.mark.asyncio

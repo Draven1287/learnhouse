@@ -68,7 +68,8 @@ async def db(pg_factory):
 
 @pytest_asyncio.fixture
 async def http_fixture(pg_factory,db,regular_user,admin_user,other_org,activity,course):
-    activity.activity_type='TYPE_CUSTOM';activity.activity_sub_type='SUBTYPE_CUSTOM'
+    activity.activity_type='TYPE_CUSTOM'
+    activity.activity_sub_type='SUBTYPE_CUSTOM'
     activity.content={'learningai':{'lesson_id':LESSON_ID,'version':1,'content_version':CONTENT_VERSION}}
     db.add(activity)
     db.add(OrganizationConfig(org_id=course.org_id,config={}))
@@ -163,7 +164,9 @@ async def test_actual_restricted_lock_denies_all_routes(http_fixture,pg_factory,
     app,headers,activity,_,_=http_fixture
     async with pg_factory() as db:
         obj=await db.get(Activity if lock_target=='activity' else Chapter,1)
-        obj.lock_type='restricted';db.add(obj);await db.commit()
+        obj.lock_type='restricted'
+        db.add(obj)
+        await db.commit()
     async with client(app) as http:
         for method,suffix in [('GET','state'),('PUT','state'),('POST','submit')]:
             response=await http.request(method,f'/learningai/{activity.activity_uuid}/{suffix}',headers=headers[2],json=None if method=='GET' else body(complete=True))
@@ -198,7 +201,8 @@ async def test_actual_valid_api_tokens_cannot_impersonate_learner(http_fixture,p
     if kind=='ordinary':
         values['org_id']=course.org_id
     async with pg_factory() as db:
-        db.add(model(**values));await db.commit()
+        db.add(model(**values))
+        await db.commit()
     async with client(app) as http:
         for method,suffix in [('GET','state'),('PUT','state'),('POST','submit')]:
             response=await http.request(method,f'/learningai/{activity.activity_uuid}/{suffix}',headers={'Authorization':'Bearer '+token},json=None if method=='GET' else body(complete=True))
@@ -220,7 +224,9 @@ async def test_real_course_group_rbac_and_cookie_session(http_fixture,pg_factory
     from src.db.usergroup_user import UserGroupUser
     app,headers,activity,course,_=http_fixture
     async with pg_factory() as db:
-        resource=await db.get(Course,course.id);resource.public=False;db.add(resource)
+        resource=await db.get(Course,course.id)
+        resource.public=False
+        db.add(resource)
         db.add(UserGroup(id=1,org_id=course.org_id,name='Fictional group',description='Local fixture',usergroup_uuid='usergroup_fixture'))
         await db.flush()
         db.add(UserGroupResource(usergroup_id=1,org_id=course.org_id,resource_uuid=course.course_uuid))
@@ -237,3 +243,18 @@ async def test_real_course_group_rbac_and_cookie_session(http_fixture,pg_factory
     async with pg_factory() as db:
         record=(await db.execute(select(LearningAIAttempt))).scalars().one()
         assert record.user_id==3
+
+
+@pytest.mark.asyncio
+async def test_optional_vector_failure_preserves_core_bootstrap(pg_factory, monkeypatch):
+    from src.core.events.schema import bootstrap_schema
+    engine = pg_factory.kw['bind']
+    async with engine.begin() as connection:
+        available = await connection.scalar(text("SELECT EXISTS (SELECT 1 FROM pg_available_extensions WHERE name='vector')"))
+        if available:
+            pytest.skip('This acceptance case requires PostgreSQL without optional pgvector')
+        await connection.run_sync(bootstrap_schema)
+        # Real missing-extension DDL must roll back only its savepoint.
+        assert await connection.scalar(text('SELECT 1')) == 1
+        assert await connection.scalar(text("SELECT to_regclass('learningai_attempt')")) is not None
+        assert await connection.scalar(text("SELECT to_regclass('course_embedding')")) is None

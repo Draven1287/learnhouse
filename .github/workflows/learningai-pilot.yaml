@@ -1,0 +1,81 @@
+name: LearningAI pilot checks
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+      - codex/learningai-pilot-staging
+    paths:
+      - 'apps/api/**'
+      - 'apps/web/**'
+      - '.github/workflows/learningai-pilot.yaml'
+  pull_request:
+    paths:
+      - 'apps/api/**'
+      - 'apps/web/**'
+      - '.github/workflows/learningai-pilot.yaml'
+permissions:
+  contents: read
+concurrency:
+  group: learningai-pilot-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - run: bun install --frozen-lockfile
+      # Module mocks persist across files in Bun. Isolate every file so the
+      # billing webhook mock cannot replace another file's real implementation.
+      - run: |
+          for file in tests/*.test.mjs; do
+            bun test "$file" || exit 1
+          done
+      - run: bun node_modules/next/dist/bin/next typegen
+      - run: bun node_modules/typescript/bin/tsc --noEmit
+  lesson-postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: postgres
+        ports:
+          - '127.0.0.1:5432:5432'
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    defaults:
+      run:
+        working-directory: apps/api
+    env:
+      # Disposable CI container only; no production connections or secrets.
+      LEARNINGAI_TEST_DATABASE_URL: postgresql+asyncpg://postgres@127.0.0.1:5432/postgres
+      TESTING: 'true'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.14.7'
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          version: '0.10.7'
+      - run: uv sync --frozen
+      - name: Verify live disposable PostgreSQL fixture
+        run: |
+          uv run python -c "import os; from sqlalchemy import create_engine, text; d=os.environ['LEARNINGAI_TEST_DATABASE_URL'].replace('postgresql+asyncpg:', 'postgresql+psycopg2:'); e=create_engine(d); c=e.connect(); assert c.execute(text('SELECT 1')).scalar()==1; c.close(); e.dispose()"
+      - name: Native HTTP auth, isolation, concurrency and completion
+        run: uv run pytest src/tests/learningai/test_postgres_http_integration.py -q
+      - name: Lesson contract, durable state and boundaries
+        run: uv run pytest src/tests/learningai -q

@@ -172,7 +172,7 @@
           {
             "type": "comment",
             "name": "lai.ai-you-can-use.l01.transfer",
-            "title": "Write a two-sentence replacement plan. Name one constraint it meets and one person you would ask before running it. You may reject AI entirely.",
+            "title": "Write a short replacement plan. Explain how it meets all three constraints: 10 minutes, no spending money, and no phones. Choose AI, a checklist, a person, or no tool and explain why that choice fits. Identify a role to consult, such as the club organizer, rather than a real person’s name.",
             "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
             "isRequired": true,
             "maxLength": 2000,
@@ -187,7 +187,7 @@
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l01.rubric",
-            "html": "<p><strong>Self-check</strong></p><ul><li>Plan fits 10 minutes, no money, and no phones.</li><li>Explains a concrete revision or justified rejection.</li><li>Identifies an inclusion check or participant to consult.</li></ul><p>A proposed activity is not proven successful until tried with its actual participants.</p>"
+            "html": "<p><strong>Self-check</strong></p><ul><li>Plan fits 10 minutes, no money, and no phones.</li><li>Justifies why AI, a checklist, a person, or no tool fits the task.</li><li>Identifies an inclusion check and a role to consult without personal information.</li></ul><p>A proposed activity is not proven successful until tried with its actual participants.</p>"
           }
         ]
       }

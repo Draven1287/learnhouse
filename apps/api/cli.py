@@ -15,7 +15,6 @@ for _stream in (sys.stdout, sys.stderr):
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import create_async_engine
-from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 import typer
 from config.config import get_learnhouse_config
@@ -61,7 +60,9 @@ async def _install_async(short: bool) -> None:
 
     # Schema DDL runs on a sync engine (SQLModel.metadata.create_all is sync).
     sync_engine = create_engine(_to_sync_url(sql_url), echo=False, pool_pre_ping=True)
-    SQLModel.metadata.create_all(sync_engine)
+    from src.core.events.schema import bootstrap_schema
+    with sync_engine.begin() as connection:
+        bootstrap_schema(connection)
     sync_engine.dispose()
 
     # The install_* coroutines use sqlmodel.ext.asyncio.session.AsyncSession.
