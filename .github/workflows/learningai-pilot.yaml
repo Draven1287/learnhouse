@@ -32,7 +32,12 @@ jobs:
         with:
           bun-version: '1.4.2'
       - run: bun install --frozen-lockfile
-      - run: bun test tests
+      # Module mocks persist across files in Bun. Isolate every file so the
+      # billing webhook mock cannot replace another file's real implementation.
+      - run: |
+          for file in tests/*.test.mjs; do
+            bun test "$file" || exit 1
+          done
       - run: bun node_modules/typescript/bin/tsc --noEmit
   lesson-postgres:
     runs-on: ubuntu-latest
@@ -46,7 +51,7 @@ jobs:
         ports:
           - '127.0.0.1:5432:5432'
         options: >-
-          --health-cmd 'pg_isready -U postgres'
+          --health-cmd pg_isready
           --health-interval 5s
           --health-timeout 5s
           --health-retries 20
