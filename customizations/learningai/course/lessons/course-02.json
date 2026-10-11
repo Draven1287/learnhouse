@@ -1,6 +1,6 @@
 {
   "id": "lai.ai-you-can-use.l02",
-  "version": 1,
+  "version": 2,
   "title": "How did we get here?",
   "number": 2,
   "sourceIds": [
@@ -8,13 +8,15 @@
   ],
   "activityIds": [
     "lai.ai-you-can-use.l02.approaches",
-    "lai.ai-you-can-use.l02.inference",
+    "lai.ai-you-can-use.l02.prediction_review",
     "lai.ai-you-can-use.l02.overlap_check",
-    "lai.ai-you-can-use.l02.transfer"
+    "lai.ai-you-can-use.l02.transfer",
+    "lai.ai-you-can-use.l02.error_analysis",
+    "lai.ai-you-can-use.l02.self_review"
   ],
   "coreActivityIds": [
     "lai.ai-you-can-use.l02.approaches",
-    "lai.ai-you-can-use.l02.inference"
+    "lai.ai-you-can-use.l02.prediction_review"
   ],
   "reflectionId": "lai.ai-you-can-use.l02.transfer",
   "completionPolicy": {
@@ -46,46 +48,46 @@
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l02.teaching",
-            "html": "<h3>Three approaches that still work together</h3><p>A rule-based tool follows a condition a person wrote: if the timer reaches zero, show a reminder. A learned classifier fits patterns from examples, such as labeled plant photos. A generator produces content, such as a new announcement. These are overlapping descriptions, not a timeline where each new approach erases the last.</p><h3>Training changes; inference uses</h3><p>During training, a model is adjusted using data. When a trained plant model labels a new photo, it is doing inference. That one prediction does not prove the label is correct or mean the model learned from the photo. A product may separately collect data for later training; do not assume it does or does not.</p><h3>Test beyond the examples it learned from</h3><p>Imagine a fictional leaf classifier trained only on clear daylight photos. A useful test includes different photos with independently checked labels, including shade or unfamiliar backgrounds. Record which predictions match and which fail. Testing only the training examples can hide a model that learned those examples but performs poorly on new ones.</p><h3>Your turn: design two tools</h3><ol><li>On paper or in your own words, invent a rule with an explicit if/then condition. You do not need to code it.</li><li>Invent a learned tool. Name the examples it would train on and the prediction it would make.</li><li>Choose two new test cases, say how you would know the expected answers, and describe a failure you would look for.</li><li>Save your designs and test plan in the final step. Use fictional objects or made-up club tasks; do not upload photos or personal data.</li></ol><p>Can you explain why your test examples are separate from training? What would you do if the tool fails one?</p>"
+            "html": "<h3>Three approaches that still work together</h3><p>A rule-based tool follows a condition a person wrote: if the timer reaches zero, show a reminder. A learned classifier fits patterns from examples, such as labeled plant photos. A generator produces content, such as a new announcement. These are overlapping descriptions, not a timeline where each new approach erases the last.</p><h3>Training changes; inference uses</h3><p>During training, a model is adjusted using data. When a trained plant model labels a new photo, it is doing inference. That one prediction does not prove the label is correct or mean the model learned from the photo. A product may separately collect data for later training; do not assume it does or does not.</p><h3>Test beyond the examples it learned from</h3><p>Imagine a fictional leaf classifier trained only on clear daylight photos. A useful test includes different photos with independently checked labels, including shade or unfamiliar backgrounds. Record which predictions match and which fail. Testing only the training examples can hide a model that learned those examples but performs poorly on new ones.</p><h3>Your turn: design two tools</h3><ol><li>On paper or in your own words, invent a rule with an explicit if/then condition. You do not need to code it.</li><li>Invent a learned tool. Name the examples it would train on and the prediction it would make.</li><li>Inspect the prediction table and save your error analysis. Then design two new test cases for your own learned tool, with expected answers and a way to check them.</li><li>Save your designs and test plan in the final step. Use fictional objects or made-up club tasks; do not upload photos or personal data.</li></ol><p>Can you explain why your test examples are separate from training? What would you do if the tool fails one?</p>"
           },
           {
             "type": "radiogroup",
             "name": "lai.ai-you-can-use.l02.approaches",
-            "title": "Which description is most accurate?",
+            "title": "Which explanation best matches the three fictional tools?",
             "isRequired": true,
             "correctAnswer": "mix",
             "choices": [
               {
-                "value": "eras",
-                "text": "A is obsolete; B and C replaced all rules."
+                "value": "output",
+                "text": "A follows a rule; B learns labels; C follows fixed rules because its output is text."
               },
               {
                 "value": "mix",
-                "text": "A uses an explicit rule; B learns from examples; C generates content and may also use machine learning."
+                "text": "A follows a rule; B learns labels; C generates text and can also learn patterns from data."
               },
               {
-                "value": "all",
-                "text": "All three must be conscious to work."
+                "value": "input",
+                "text": "A learns from elapsed time; B follows fixed rules because people supplied its example labels."
               }
             ]
           },
           {
             "type": "html",
-            "name": "lai.ai-you-can-use.l02.approaches.feedback.eras",
-            "html": "<p class=\"feedback\" role=\"status\">Rules still run timers, checks and many parts of AI applications.</p>",
-            "visibleIf": "{lai.ai-you-can-use.l02.approaches} = 'eras'"
+            "name": "lai.ai-you-can-use.l02.approaches.feedback.output",
+            "html": "<p class=\"feedback\" role=\"status\">Text output does not establish fixed rules. Generation describes the output, while learning describes how patterns are fitted.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.approaches} = 'output'"
           },
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l02.approaches.feedback.mix",
-            "html": "<p class=\"feedback\" role=\"status\">These categories overlap rather than forming a simple replacement timeline.</p>",
+            "html": "<p class=\"feedback\" role=\"status\">These descriptions can overlap: a generator can be a learned model, and a product can also use ordinary rules.</p>",
             "visibleIf": "{lai.ai-you-can-use.l02.approaches} = 'mix'"
           },
           {
             "type": "html",
-            "name": "lai.ai-you-can-use.l02.approaches.feedback.all",
-            "html": "<p class=\"feedback\" role=\"status\">None of these behaviors establishes consciousness.</p>",
-            "visibleIf": "{lai.ai-you-can-use.l02.approaches} = 'all'"
+            "name": "lai.ai-you-can-use.l02.approaches.feedback.input",
+            "html": "<p class=\"feedback\" role=\"status\">Receiving an input is not itself learning. In the brief, B fits patterns from labeled examples; A applies a specified timer rule.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.approaches} = 'input'"
           }
         ]
       },
@@ -94,43 +96,56 @@
         "title": "Make a decision",
         "elements": [
           {
-            "type": "radiogroup",
-            "name": "lai.ai-you-can-use.l02.inference",
-            "title": "A trained plant model labels one new photo. What is this step?",
+            "type": "html",
+            "name": "lai.ai-you-can-use.l02.predictions",
+            "html": "<p>Every label and prediction below is invented for this exercise. No model was run. The fictional model trained on daylight photos. Actual means the independently checked label; Model means its prediction. Compare the two and separate new test examples from reused training examples.</p><table><caption>Fictional leaf classifier: inspect four predictions</caption><thead><tr><th scope=\"col\">ID</th><th scope=\"col\">Example</th><th scope=\"col\">Actual</th><th scope=\"col\">Model</th></tr></thead><tbody><tr><th scope=\"row\">A</th><td>New daylight photo</td><td>Broad</td><td>Broad</td></tr><tr><th scope=\"row\">B</th><td>New shade photo</td><td>Narrow</td><td>Broad</td></tr><tr><th scope=\"row\">C</th><td>New daylight photo</td><td>Narrow</td><td>Narrow</td></tr><tr><th scope=\"row\">D</th><td>Reused training photo, daylight</td><td>Broad</td><td>Broad</td></tr></tbody></table>"
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l02.error_analysis",
+            "title": "Your analysis: identify the wrong prediction, the row that cannot count as a new-example test, one next test case, and a limit on what these results tell you.",
+            "description": "Self-review: Compare checked labels with predictions by row.; Separate reused training data from new test examples.; Propose another independently checked case; do not infer a general cause from one error.. Presence only; not automatically graded.",
             "isRequired": true,
-            "correctAnswer": "infer",
+            "maxLength": 2000
+          },
+          {
+            "type": "radiogroup",
+            "name": "lai.ai-you-can-use.l02.prediction_review",
+            "title": "After your own analysis, which conclusion fits the table?",
+            "isRequired": true,
+            "correctAnswer": "limited",
             "choices": [
               {
-                "value": "train",
-                "text": "Training must happen again for every photo."
+                "value": "all_new",
+                "text": "B is wrong; the other three rows are successful new-example tests, so use those four to estimate reliability."
               },
               {
-                "value": "infer",
-                "text": "Inference: applying the trained model to a new input."
+                "value": "limited",
+                "text": "B is wrong; D reuses training data. Check more new examples before relying on the model."
               },
               {
-                "value": "certain",
-                "text": "Proof that its label is correct."
+                "value": "cause",
+                "text": "B is wrong in shade; all shaded photos will fail, so daylight-only use is now proven safe."
               }
             ]
           },
           {
             "type": "html",
-            "name": "lai.ai-you-can-use.l02.inference.feedback.train",
-            "html": "<p class=\"feedback\" role=\"status\">Using a trained model does not by itself imply its parameters changed.</p>",
-            "visibleIf": "{lai.ai-you-can-use.l02.inference} = 'train'"
+            "name": "lai.ai-you-can-use.l02.prediction_review.feedback.all_new",
+            "html": "<p class=\"feedback\" role=\"status\">D is reused training data. Do not count it as an independent new-example test; this tiny set is also insufficient to establish general reliability.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.prediction_review} = 'all_new'"
           },
           {
             "type": "html",
-            "name": "lai.ai-you-can-use.l02.inference.feedback.infer",
-            "html": "<p class=\"feedback\" role=\"status\">Right. Separate using the model from changing it during training.</p>",
-            "visibleIf": "{lai.ai-you-can-use.l02.inference} = 'infer'"
+            "name": "lai.ai-you-can-use.l02.prediction_review.feedback.limited",
+            "html": "<p class=\"feedback\" role=\"status\">B differs from its checked label. D cannot count as a new-example test. A and C match, but these few results do not establish general reliability.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.prediction_review} = 'limited'"
           },
           {
             "type": "html",
-            "name": "lai.ai-you-can-use.l02.inference.feedback.certain",
-            "html": "<p class=\"feedback\" role=\"status\">A prediction still needs evaluation.</p>",
-            "visibleIf": "{lai.ai-you-can-use.l02.inference} = 'certain'"
+            "name": "lai.ai-you-can-use.l02.prediction_review.feedback.cause",
+            "html": "<p class=\"feedback\" role=\"status\">One shaded error does not prove its cause or predict every shaded result. Two daylight matches do not prove daylight use is safe.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l02.prediction_review} = 'cause'"
           }
         ]
       },
@@ -177,22 +192,24 @@
           {
             "type": "comment",
             "name": "lai.ai-you-can-use.l02.transfer",
-            "title": "Invent a simple rule-based tool and a tool that learns from examples. Explain how you would test the second on examples it did not train on.",
+            "title": "Invent a simple rule-based tool and a tool that learns from examples. State the rule’s condition and action, the learned tool’s training examples and prediction, and two NEW test cases. Explain how you would check expected answers, identify errors, and respond to a failed test.",
             "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
             "isRequired": true,
             "maxLength": 2000,
-            "validators": [
-              {
-                "type": "text",
-                "minLength": 30,
-                "text": "Add enough reasoning to review (at least 30 characters)."
-              }
-            ]
+            "validators": []
           },
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l02.rubric",
-            "html": "<p><strong>Self-check</strong></p><ul><li>Rule example has an explicit condition/action.</li><li>Learning example uses data to fit patterns.</li><li>Test includes new examples and a way to identify errors.</li></ul><p>Systems can combine approaches. Do not date a single clean switch from rules to learning or infer consciousness from outputs.</p>"
+            "html": "<p><strong>Self-check</strong></p><ul><li>Rule has an explicit condition and action.</li><li>Learning example identifies training data and a prediction.</li><li>Two test cases are separate from training, with independently checked expected answers.</li><li>Explains how a mismatch changes the use decision; avoids claiming the small test proves reliability.</li></ul><p>Systems can combine approaches. Do not date a single clean switch from rules to learning or infer consciousness from outputs.</p>"
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l02.self_review",
+            "title": "Self-review: point to how your test could reveal an error, and name one conclusion it would not justify.",
+            "description": "Self-review: Describe evidence you could inspect.; State a limit on the conclusion.. Presence only; not automatically graded.",
+            "isRequired": true,
+            "maxLength": 2000
           }
         ]
       }

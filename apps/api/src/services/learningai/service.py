@@ -47,17 +47,23 @@ def snapshot(record):
 
 async def read(request, user, activity_uuid, db):
     activity, course = await context(request, user, activity_uuid, db)
-    return {"lesson": lesson_for(activity), "state": snapshot(await attempt(user, activity, course, db))}
+    record = await attempt(user, activity, course, db)
+    lesson = lesson_for(activity, record.lesson_version if record else None)
+    if lesson is None:
+        raise HTTPException(409, "Saved lesson edition is unavailable")
+    return {"lesson": lesson, "state": snapshot(record)}
 
 async def write(request, user, activity_uuid, payload, db, submit=False):
     activity, course = await context(request, user, activity_uuid, db)
-    lesson = lesson_for(activity)
     # Serialize all LearningAI state/trail mutations for this learner across workers.
     # SQLite silently ignores FOR UPDATE; fail closed rather than claim safe concurrency.
     if db.bind.dialect.name != "postgresql":
         raise HTTPException(503, "LearningAI writes require PostgreSQL row locks")
     await db.execute(select(User.id).where(User.id == user.id).with_for_update())
     record = await attempt(user, activity, course, db)
+    lesson = lesson_for(activity, record.lesson_version if record else None)
+    if lesson is None:
+        raise HTTPException(409, "Saved lesson edition is unavailable")
     try:
         new = transition(snapshot(record), payload.answers, payload.page, payload.revision, submit, lesson)
     except ContractError as error:

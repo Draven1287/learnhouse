@@ -7,7 +7,7 @@ This implements the selected `claude-ui/07-cockpit` interface in LearnHouse Reac
 - `/learningai`: Cockpit home with the original three-part instrument dial, an account-aware next action and saved step.
 - `/learningai/course`: real course name/description from the course metadata API; per-lesson status from the authenticated lesson state API. The 15-lesson plan is labeled as a plan, with lessons 03–15 explicitly unreleased.
 - `/learningai/intro/01` and `/learningai/intro/02`: numbered lesson covers and step dials. The unnumbered alias selects the next available unfinished lesson.
-- `/learningai/lesson/01` and `/learningai/lesson/02`: four-step native player — learn, first choice, second choice plus any required conditional check, reflection; persisted completion and read-only submitted answers.
+- `/learningai/lesson/01` and `/learningai/lesson/02`: four-step native player with lesson-specific practice, formative choices, written self-review and transfer; persisted completion and read-only submitted answers.
 - `/learningai/signin`: real LearnHouse password and MFA login through the existing AuthContext. Full sign-in options and password recovery remain linked to the existing LearnHouse flows.
 - `/learningai/toolkit`: each available lesson's saved or submitted practice response from the server.
 - `/learningai/projects`: explicit unavailable status and a route back to the available lesson.
@@ -26,7 +26,7 @@ NEXT_PUBLIC_LEARNINGAI_ORG_SLUG=default
 
 The organization slug defaults to the configured default organization if omitted. With a course configured, that organization's `/` redirects to `/learningai`. Without configuration the existing LearnHouse home is unchanged. Missing configuration, inaccessible courses, mismatched organization ownership, and unavailable managed activities produce explicit recovery states.
 
-The course must contain published, readable `TYPE_CUSTOM` / `SUBTYPE_CUSTOM` activities with `content.learningai` exactly `{ "lesson_id": "lai.ai-you-can-use.l01", "version": 1, "content_version": "2026-10-05-draft.2" }` or the equivalent `l02` ID. These are the only supported lessons. Keep each lesson in its own activity; do not change an existing activity's lesson identity. See `LOCAL-FIRST-LESSON.md` for the original setup boundaries. The existing API flag `LEARNHOUSE_LEARNINGAI_PILOT=true` and pilot schema remain prerequisites. This frontend does not enable the pilot, alter permissions, or create learner accounts.
+The course must contain published, readable `TYPE_CUSTOM` / `SUBTYPE_CUSTOM` activities with `content.learningai` exactly `{ "lesson_id": "lai.ai-you-can-use.l01", "version": 2, "content_version": "2026-10-05-draft.2" }` or the equivalent `l02` ID. Versions 1 and 2 of these are the only supported lessons. Use version 2 for new activity setup. Upgrading an existing activity from 1 to 2 changes only new attempts: existing drafts and submissions retain their recorded `lesson_version` and frozen original definition. Never change its `lesson_id`, activity UUID, or content-version namespace to force an upgrade. Keep each lesson in its own activity; do not change an existing activity's lesson identity. See `LOCAL-FIRST-LESSON.md` for the original setup boundaries. The existing API flag `LEARNHOUSE_LEARNINGAI_PILOT=true` and pilot schema remain prerequisites. This frontend does not enable the pilot, alter permissions, or create learner accounts.
 
 Archivo is self-hosted under `apps/web/public/fonts/archivo`, with the upstream Google Fonts OFL license. Cockpit CSS is scoped to `.lai`; native menu focus/escape behavior, reduced-motion support, visible keyboard focus and responsive layouts are retained.
 
@@ -47,7 +47,7 @@ Tested locally against a separate real PostgreSQL/Redis/API stack and synthetic 
 
 - Production Next.js build, TypeScript and targeted ESLint.
 - Existing web suite: 382 tests passed.
-- Current pilot API suite: 55 tests and 11 subtests passed, including actual HTTP authentication/authorization, PostgreSQL persistence/concurrency and completion boundaries.
+- Current pilot API suite: 58 tests and 15 subtests passed, including actual HTTP authentication/authorization, PostgreSQL persistence/concurrency and completion boundaries.
 - Browser: real login/signout, signed-out lesson gate, account A completion and account B empty state, save/refresh restoration, reflection submission/reload, conditional checks, actual API outage/recovery, stale-tab rejection/reload, keyboard radio selection, Escape/menu focus, desktop/mobile/tablet layouts.
 - Disposable database inspection confirmed separate learner rows; anonymous state GET returned 401.
 
@@ -61,8 +61,20 @@ Educator review, retention/deletion policy and the existing pilot's remaining ba
 
 The canonical 15-lesson structure and stable IDs are preserved. The earlier eight-session proposal is pacing context, not a replacement lesson count or approval of final pedagogy. Grouping lessons into classroom sessions remains a review decision.
 
-`curriculum/pilot-teaching.json` supplies additive worked examples, hands-on instructions, self-checks and independent follow-up for Lessons 1–2. Run `python3 customizations/learningai/course/curriculum/build_course.py` from the repository root to regenerate the canonical manifest, review Markdown, portable lesson definitions, server bundles and client course map. Existing Lesson 1 answer IDs and requirements are unchanged, so saved answers remain valid. The additive teaching revision is recorded separately; future answer-contract changes require explicit version/migration planning.
+`curriculum/pilot-teaching.json` supplies teaching material; `curriculum/pilot-assessments.json` supplies the version 2 answer contract for Lessons 1–2. Run `python3 customizations/learningai/course/curriculum/build_course.py` from the repository root to regenerate the canonical manifest, review Markdown, portable lesson definitions, server bundles and client course map. Frozen `lesson-01-v1.json` and `lesson-02-v1.json` preserve existing work and its exact criteria. Keep these archives unchanged when regenerating. New attempts on version 2 activities use the revised contract, including required practice and self-review responses. The server checks presence and size, not reasoning quality; the 2,000-character limit is a storage/input bound, not a grade. Version 1 retains its original minimum length for compatibility.
 
 Lesson 1 practices constraint checks, repair and justified tool choice. Lesson 2 distinguishes explicit rules, learned patterns, generation and inference, then asks learners to design tools and test with new examples. Both have two formative checks, answer-specific feedback, conditional remediation and a saved original response. Disagreement and justified non-use are valid; reflection is not semantically auto-graded. The ML concepts were rechecked against Google's introductory ML documentation on 2026-10-11.
 
 The existing LTX v3 media remains a review artifact and is not mounted or published. Lesson 12's canonical written explanation and scenario remain the resource-topic text alternative in the review curriculum; Lesson 12 is not yet a working native learner route.
+
+## Version 2 learning sequence
+
+Lesson 1 saves an original 10-minute plan before revealing the worked example. The transfer changes the limit to five minutes and asks for a revised allocation, an explanation of cuts/retained choices, tool judgment, inclusion and uncertainty. Lesson 2 includes an explicitly fictional prediction table: row B is wrong; row D reuses training data. Learners write an analysis before the comparison choices, then design independent tests and review the limits of their evidence. Submitted work remains immutable. This is formative practice, not demonstrated mastery or certification.
+
+## Deployment handoff boundaries
+
+No production deployment or database migration was performed. This branch is stacked on PR #2; deploy its full tested commit, not only frontend files. Before any separate deployment, review the destination schema and take the deployment team's normal backup/snapshot. The existing bootstrap creates missing tables, but `create_all` does not migrate incompatible existing tables. The API needs PostgreSQL (writes fail closed on SQLite), Redis and the existing LearnHouse auth configuration. Confirm the `learningai_attempt` table has `lesson_version`, JSON answers, page, revision, completed, ownership foreign keys and the unique owner/activity/content-version constraint. This refinement requires no new columns beyond the pilot schema.
+
+Provision a real organization/course/chapter and two distinct published custom activities through the reviewed LearnHouse administration/setup path. Link them in course order 1 and 2 with the exact metadata above (`l01` and `l02`). Grant learners access using the existing membership/RBAC/course rules; do not copy the local fixture accounts or configuration. Set the actual course UUID and organization slug in web runtime config and `LEARNHOUSE_LEARNINGAI_PILOT=true` in the API only after target verification. The local `course_local_acceptance` is a disposable fixture, not a production identifier. Verify API/web origin, HTTPS and the deployment's existing auth/cookie configuration separately.
+
+Release gaps remain: educator review and learner testing, production schema compatibility, target course provisioning and real auth-policy/browser acceptance. The custom UI is functional for two lessons; the rest is explicitly a course plan.

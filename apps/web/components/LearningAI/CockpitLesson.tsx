@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { PracticeResponse, PredictionTable } from './LessonPractice'
 import { useEffect, useRef } from 'react'
 import type {
   Lesson,
@@ -6,7 +7,12 @@ import type {
 } from '@components/Objects/Activities/LearningAIActivity/LearningAIActivity'
 import type { LessonState } from '@services/courses/learningai'
 
-const stepNames = ['Learn', 'First choice', 'Your judgment', 'Make it yours']
+const defaultStepNames = [
+  'Learn',
+  'First choice',
+  'Your judgment',
+  'Make it yours',
+]
 type Props = {
   lesson: Lesson
   state: LessonState
@@ -46,6 +52,31 @@ export default function CockpitLesson({
     state.answers[branch.visibleIfActivity!] !== undefined &&
     state.answers[branch.visibleIfActivity!] !== branch.visibleIfNotEqual
   const page = state.page
+  const stepNames = lesson.teaching?.stepNames || defaultStepNames
+  const fields = lesson.responseFields || []
+  const firstAttempt = fields.find((field) => field.stage === 0)
+  const openingReady =
+    !firstAttempt || !!(state.answers[firstAttempt.id] || '').trim()
+  const analysis = fields.find((field) => field.stage === 2)
+  const analysisReady = !analysis || !!(state.answers[analysis.id] || '').trim()
+  const responses = (stage: number) =>
+    fields
+      .filter((field) => field.stage === stage)
+      .map((field) => (
+        <PracticeResponse
+          key={field.id}
+          field={field}
+          value={state.answers[field.id] || ''}
+          disabled={busy || state.completed}
+          answer={answer}
+        />
+      ))
+  const teaching = lesson.teaching?.sections.map((section) => (
+    <section className="teaching-block" key={section.title}>
+      <h2>{section.title}</h2>
+      <p>{section.text}</p>
+    </section>
+  ))
   function choice(check: ChoiceActivity) {
     return (
       <fieldset disabled={busy || state.completed} key={check.id}>
@@ -94,9 +125,9 @@ export default function CockpitLesson({
         <>
           <div className="body">
             <p>
-              Your lesson is complete and saved to your account. Completion
-              records submission, not mastery. Review your reasoning yourself or
-              with an educator.
+              Your responses are submitted and saved to your account. This
+              records submission, not demonstrated mastery. Review your
+              reasoning yourself or with an educator.
             </p>
           </div>
           <dl className="readback">
@@ -121,7 +152,13 @@ export default function CockpitLesson({
                 </div>
               )
             )}
-            <dt>Your reflection</dt>
+            {fields.map((field) => (
+              <div key={field.id}>
+                <dt>{field.prompt}</dt>
+                <dd>{state.answers[field.id]}</dd>
+              </div>
+            ))}
+            <dt>Your revised plan or test design</dt>
             <dd>{state.answers[lesson.transfer.id]}</dd>
           </dl>
           <details className="lesson-references">
@@ -133,6 +170,7 @@ export default function CockpitLesson({
                 <p>{section.text}</p>
               </section>
             ))}
+            <PredictionTable lesson={lesson} />
             <p>{lesson.uncertainty}</p>
             <ul>
               {lesson.references?.map((source) => (
@@ -181,7 +219,7 @@ export default function CockpitLesson({
             {stepNames.map((name, i) => (
               <button
                 key={name}
-                disabled={busy || page === i}
+                disabled={busy || page === i || (i > 0 && !openingReady)}
                 aria-current={page === i ? 'step' : undefined}
                 onClick={() => persist(false, i)}
               >
@@ -194,16 +232,12 @@ export default function CockpitLesson({
               <p className="cap">What you will practice</p>
               <p>{lesson.objective}</p>
               <p>{lesson.explanation}</p>
-              {lesson.teaching?.sections.map((section) => (
-                <section className="teaching-block" key={section.title}>
-                  <h2>{section.title}</h2>
-                  <p>{section.text}</p>
-                </section>
-              ))}
+              {!lesson.teaching?.exampleAfterAttempt && teaching}
               <aside className="case">
                 <span className="cap">The situation</span>
                 <p>{lesson.scenario}</p>
               </aside>
+              {responses(0)}
               <p className="muted">
                 Read the brief. Make two choices, consider the feedback, then
                 write a plan of your own.
@@ -247,7 +281,32 @@ export default function CockpitLesson({
                 <p>{lesson.scenario}</p>
               </aside>
               <div className="body">
-                {choice(lesson.activities[page - 1])}
+                {page === 1 && lesson.teaching?.exampleAfterAttempt && (
+                  <>
+                    <h2>Compare with your first attempt</h2>
+                    <p className="saved-response">
+                      {state.answers[firstAttempt!.id]}
+                    </p>
+                    {teaching}
+                    <p>
+                      What did your plan do differently? Use the criteria to
+                      compare; matching the example is not the goal.
+                    </p>
+                  </>
+                )}
+                {page === 2 && (
+                  <>
+                    <PredictionTable lesson={lesson} />
+                    {responses(2)}
+                  </>
+                )}
+                {page !== 2 || analysisReady ? (
+                  choice(lesson.activities[page - 1])
+                ) : (
+                  <p className="integration-status">
+                    Write your own analysis to open the comparison choices.
+                  </p>
+                )}
                 {page === 2 && branchVisible && (
                   <div className="rubric">
                     <p className="cap">One more check</p>
@@ -267,13 +326,21 @@ export default function CockpitLesson({
                   <p>{lesson.teaching.takeaway}</p>
                 </div>
               )}
+              {firstAttempt && (
+                <div className="case">
+                  <h2>Your original attempt</h2>
+                  <p className="saved-response">
+                    {state.answers[firstAttempt.id]}
+                  </p>
+                </div>
+              )}
               <label className="field-lbl" htmlFor="lai-reflection">
                 {lesson.transfer.prompt}
               </label>
               <textarea
                 id="lai-reflection"
                 required
-                minLength={30}
+                minLength={lesson.transfer.minLength ?? 30}
                 maxLength={2000}
                 rows={7}
                 aria-describedby="lai-requirements lai-privacy"
@@ -281,12 +348,17 @@ export default function CockpitLesson({
                 onChange={(e) => answer(lesson.transfer.id, e.target.value)}
               />
               <p className="count">
-                {(state.answers[lesson.transfer.id] || '').trim().length} / 30
-                characters minimum · 2,000 maximum
+                {(state.answers[lesson.transfer.id] || '').trim().length} /
+                2,000 characters ·{' '}
+                {lesson.transfer.minLength === 1
+                  ? 'required response'
+                  : 'at least 30 characters'}
+                ; not a quality score
               </p>
               <p id="lai-requirements" className="integration-status">
-                Answer every visible choice and write at least 30 characters of
-                reasoning before submitting. You can save unfinished work.
+                Answer every visible choice and complete the written responses
+                before submitting. These checks record presence, not quality.
+                You can save unfinished work.
               </p>
               {!required && (
                 <p className="integration-status">
@@ -300,9 +372,22 @@ export default function CockpitLesson({
                     )
                     .concat(
                       (state.answers[lesson.transfer.id] || '').trim().length <
-                        30
+                        (lesson.transfer.minLength ?? 30)
                         ? ['reflection']
                         : []
+                    )
+                    .concat(
+                      fields
+                        .filter(
+                          (field) => !(state.answers[field.id] || '').trim()
+                        )
+                        .map((field) =>
+                          field.stage === 0
+                            ? 'first attempt'
+                            : field.stage === 2
+                              ? 'error analysis'
+                              : 'self-review'
+                        )
                     )
                     .join(', ')}
                   .
@@ -322,6 +407,7 @@ export default function CockpitLesson({
                 </ul>
                 <p>{lesson.uncertainty}</p>
               </div>
+              {responses(3)}
               <p className="integration-status">
                 Saving sends your answers to the server and stores them with
                 your account. Review before submitting: submitted work cannot be
@@ -343,7 +429,9 @@ export default function CockpitLesson({
             {page < 3 ? (
               <button
                 className="btn white"
-                disabled={busy}
+                disabled={
+                  busy || !openingReady || (page === 2 && !analysisReady)
+                }
                 onClick={() => persist(false, page + 1)}
               >
                 Save & continue <span aria-hidden="true">›</span>

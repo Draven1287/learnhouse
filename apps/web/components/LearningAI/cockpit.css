@@ -1598,3 +1598,39 @@ html:has(.lai) {
   font-size: 9px;
   letter-spacing: 0.12em;
 }
+
+.lai .practice-response {
+  margin-block: 1.5rem;
+}
+.lai .saved-response {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.lai .prediction-evidence {
+  margin-block: 1.5rem;
+}
+.lai .prediction-evidence table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.lai .prediction-evidence caption {
+  text-align: left;
+  font-weight: 600;
+  padding-block: 0.75rem;
+}
+.lai .prediction-evidence th,
+.lai .prediction-evidence td {
+  padding: 0.65rem 0.4rem;
+  border-bottom: 1px solid #424242;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.lai .prediction-evidence th:first-child {
+  width: 12%;
+}
+.lai .prediction-evidence th:nth-child(2) {
+  width: 40%;
+}

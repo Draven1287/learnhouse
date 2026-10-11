@@ -7,6 +7,10 @@ import { queryKeys } from '@/lib/query/keys'
 import { useOrg } from '@components/Contexts/OrgContext'
 import styles from './lesson.module.css'
 import CockpitLesson from '@components/LearningAI/CockpitLesson'
+import {
+  PracticeResponse,
+  PredictionTable,
+} from '@components/LearningAI/LessonPractice'
 import LearningAIReviewVideo, {
   LearningAIReviewMedia,
 } from './LearningAIReviewVideo'
@@ -19,7 +23,17 @@ export type ChoiceActivity = {
   visibleIfActivity?: string
   visibleIfNotEqual?: string
 }
+export type ResponseField = {
+  id: string
+  prompt: string
+  stage: number
+  minLength: number
+  maxLength: number
+  criteria: string[]
+}
 export type Lesson = {
+  version: number
+  responseFields?: ResponseField[]
   id: string
   number: number
   title: string
@@ -28,9 +42,17 @@ export type Lesson = {
   scenario: string
   activities: ChoiceActivity[]
   branchActivity: ChoiceActivity
-  transfer: { id: string; prompt: string; rubric: string[] }
+  transfer: { id: string; prompt: string; rubric: string[]; minLength?: number }
   uncertainty: string
   teaching?: {
+    stepNames?: string[]
+    exampleAfterAttempt?: boolean
+    predictionTable?: {
+      caption: string
+      context: string
+      columns: string[]
+      rows: string[][]
+    }
     sections: { title: string; text: string }[]
     practice: { title: string; instructions: string[]; selfCheck: string }
     takeaway: string
@@ -195,7 +217,7 @@ function AuthenticatedLesson({
       setDirty(false)
       setStatus(
         submit
-          ? 'Lesson complete. Saved to your account.'
+          ? 'Submitted and saved to your account. This records submission, not mastery.'
           : 'Saved to your account.'
       )
       if (submit)
@@ -245,7 +267,12 @@ function AuthenticatedLesson({
   const checks = [...lesson.activities, ...(branchVisible ? [branch] : [])]
   const required =
     checks.every((check) => !!state.answers[check.id]) &&
-    (state.answers[lesson.transfer.id] || '').trim().length >= 30
+    (state.answers[lesson.transfer.id] || '').trim().length >=
+      (lesson.transfer.minLength ?? 30) &&
+    (lesson.responseFields || []).every(
+      (field) =>
+        (state.answers[field.id] || '').trim().length >= field.minLength
+    )
   if (presentation === 'cockpit')
     return (
       <CockpitLesson
@@ -261,6 +288,8 @@ function AuthenticatedLesson({
         reload={reload}
       />
     )
+  const firstAttempt = lesson.responseFields?.find((field) => field.stage === 0)
+  const showPractice = !firstAttempt || state.page > 0 || state.completed
   return (
     <section className={styles.lesson} aria-label={lesson.title}>
       <h1>{lesson.title}</h1>
@@ -271,63 +300,107 @@ function AuthenticatedLesson({
       <aside aria-label="The situation">{lesson.scenario}</aside>
       <fieldset disabled={busy || state.completed}>
         <legend>Make a decision and explain it</legend>
-        {checks.map((check) => (
-          <fieldset key={check.id}>
-            <legend>{check.prompt}</legend>
-            {check.choices.map((choice) => (
-              <label key={choice.value}>
-                <input
-                  type="radio"
-                  name={check.id}
-                  checked={state.answers[check.id] === choice.value}
-                  onChange={() => answer(check.id, choice.value)}
-                />
-                {choice.text}
-              </label>
+        {firstAttempt && (
+          <PracticeResponse
+            field={firstAttempt}
+            value={state.answers[firstAttempt.id] || ''}
+            disabled={busy || state.completed}
+            answer={answer}
+          />
+        )}
+        {!showPractice && (
+          <button
+            disabled={busy || !(state.answers[firstAttempt!.id] || '').trim()}
+            onClick={() => persist(false, 1)}
+          >
+            Save first attempt and open example
+          </button>
+        )}
+        {showPractice && (
+          <>
+            {lesson.teaching?.sections.map((section) => (
+              <section key={section.title}>
+                <h2>{section.title}</h2>
+                <p>{section.text}</p>
+              </section>
             ))}
-            {state.answers[check.id] && (
-              <p className={styles.feedback} role="status">
-                {
-                  check.choices.find(
-                    (choice) => choice.value === state.answers[check.id]
-                  )?.feedback
-                }
-              </p>
-            )}
-          </fieldset>
-        ))}
-        <label htmlFor="lai-reflection">{lesson.transfer.prompt}</label>
-        <textarea
-          id="lai-reflection"
-          required
-          minLength={30}
-          maxLength={2000}
-          aria-describedby="lai-requirements lai-privacy"
-          rows={7}
-          value={state.answers[lesson.transfer.id] || ''}
-          onChange={(event) => answer(lesson.transfer.id, event.target.value)}
-        />
-        <p id="lai-requirements">
-          Answer every visible choice and write at least 30 characters of
-          reasoning before submitting. You can save unfinished work.
-        </p>
-        <p id="lai-privacy">
-          Use fictional practice details. Do not include names, contact details,
-          or other personal information. Use a role such as club organizer.
-        </p>
-        <p>
-          Save progress or Submit sends your answers to the server and stores
-          them with your account. Review your answers before submitting:
-          submitted work cannot be edited in this pilot. Review the reasoning
-          yourself or with an educator; it is not AI graded.
-        </p>
-        <p>Self-check</p>
-        <ul>
-          {lesson.transfer.rubric.map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-        </ul>
-        <p>{lesson.uncertainty}</p>
+            <PredictionTable lesson={lesson} />
+            {lesson.responseFields
+              ?.filter((field) => field.stage !== 0)
+              .map((field) => (
+                <PracticeResponse
+                  key={field.id}
+                  field={field}
+                  value={state.answers[field.id] || ''}
+                  disabled={busy || state.completed}
+                  answer={answer}
+                />
+              ))}
+            {checks.map((check) => (
+              <fieldset key={check.id}>
+                <legend>{check.prompt}</legend>
+                {check.choices.map((choice) => (
+                  <label key={choice.value}>
+                    <input
+                      type="radio"
+                      name={check.id}
+                      checked={state.answers[check.id] === choice.value}
+                      onChange={() => answer(check.id, choice.value)}
+                    />
+                    {choice.text}
+                  </label>
+                ))}
+                {state.answers[check.id] && (
+                  <p className={styles.feedback} role="status">
+                    {
+                      check.choices.find(
+                        (choice) => choice.value === state.answers[check.id]
+                      )?.feedback
+                    }
+                  </p>
+                )}
+              </fieldset>
+            ))}
+            <label htmlFor="lai-reflection">{lesson.transfer.prompt}</label>
+            <textarea
+              id="lai-reflection"
+              required
+              minLength={lesson.transfer.minLength ?? 30}
+              maxLength={2000}
+              aria-describedby="lai-requirements lai-privacy"
+              rows={7}
+              value={state.answers[lesson.transfer.id] || ''}
+              onChange={(event) =>
+                answer(lesson.transfer.id, event.target.value)
+              }
+            />
+            <p id="lai-requirements">
+              Answer every visible choice and complete the written responses
+              before submitting. These checks record presence, not the quality
+              of your reasoning. You can save unfinished work.
+              {lesson.transfer.minLength !== 1 &&
+                ' This original edition requires at least 30 characters in the reflection.'}
+            </p>
+            <p id="lai-privacy">
+              Use fictional practice details. Do not include names, contact
+              details, or other personal information. Use a role such as club
+              organizer.
+            </p>
+            <p>
+              Save progress or Submit sends your answers to the server and
+              stores them with your account. Review your answers before
+              submitting: submitted work cannot be edited in this pilot. Review
+              the reasoning yourself or with an educator; it is not AI graded.
+            </p>
+            <p>Self-check</p>
+            <ul>
+              {lesson.transfer.rubric.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+            <p>{lesson.uncertainty}</p>
+          </>
+        )}
       </fieldset>
       {!state.completed && (
         <div className={styles.actions}>

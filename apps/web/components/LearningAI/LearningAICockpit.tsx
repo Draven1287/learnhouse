@@ -347,7 +347,7 @@ function CockpitSession({
           <div className="ck-core">
             <span className="cap">
               {complete
-                ? 'Lesson complete'
+                ? 'Lesson submitted'
                 : signedIn
                   ? 'Your next step'
                   : 'Begin with'}

@@ -36,7 +36,7 @@ All exercises use fictional practice material. Learners can use plain text or di
 
 ## 1. Get your first useful result
 
-Stable ID: `lai.ai-you-can-use.l01` · version 1 · implemented-draft
+Stable ID: `lai.ai-you-can-use.l01` · version 2 · implemented-draft
 
 **Objective:** Judge a suggestion against practical constraints and justify a tool choice.
 
@@ -60,14 +60,13 @@ The proposed online tournament takes 45 minutes, costs money and needs phones. I
 
 A possible repair uses one minute to explain a scrap-paper word game, seven minutes to play and two minutes to share. That totals 10 minutes and needs no spending or phones. It is still a proposal: ask the club organizer whether everyone can read, write or contribute another way.
 
-**Your turn: make a different plan**
+**Start with your own plan**
 
-- Before seeing the choices, sketch another activity on paper or think it through in your own words.
-- Check time, cost and devices separately. Include setup and clearing away in your 10 minutes.
-- Choose a checklist, a person, AI or no tool. Explain what that choice adds and what you would still check.
-- Keep your own plan for the final step. You will save it there, with one inclusion check and a role to consult.
+- Write a first plan before opening the worked example. Include setup, activity and clearing away in 10 minutes.
+- Check no spending and no phones. Choose a tool or explain why none is needed.
+- Keep this first version for comparison; you will adapt it to a changed constraint later.
 
-Could someone run your plan from the details you give? If a constraint is missing, revise it before submitting.
+Is every constraint visible in your plan? What still needs checking with the club organizer?
 
 **Takeaway:** Define useful → check every constraint → revise or reject → explain your decision.
 
@@ -104,15 +103,24 @@ What should guide a revised plan?
 
 **Answer:** `limits`. Complete this short check, then return to the main lesson.
 
+**Required practice response:** Your first attempt: write a 10-minute plan for the six students before seeing the example. Include time, cost, devices and your tool choice.
+
+Self-review criteria: Include setup and clearing away in 10 minutes.; Use no spending and no phones.; Explain a tool choice or justified non-use.
+
+**Required practice response:** Self-review: name one criterion your revised plan meets, show the detail that supports it, and identify one uncertainty to check.
+
+Self-review criteria: Point to evidence in your own plan.; Name a remaining uncertainty without claiming the activity has been tested.
+
 **Reflection / transfer**
 
-Write a short replacement plan. Explain how it meets all three constraints: 10 minutes, no spending money, and no phones. Choose AI, a checklist, a person, or no tool and explain why that choice fits. Identify a role to consult, such as the club organizer, rather than a real person’s name.
+Changed constraint: the club now has only FIVE minutes. Six students, no spending and no phones still apply. Adapt your original plan: give a new time allocation including setup and clearing away, explain what you cut or kept, reconsider your tool choice, and name an inclusion check and a role to consult. Use fictional details.
 
 **Review rubric (0–2 per item)**
 
-- Plan fits 10 minutes, no money, and no phones.
-- Justifies why AI, a checklist, a person, or no tool fits the task.
-- Identifies an inclusion check and a role to consult without personal information.
+- The revised times total no more than five minutes, including setup and clearing away.
+- Explains what changed from the original attempt and why; still no spending or phones.
+- Justifies keeping or changing the tool choice, including non-use.
+- Names an inclusion check and a role to consult without personal details.
 
 **Uncertainty and scope:** A proposed activity is not proven successful until tried with its actual participants.
 
@@ -122,7 +130,7 @@ Write a short replacement plan. Explain how it meets all three constraints: 10 m
 
 ## 2. How did we get here?
 
-Stable ID: `lai.ai-you-can-use.l02` · version 1 · implemented-draft
+Stable ID: `lai.ai-you-can-use.l02` · version 2 · implemented-draft
 
 **Objective:** Distinguish explicit rules, learning from examples, and generative output without treating them as mutually exclusive eras.
 
@@ -150,7 +158,7 @@ Imagine a fictional leaf classifier trained only on clear daylight photos. A use
 
 - On paper or in your own words, invent a rule with an explicit if/then condition. You do not need to code it.
 - Invent a learned tool. Name the examples it would train on and the prediction it would make.
-- Choose two new test cases, say how you would know the expected answers, and describe a failure you would look for.
+- Inspect the prediction table and save your error analysis. Then design two new test cases for your own learned tool, with expected answers and a way to check them.
 - Save your designs and test plan in the final step. Use fictional objects or made-up club tasks; do not upload photos or personal data.
 
 Can you explain why your test examples are separate from training? What would you do if the tool fails one?
@@ -161,23 +169,23 @@ Can you explain why your test examples are separate from training? What would yo
 
 ### Exercise: lai.ai-you-can-use.l02.approaches
 
-Which description is most accurate?
+Which explanation best matches the three fictional tools?
 
-- **eras — A is obsolete; B and C replaced all rules.** Feedback: Rules still run timers, checks and many parts of AI applications.
-- **mix — A uses an explicit rule; B learns from examples; C generates content and may also use machine learning.** Feedback: These categories overlap rather than forming a simple replacement timeline.
-- **all — All three must be conscious to work.** Feedback: None of these behaviors establishes consciousness.
+- **output — A follows a rule; B learns labels; C follows fixed rules because its output is text.** Feedback: Text output does not establish fixed rules. Generation describes the output, while learning describes how patterns are fitted.
+- **mix — A follows a rule; B learns labels; C generates text and can also learn patterns from data.** Feedback: These descriptions can overlap: a generator can be a learned model, and a product can also use ordinary rules.
+- **input — A learns from elapsed time; B follows fixed rules because people supplied its example labels.** Feedback: Receiving an input is not itself learning. In the brief, B fits patterns from labeled examples; A applies a specified timer rule.
 
-**Answer:** `mix`. A product label is less informative than its mechanism.
+**Answer:** `mix`. Distinguish a specified rule, fitting patterns and generating output; categories can overlap.
 
-### Exercise: lai.ai-you-can-use.l02.inference
+### Exercise: lai.ai-you-can-use.l02.prediction_review
 
-A trained plant model labels one new photo. What is this step?
+After your own analysis, which conclusion fits the table?
 
-- **train — Training must happen again for every photo.** Feedback: Using a trained model does not by itself imply its parameters changed.
-- **infer — Inference: applying the trained model to a new input.** Feedback: Right. Separate using the model from changing it during training.
-- **certain — Proof that its label is correct.** Feedback: A prediction still needs evaluation.
+- **all_new — B is wrong; the other three rows are successful new-example tests, so use those four to estimate reliability.** Feedback: D is reused training data. Do not count it as an independent new-example test; this tiny set is also insufficient to establish general reliability.
+- **limited — B is wrong; D reuses training data. Check more new examples before relying on the model.** Feedback: B differs from its checked label. D cannot count as a new-example test. A and C match, but these few results do not establish general reliability.
+- **cause — B is wrong in shade; all shaded photos will fail, so daylight-only use is now proven safe.** Feedback: One shaded error does not prove its cause or predict every shaded result. Two daylight matches do not prove daylight use is safe.
 
-**Answer:** `infer`. Inference can be wrong, especially for unfamiliar inputs.
+**Answer:** `limited`. Separate observed mismatches, independent test examples and unsupported generalizations.
 
 ### Exercise: lai.ai-you-can-use.l02.overlap_check
 
@@ -190,15 +198,35 @@ Can a generative system also use machine learning?
 
 **Answer:** `yes`. Complete this short check, then return to the main lesson.
 
+**Required practice response:** Your analysis: identify the wrong prediction, the row that cannot count as a new-example test, one next test case, and a limit on what these results tell you.
+
+Self-review criteria: Compare checked labels with predictions by row.; Separate reused training data from new test examples.; Propose another independently checked case; do not infer a general cause from one error.
+
+**Required practice response:** Self-review: point to how your test could reveal an error, and name one conclusion it would not justify.
+
+Self-review criteria: Describe evidence you could inspect.; State a limit on the conclusion.
+
+**Fictional leaf classifier: inspect four predictions**
+
+Every label and prediction below is invented for this exercise. No model was run. The fictional model trained on daylight photos. Actual means the independently checked label; Model means its prediction. Compare the two and separate new test examples from reused training examples.
+
+ID | Example | Actual | Model
+--- | --- | --- | ---
+A | New daylight photo | Broad | Broad
+B | New shade photo | Narrow | Broad
+C | New daylight photo | Narrow | Narrow
+D | Reused training photo, daylight | Broad | Broad
+
 **Reflection / transfer**
 
-Invent a simple rule-based tool and a tool that learns from examples. Explain how you would test the second on examples it did not train on.
+Invent a simple rule-based tool and a tool that learns from examples. State the rule’s condition and action, the learned tool’s training examples and prediction, and two NEW test cases. Explain how you would check expected answers, identify errors, and respond to a failed test.
 
 **Review rubric (0–2 per item)**
 
-- Rule example has an explicit condition/action.
-- Learning example uses data to fit patterns.
-- Test includes new examples and a way to identify errors.
+- Rule has an explicit condition and action.
+- Learning example identifies training data and a prediction.
+- Two test cases are separate from training, with independently checked expected answers.
+- Explains how a mismatch changes the use decision; avoids claiming the small test proves reliability.
 
 **Uncertainty and scope:** Systems can combine approaches. Do not date a single clean switch from rules to learning or infer consciousness from outputs.
 

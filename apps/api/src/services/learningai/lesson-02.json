@@ -1,6 +1,6 @@
 {
   "id": "lai.ai-you-can-use.l02",
-  "version": 1,
+  "version": 2,
   "number": 2,
   "part": 1,
   "title": "How did we get here?",
@@ -11,59 +11,61 @@
   "scenario": "Three fictional tools: A sends a reminder when a timer reaches zero. B learns to label plant photos from labeled examples. C generates a new club announcement from a brief.",
   "activities": [
     {
-      "prompt": "Which description is most accurate?",
+      "id": "lai.ai-you-can-use.l02.approaches",
+      "prompt": "Which explanation best matches the three fictional tools?",
       "choices": [
         {
-          "value": "eras",
-          "text": "A is obsolete; B and C replaced all rules.",
-          "feedback": "Rules still run timers, checks and many parts of AI applications."
+          "value": "output",
+          "text": "A follows a rule; B learns labels; C follows fixed rules because its output is text.",
+          "feedback": "Text output does not establish fixed rules. Generation describes the output, while learning describes how patterns are fitted."
         },
         {
           "value": "mix",
-          "text": "A uses an explicit rule; B learns from examples; C generates content and may also use machine learning.",
-          "feedback": "These categories overlap rather than forming a simple replacement timeline."
+          "text": "A follows a rule; B learns labels; C generates text and can also learn patterns from data.",
+          "feedback": "These descriptions can overlap: a generator can be a learned model, and a product can also use ordinary rules."
         },
         {
-          "value": "all",
-          "text": "All three must be conscious to work.",
-          "feedback": "None of these behaviors establishes consciousness."
+          "value": "input",
+          "text": "A learns from elapsed time; B follows fixed rules because people supplied its example labels.",
+          "feedback": "Receiving an input is not itself learning. In the brief, B fits patterns from labeled examples; A applies a specified timer rule."
         }
       ],
       "correctAnswer": "mix",
-      "rationale": "A product label is less informative than its mechanism.",
-      "id": "lai.ai-you-can-use.l02.approaches"
+      "rationale": "Distinguish a specified rule, fitting patterns and generating output; categories can overlap."
     },
     {
-      "prompt": "A trained plant model labels one new photo. What is this step?",
+      "id": "lai.ai-you-can-use.l02.prediction_review",
+      "prompt": "After your own analysis, which conclusion fits the table?",
       "choices": [
         {
-          "value": "train",
-          "text": "Training must happen again for every photo.",
-          "feedback": "Using a trained model does not by itself imply its parameters changed."
+          "value": "all_new",
+          "text": "B is wrong; the other three rows are successful new-example tests, so use those four to estimate reliability.",
+          "feedback": "D is reused training data. Do not count it as an independent new-example test; this tiny set is also insufficient to establish general reliability."
         },
         {
-          "value": "infer",
-          "text": "Inference: applying the trained model to a new input.",
-          "feedback": "Right. Separate using the model from changing it during training."
+          "value": "limited",
+          "text": "B is wrong; D reuses training data. Check more new examples before relying on the model.",
+          "feedback": "B differs from its checked label. D cannot count as a new-example test. A and C match, but these few results do not establish general reliability."
         },
         {
-          "value": "certain",
-          "text": "Proof that its label is correct.",
-          "feedback": "A prediction still needs evaluation."
+          "value": "cause",
+          "text": "B is wrong in shade; all shaded photos will fail, so daylight-only use is now proven safe.",
+          "feedback": "One shaded error does not prove its cause or predict every shaded result. Two daylight matches do not prove daylight use is safe."
         }
       ],
-      "correctAnswer": "infer",
-      "rationale": "Inference can be wrong, especially for unfamiliar inputs.",
-      "id": "lai.ai-you-can-use.l02.inference"
+      "correctAnswer": "limited",
+      "rationale": "Separate observed mismatches, independent test examples and unsupported generalizations."
     }
   ],
   "transfer": {
     "id": "lai.ai-you-can-use.l02.transfer",
-    "prompt": "Invent a simple rule-based tool and a tool that learns from examples. Explain how you would test the second on examples it did not train on.",
+    "minLength": 1,
+    "prompt": "Invent a simple rule-based tool and a tool that learns from examples. State the rule’s condition and action, the learned tool’s training examples and prediction, and two NEW test cases. Explain how you would check expected answers, identify errors, and respond to a failed test.",
     "rubric": [
-      "Rule example has an explicit condition/action.",
-      "Learning example uses data to fit patterns.",
-      "Test includes new examples and a way to identify errors."
+      "Rule has an explicit condition and action.",
+      "Learning example identifies training data and a prediction.",
+      "Two test cases are separate from training, with independently checked expected answers.",
+      "Explains how a mismatch changes the use decision; avoids claiming the small test proves reliability."
     ]
   },
   "sourceIds": [
@@ -100,8 +102,33 @@
     "correctAnswersRequired": false,
     "reflectionSemanticallyGraded": false
   },
+  "responseFields": [
+    {
+      "id": "lai.ai-you-can-use.l02.error_analysis",
+      "prompt": "Your analysis: identify the wrong prediction, the row that cannot count as a new-example test, one next test case, and a limit on what these results tell you.",
+      "stage": 2,
+      "minLength": 1,
+      "maxLength": 2000,
+      "criteria": [
+        "Compare checked labels with predictions by row.",
+        "Separate reused training data from new test examples.",
+        "Propose another independently checked case; do not infer a general cause from one error."
+      ]
+    },
+    {
+      "id": "lai.ai-you-can-use.l02.self_review",
+      "prompt": "Self-review: point to how your test could reveal an error, and name one conclusion it would not justify.",
+      "stage": 3,
+      "minLength": 1,
+      "maxLength": 2000,
+      "criteria": [
+        "Describe evidence you could inspect.",
+        "State a limit on the conclusion."
+      ]
+    }
+  ],
   "teaching": {
-    "revision": "2026-10-11-pilot.1",
+    "revision": "2026-10-11-pilot.2",
     "question": "Is it following a rule, learning a pattern, or making something?",
     "sections": [
       {
@@ -122,13 +149,55 @@
       "instructions": [
         "On paper or in your own words, invent a rule with an explicit if/then condition. You do not need to code it.",
         "Invent a learned tool. Name the examples it would train on and the prediction it would make.",
-        "Choose two new test cases, say how you would know the expected answers, and describe a failure you would look for.",
+        "Inspect the prediction table and save your error analysis. Then design two new test cases for your own learned tool, with expected answers and a way to check them.",
         "Save your designs and test plan in the final step. Use fictional objects or made-up club tasks; do not upload photos or personal data."
       ],
       "selfCheck": "Can you explain why your test examples are separate from training? What would you do if the tool fails one?"
     },
     "takeaway": "Ask how it works, where its examples came from, and how you would check a new result.",
-    "independentPractice": "Without the notes, explain a timer, a learned classifier and a generator to someone—or write the explanation yourself. Include how their functions can overlap."
+    "independentPractice": "Without the notes, explain a timer, a learned classifier and a generator to someone—or write the explanation yourself. Include how their functions can overlap.",
+    "stepNames": [
+      "How the tools work",
+      "Compare approaches",
+      "Inspect predictions",
+      "Design your test"
+    ],
+    "predictionTable": {
+      "caption": "Fictional leaf classifier: inspect four predictions",
+      "context": "Every label and prediction below is invented for this exercise. No model was run. The fictional model trained on daylight photos. Actual means the independently checked label; Model means its prediction. Compare the two and separate new test examples from reused training examples.",
+      "columns": [
+        "ID",
+        "Example",
+        "Actual",
+        "Model"
+      ],
+      "rows": [
+        [
+          "A",
+          "New daylight photo",
+          "Broad",
+          "Broad"
+        ],
+        [
+          "B",
+          "New shade photo",
+          "Narrow",
+          "Broad"
+        ],
+        [
+          "C",
+          "New daylight photo",
+          "Narrow",
+          "Narrow"
+        ],
+        [
+          "D",
+          "Reused training photo, daylight",
+          "Broad",
+          "Broad"
+        ]
+      ]
+    }
   },
   "references": [
     {

@@ -1,6 +1,6 @@
 {
   "lai.ai-you-can-use.l01": {
-    "revision": "2026-10-11-pilot.1",
+    "revision": "2026-10-11-pilot.2",
     "question": "What makes a suggestion worth using?",
     "sections": [
       {
@@ -17,20 +17,26 @@
       }
     ],
     "practice": {
-      "title": "Your turn: make a different plan",
+      "title": "Start with your own plan",
       "instructions": [
-        "Before seeing the choices, sketch another activity on paper or think it through in your own words.",
-        "Check time, cost and devices separately. Include setup and clearing away in your 10 minutes.",
-        "Choose a checklist, a person, AI or no tool. Explain what that choice adds and what you would still check.",
-        "Keep your own plan for the final step. You will save it there, with one inclusion check and a role to consult."
+        "Write a first plan before opening the worked example. Include setup, activity and clearing away in 10 minutes.",
+        "Check no spending and no phones. Choose a tool or explain why none is needed.",
+        "Keep this first version for comparison; you will adapt it to a changed constraint later."
       ],
-      "selfCheck": "Could someone run your plan from the details you give? If a constraint is missing, revise it before submitting."
+      "selfCheck": "Is every constraint visible in your plan? What still needs checking with the club organizer?"
     },
     "takeaway": "Define useful → check every constraint → revise or reject → explain your decision.",
-    "independentPractice": "Tomorrow, try the same three-constraint check on a fictional plan without reopening the worked example. Explain one reason to use a tool and one reason not to."
+    "independentPractice": "Tomorrow, try the same three-constraint check on a fictional plan without reopening the worked example. Explain one reason to use a tool and one reason not to.",
+    "stepNames": [
+      "Your first attempt",
+      "Compare and check",
+      "Your judgment",
+      "Adapt your plan"
+    ],
+    "exampleAfterAttempt": true
   },
   "lai.ai-you-can-use.l02": {
-    "revision": "2026-10-11-pilot.1",
+    "revision": "2026-10-11-pilot.2",
     "question": "Is it following a rule, learning a pattern, or making something?",
     "sections": [
       {
@@ -51,12 +57,54 @@
       "instructions": [
         "On paper or in your own words, invent a rule with an explicit if/then condition. You do not need to code it.",
         "Invent a learned tool. Name the examples it would train on and the prediction it would make.",
-        "Choose two new test cases, say how you would know the expected answers, and describe a failure you would look for.",
+        "Inspect the prediction table and save your error analysis. Then design two new test cases for your own learned tool, with expected answers and a way to check them.",
         "Save your designs and test plan in the final step. Use fictional objects or made-up club tasks; do not upload photos or personal data."
       ],
       "selfCheck": "Can you explain why your test examples are separate from training? What would you do if the tool fails one?"
     },
     "takeaway": "Ask how it works, where its examples came from, and how you would check a new result.",
-    "independentPractice": "Without the notes, explain a timer, a learned classifier and a generator to someone—or write the explanation yourself. Include how their functions can overlap."
+    "independentPractice": "Without the notes, explain a timer, a learned classifier and a generator to someone—or write the explanation yourself. Include how their functions can overlap.",
+    "stepNames": [
+      "How the tools work",
+      "Compare approaches",
+      "Inspect predictions",
+      "Design your test"
+    ],
+    "predictionTable": {
+      "caption": "Fictional leaf classifier: inspect four predictions",
+      "context": "Every label and prediction below is invented for this exercise. No model was run. The fictional model trained on daylight photos. Actual means the independently checked label; Model means its prediction. Compare the two and separate new test examples from reused training examples.",
+      "columns": [
+        "ID",
+        "Example",
+        "Actual",
+        "Model"
+      ],
+      "rows": [
+        [
+          "A",
+          "New daylight photo",
+          "Broad",
+          "Broad"
+        ],
+        [
+          "B",
+          "New shade photo",
+          "Narrow",
+          "Broad"
+        ],
+        [
+          "C",
+          "New daylight photo",
+          "Narrow",
+          "Narrow"
+        ],
+        [
+          "D",
+          "Reused training photo, daylight",
+          "Broad",
+          "Broad"
+        ]
+      ]
+    }
   }
 }

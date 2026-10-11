@@ -6,7 +6,11 @@ LESSONS = {
     lesson["id"]: lesson
     for lesson in (json.loads(Path(__file__).with_name(f"lesson-{number:02d}.json").read_text()) for number in (1, 2))
 }
-LESSON = LESSONS["lai.ai-you-can-use.l01"]
+LESSON_VERSIONS = {(lesson["id"], lesson["version"]): lesson for lesson in LESSONS.values()}
+for number in (1, 2):
+    archived = json.loads(Path(__file__).with_name(f"lesson-{number:02d}-v1.json").read_text())
+    LESSON_VERSIONS[(archived["id"], 1)] = archived
+LESSON = LESSON_VERSIONS[("lai.ai-you-can-use.l01", 1)]
 LESSON_ID = LESSON["id"]
 VERSION = LESSON["version"]
 CONTENT_VERSION = "2026-10-05-draft.2"
@@ -17,15 +21,17 @@ def is_managed(activity):
 def supported(activity):
     return lesson_for(activity) is not None
 
-def lesson_for(activity):
+def lesson_for(activity, attempt_version=None):
     if not is_managed(activity) or activity.activity_sub_type != "SUBTYPE_CUSTOM":
         return None
     definition = activity.content["learningai"]
     if not isinstance(definition, dict) or not isinstance(definition.get("lesson_id"), str):
         return None
-    lesson = LESSONS.get(definition["lesson_id"])
+    if type(definition.get("version")) is not int:
+        return None
+    lesson = LESSON_VERSIONS.get((definition["lesson_id"], definition["version"]))
     if lesson and type(definition.get("version")) is int and definition == {"lesson_id": lesson["id"], "version": lesson["version"], "content_version": CONTENT_VERSION}:
-        return lesson
+        return lesson if attempt_version is None else LESSON_VERSIONS.get((lesson["id"], attempt_version))
     return None
 
 class ContractError(ValueError):
@@ -47,11 +53,13 @@ def validate(answers, page, complete=False, lesson=LESSON):
     activities = lesson["activities"] + [lesson["branchActivity"]]
     allowed = {a["id"]: {c["value"] for c in a["choices"]} for a in activities}
     text_id = lesson["transfer"]["id"]
-    if set(answers) - set(allowed) - {text_id}:
+    fields = {f["id"]: f for f in lesson.get("responseFields", [])}
+    fields[text_id] = {"minLength": lesson["transfer"].get("minLength", 30), "maxLength": 2000}
+    if set(answers) - set(allowed) - set(fields):
         raise ContractError("Unknown answer")
     for key, value in answers.items():
-        if key == text_id:
-            if text_units(value) > 2000:
+        if key in fields:
+            if text_units(value) > fields[key]["maxLength"]:
                 raise ContractError("Invalid reflection")
         elif not isinstance(value, str) or value not in allowed[key]:
             raise ContractError("Invalid choice")
@@ -62,11 +70,13 @@ def validate(answers, page, complete=False, lesson=LESSON):
     visible = first is not None and first != branch["visibleIfNotEqual"]
     if not visible:
         clean.pop(branch["id"], None)
+    if page > 0 and any(f.get("stage") == 0 and text_units(clean.get(k, ""), trim=True) < f["minLength"] for k, f in fields.items()):
+        raise ContractError("Save your first attempt before continuing")
     if complete:
         required = [a["id"] for a in lesson["activities"]]
         if visible:
             required.append(branch["id"])
-        if any(k not in clean for k in required) or text_units(clean.get(text_id, ""), trim=True) < 30:
+        if any(k not in clean for k in required) or any(text_units(clean.get(k, ""), trim=True) < f["minLength"] for k, f in fields.items()):
             raise ContractError("Required answers are missing")
     return clean
 

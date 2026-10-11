@@ -268,7 +268,7 @@ async def test_two_lessons_keep_answers_revisions_and_completion_separate(http_f
     definition = LESSONS['lai.ai-you-can-use.l02']
     second = Activity(**first.model_dump(exclude={'id', 'activity_uuid', 'content', 'name'}),
                       id=2, name=definition['title'], activity_uuid='activity_second_lesson',
-                      content={'learningai': {'lesson_id': definition['id'], 'version': 1, 'content_version': CONTENT_VERSION}})
+                      content={'learningai': {'lesson_id': definition['id'], 'version': definition['version'], 'content_version': CONTENT_VERSION}})
     db.add(second)
     await db.commit()
     first_link = (await db.execute(select(ChapterActivity).where(ChapterActivity.activity_id == first.id))).scalars().one()
@@ -276,6 +276,7 @@ async def test_two_lessons_keep_answers_revisions_and_completion_separate(http_f
     await db.commit()
     route = f'/learningai/{second.activity_uuid}'
     work = {a['id']: a['correctAnswer'] for a in definition['activities']}
+    work.update({f['id']: 'Observed evidence with a limit.' for f in definition['responseFields']})
     work[definition['transfer']['id']] = 'A timer follows an if/then rule. A plant classifier learns labeled examples; I test new shade photos against checked labels.'
     async with client(app) as http:
         data = (await http.get(route+'/state', headers=headers[2])).json()
@@ -301,3 +302,34 @@ async def test_two_lessons_keep_answers_revisions_and_completion_separate(http_f
         assert len(steps) == 2 and all(s.complete for s in steps)
         run = (await session.execute(select(TrailRun))).scalars().one()
         assert run.status == StatusEnum.STATUS_IN_PROGRESS
+
+
+@pytest.mark.asyncio
+async def test_existing_attempts_keep_edition_when_activity_upgrades(http_fixture, pg_factory, db):
+    from src.services.learningai.contract import LESSONS
+    app, headers, activity, _, _ = http_fixture
+    route = f'/learningai/{activity.activity_uuid}'
+    async with client(app) as http:
+        original = body()
+        assert (await http.put(route+'/state', headers=headers[2], json=original)).status_code == 200
+        activity.content = {'learningai': {'lesson_id': LESSON_ID, 'version': 2, 'content_version': CONTENT_VERSION}}
+        db.add(activity)
+        await db.commit()
+        old = (await http.get(route+'/state', headers=headers[2])).json()
+        assert old['lesson']['version'] == 1
+        assert old['state']['answers'] == original['answers']
+        # The old draft can still be submitted with its original criteria.
+        assert (await http.post(route+'/submit', headers=headers[2], json=body(complete=True, revision=1))).status_code == 200
+        new = (await http.get(route+'/state', headers=headers[3])).json()
+        assert new['lesson']['version'] == 2 and new['state']['answers'] == {}
+        assert (await http.put(route+'/state', headers=headers[3], json={'answers': {}, 'page': 1, 'revision': 0})).status_code == 422
+        definition = LESSONS[LESSON_ID]
+        work = {a['id']: a['correctAnswer'] for a in definition['activities']}
+        work.update({f['id']: 'Evidence for self-review.' for f in definition['responseFields']})
+        work[definition['transfer']['id']] = 'A five-minute revision with a reason.'
+        result = await http.post(route+'/submit', headers=headers[3], json={'answers': work, 'page': 3, 'revision': 0})
+        assert result.status_code == 200, result.text
+        assert (await http.get(route+'/state', headers=headers[2])).json()['lesson']['version'] == 1
+    async with pg_factory() as session:
+        records = (await session.execute(select(LearningAIAttempt))).scalars().all()
+        assert {(r.user_id, r.lesson_version, r.completed) for r in records} == {(2, 1, True), (3, 2, True)}
