@@ -1,0 +1,130 @@
+/* Cockpit tokens for native LearnHouse surfaces. Content, permissions and controls
+   remain native; this layer carries the selected black editorial design across them. */
+.cockpit-native {
+  color-scheme: dark; background: #000; color: #f4f4f2; min-height: 100svh;
+  font-family: Archivo, var(--font-arabic), sans-serif; line-height: 1.6;
+  --background: 0 0% 3%; --foreground: 0 0% 96%;
+  --card: 0 0% 5%; --card-foreground: 0 0% 96%;
+  --popover: 0 0% 6%; --popover-foreground: 0 0% 96%;
+  --primary: 60 10% 92%; --primary-foreground: 0 0% 6%;
+  --secondary: 0 0% 14%; --secondary-foreground: 0 0% 96%;
+  --muted: 0 0% 12%; --muted-foreground: 0 0% 70%;
+  --accent: 0 0% 18%; --accent-foreground: 0 0% 96%;
+  --border: 0 0% 22%; --input: 0 0% 35%; --ring: 0 0% 90%;
+}
+.cockpit-native .lh-org-font-root { font-family: inherit !important; background: #000 !important; }
+.cockpit-native :is(h1,h2,h3), .cockpit-native [class*="text-4xl"], .cockpit-native [class*="text-3xl"] {
+  font-family: Archivo, var(--font-arabic), sans-serif; font-weight: 400; letter-spacing: .015em; text-wrap: balance;
+}
+.cockpit-native h1, .cockpit-native [class*="text-4xl"], .cockpit-native [class*="text-3xl"] { text-transform: uppercase; font-stretch: 115%; line-height: 1.2; }
+.cockpit-native :is([class*="bg-white"],[class*="bg-gray-50"],[class*="bg-gray-100"],[class*="bg-zinc-50"],[class*="bg-neutral-50"],[class*="bg-slate-50"],[class*="bg-[#f8f8f8]"],[class*="bg-[#fcfbfc]"],[class*="bg-[#f9f9f9]"],[class*="bg-[#fafafa]"],[class*="bg-[#F8F8F8]"]) { background-color: #0b0b0b !important; }
+.cockpit-native :is([class*="bg-gray-200"],[class*="bg-zinc-100"],[class*="bg-neutral-100"],[class*="bg-slate-100"]) { background-color: #222 !important; }
+.cockpit-native :is([class*="text-black"],[class*="text-gray-9"],[class*="text-gray-8"],[class*="text-zinc-9"],[class*="text-slate-9"],[class*="text-neutral-9"]) { color: #f4f4f2 !important; }
+.cockpit-native :is([class*="text-gray-7"],[class*="text-gray-6"],[class*="text-gray-5"],[class*="text-gray-4"],[class*="text-gray-3"],[class*="text-zinc-5"],[class*="text-slate-5"],[class*="text-neutral-5"]) { color: #b2b2af !important; }
+.cockpit-native :is([class*="border-gray"],[class*="border-neutral"],[class*="border-zinc"],[class*="border-slate"],[class*="divide-gray"]) { border-color: #333 !important; }
+.cockpit-native :is(.nice-shadow,[class*="shadow-sm"],[class*="shadow-md"],[class*="shadow-lg"]) { box-shadow: none; border: 1px solid #303030; }
+.cockpit-native :is([class*="rounded-lg"],[class*="rounded-xl"],[class*="rounded-2xl"],[class*="rounded-3xl"]) { border-radius: 3px; }
+.cockpit-native :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),textarea,select) { background: #070707; color: #f4f4f2; border-color: #555; border-radius: 2px; min-height: 42px; }
+.cockpit-native :is(input,textarea)::placeholder { color: #989895; }
+.cockpit-native :is(input[type=checkbox],input[type=radio]) { accent-color: #eee; }
+.cockpit-native :is(button,a)[class*="bg-black"], .cockpit-native :is(button,a)[class*="bg-gray-900"] { background: #efefeb !important; color: #111 !important; border-radius: 2px; }
+.cockpit-native :is(button,a)[class*="bg-black"] *, .cockpit-native :is(button,a)[class*="bg-gray-900"] * { color: inherit !important; }
+.cockpit-native :is(a,button,input,textarea,select,[role=button],[contenteditable]):focus-visible { outline: 2px solid #eee; outline-offset: 3px; }
+.cockpit-native :is(button,a)[aria-disabled=true], .cockpit-native button:disabled { opacity: .5; }
+.cockpit-native :is([class*="bg-red-50"],[class*="bg-red-100"],[class*="bg-rose-50"]) { background: #2b1414 !important; }
+.cockpit-native :is([class*="text-red-"],[class*="text-rose-"]) { color: #ffb5aa !important; }
+.cockpit-native :is([class*="bg-green-50"],[class*="bg-green-100"],[class*="bg-emerald-50"]) { background: #11271a !important; }
+.cockpit-native :is([class*="text-green-"],[class*="text-emerald-"]) { color: #a6dfb8 !important; }
+.cockpit-native :is([class*="bg-amber-50"],[class*="bg-yellow-50"],[class*="bg-orange-50"]) { background: #2d2314 !important; }
+.cockpit-native :is([class*="text-amber-"],[class*="text-orange-"]) { color: #ebc68c !important; }
+.cockpit-native :is([class*="bg-blue-50"],[class*="bg-indigo-50"],[class*="bg-purple-50"]) { background: #171c2b !important; }
+.cockpit-native :is([class*="text-blue-"],[class*="text-indigo-"],[class*="text-purple-"]) { color: #b8c9ff !important; }
+.cockpit-native nav[aria-label="Top navigation"] { border-bottom: 1px solid #333; background: #000 !important; }
+.cockpit-wordmark { color: #eee; font-family: Archivo, sans-serif; font-size: 13px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; }
+.cockpit-workspace-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; padding: 20px 32px; border-bottom: 1px solid #303030; background: #000; }
+.cockpit-workspace-heading > span { font-size: 11px; text-transform: uppercase; letter-spacing: .18em; color: #aaa; }
+.cockpit-workspace-heading > a:last-child { margin-inline-start: auto; font-size: 12px; color: #ddd; }
+.cockpit-native a[href*="learnhouse.app"] img { filter: invert(1); opacity: .75; }
+.cockpit-unavailable { padding: clamp(32px,7vw,88px) clamp(20px,5vw,64px); max-width: 850px; margin: 24px auto; border: 1px solid #333; background: #090909; color: #eee; }
+.cockpit-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; color: #aaa; }
+.cockpit-unavailable h1 { font-size: clamp(26px,4vw,48px) !important; font-weight: 400; line-height: 1.15; margin: 24px 0; text-transform: uppercase; }
+.cockpit-unavailable > p:not(.cockpit-eyebrow) { color: #bbb; max-width: 560px; line-height: 1.7; }
+.cockpit-unavailable > a { display: inline-block; margin-top: 28px; padding: 12px 0; border-bottom: 1px solid #777; }
+/* Portals live outside the route wrapper. Do not recolor uploaded images, canvases or authored inline styles. */
+.cockpit-native-portals :is([role=dialog],[role=alertdialog],[role=menu],[role=listbox],[role=tooltip],[data-radix-popper-content-wrapper]) { font-family: Archivo, sans-serif; color: #eee; color-scheme: dark; }
+.cockpit-native-portals :is([role=dialog],[role=alertdialog],[role=menu],[role=listbox],[role=tooltip]) { background: #111 !important; border: 1px solid #444; border-radius: 3px; }
+.cockpit-native-portals :is([role=dialog],[role=menu],[role=listbox]) :is([class*="bg-white"],[class*="bg-gray-50"],[class*="bg-gray-100"]) { background: #171717 !important; }
+.cockpit-native-portals :is([role=dialog],[role=menu],[role=listbox]) :is([class*="text-gray"],[class*="text-black"]) { color: #ccc !important; }
+.cockpit-native-portals :is([role=dialog],[role=menu],[role=listbox]) :is(input,textarea,select) { background: #070707; color: #eee; border-color: #555; }
+.cockpit-native-portals :is([role=dialog],[role=menu],[role=listbox]) :focus-visible { outline: 2px solid #eee; outline-offset: 3px; }
+@media(max-width:1100px) and (min-width:768px) {
+  .cockpit-native nav[aria-label="Top navigation"] .max-w-lg { max-width: 170px; }
+  .cockpit-native nav[aria-label="Top navigation"] ul { gap: 12px; }
+  .cockpit-native nav[aria-label="Top navigation"] ul svg { display: none; }
+}
+@media(max-width:767px) {
+  .cockpit-workspace-heading { padding: 18px 20px; gap: 12px; }
+  .cockpit-workspace-heading > a:last-child { margin-inline-start: 0; }
+  .cockpit-native .cockpit-wordmark { font-size: 12px; letter-spacing: .16em; }
+  .cockpit-native :is(h1,[class*="text-4xl"]) { overflow-wrap: anywhere; }
+  .cockpit-unavailable { margin: 20px 16px; }
+}
+@media(prefers-reduced-motion:reduce) { .cockpit-native *, .cockpit-native-portals [role=dialog] { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+/* Match the full native navigation to the available width, including account controls. */
+@media(max-width:1279px) {
+  .cockpit-native nav[aria-label="Top navigation"] .hidden.md\:flex { display: none; }
+  .cockpit-native nav[aria-label="Top navigation"] .md\:hidden { display: block; }
+  .cockpit-native #org-mobile-navigation { display: block; max-height: calc(100svh - 60px); overflow-y: auto; }
+  .cockpit-native #org-mobile-navigation ul { flex-wrap: wrap; justify-content: center; gap: 20px; }
+  .cockpit-native #org-mobile-navigation ul > * { margin: 0; }
+}
+.cockpit-native :is([class*="text-neutral-"],[class*="text-zinc-"],[class*="text-slate-"],[class*="text-stone-"]) { color: #bcbcb9 !important; }
+.cockpit-native :is(h1,h2,h3), .cockpit-native [class*="font-semibold"] { color: #efefeb; }
+.cockpit-native nav[aria-label="Top navigation"] ul a { font-weight: 400; font-size: 12px; letter-spacing: .055em; text-transform: uppercase; }
+.cockpit-native [class*="lesson_lesson"] { background: #080808; color: #eee; }
+.cockpit-native [class*="lesson_lesson"] aside { background: #171717; border-color: #777; }
+.cockpit-native [class*="lesson_feedback"] { background: #191919; color: #ddd; }
+
+.cockpit-native .cockpit-onboarding-mark { text-align: center; min-height: 200px; padding-top: 24px; font-size: 18px; letter-spacing: .2em; }
+.cockpit-native .cockpit-onboarding-mark small { font-size: 11px; color: #aaa; letter-spacing: .12em; }
+.cockpit-native :is([class*="bg-rose-100"],[class*="bg-rose-200"]) { background: #2b1414 !important; }
+.cockpit-native nav[aria-label="Dashboard sidebar navigation"] > div:first-child .cockpit-wordmark { font-size: 11px; letter-spacing: .12em; }
+
+.cockpit-native [class*="lesson-module__"][class*="__lesson"] { background: #080808; color: #eee; }
+/* The native field component sets white inline, so form surfaces need an explicit override. */
+.cockpit-native :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),textarea,select),
+.cockpit-native-portals :is([role=dialog],[role=menu],[role=listbox]) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),textarea,select) { background: #070707 !important; color: #eee !important; border: 1px solid #555 !important; box-shadow: none !important; }
+.cockpit-native :is(button,a,[role=button])[class*="text-[#"], .cockpit-native [class*="text-gray-2"], .cockpit-native [class*="text-gray-1"] { color: #ccc !important; }
+.cockpit-native-portals :is([role=dialog],[role=menu]) :is([class*="rounded-xl"],[class*="rounded-2xl"]) { border-radius: 3px; }
+.cockpit-native-portals [role=dialog] :is(h1,h2) { font-weight: 400; text-transform: uppercase; letter-spacing: .035em; }
+/* Native rich-text authoring has named surfaces outside Tailwind. */
+.cockpit-native .activity-editor-page { background: #000; padding-top: 20px; }
+.cockpit-native :is(.activity-editor-top,.activity-editor-content-wrapper,.editor-menu-dropdown) { background: #0b0b0b; color: #eee; border: 1px solid #383838; border-radius: 3px; outline: none; box-shadow: none; }
+.cockpit-native .activity-editor-doc-name, .cockpit-native .activity-editor-doc-name svg { color: #ccc; }
+.cockpit-native .editor-tool-btn { background: #151515; color: #ccc; border-radius: 2px; outline: 1px solid #393939; min-height: 32px; }
+.cockpit-native .editor-tool-btn:hover, .cockpit-native .editor-tool-btn.is-active { background: #eee; color: #111; }
+.cockpit-native .editor-menu-item { width: 100%; color: #ddd; text-align: start; }
+.cockpit-native .editor-menu-item:hover, .cockpit-native .editor-menu-item.is-active { background: #303030; }
+.cockpit-native .editor-menu-item .icon { color: inherit; }
+.cockpit-native .ProseMirror { color: #eee; caret-color: #fff; min-height: 240px; }
+.cockpit-native .ProseMirror :is(h1,h2,h3,h4,h5,h6) { text-transform: none; font-stretch: 100%; }
+.cockpit-native .ProseMirror a { color: #bacaff; }
+@media(max-width:900px) {
+ .cockpit-native .activity-editor-top { position: relative; margin: 0 16px 20px; }
+ .cockpit-native .activity-editor-content-wrapper { margin: 0 16px 24px; }
+ .cockpit-native .activity-editor-info-wrapper { flex-wrap: wrap; row-gap: 8px; }
+}
+
+.cockpit-native-portals :is(.slash-commands-menu,.editor-drag-handle), .cockpit-native .editor-drag-handle { background: #141414; color: #ddd; border: 1px solid #444; box-shadow: none; }
+.cockpit-native-portals .slash-commands-item, .cockpit-native-portals .editor-drag-handle .action-btn { color: #ddd; background: #141414; }
+.cockpit-native-portals .slash-commands-item.is-selected, .cockpit-native-portals .slash-commands-item.is-selected .slash-commands-item-icon { background: #333; color: #fff; }
+.cockpit-boundary { background: #000; min-height: 100svh; }
+.cockpit-native .flex:has(> .course_metadata_right) { display: grid; grid-template-columns: minmax(0,1fr) 320px; }
+.cockpit-native .flex:has(> .course_metadata_right) > * { width: 100%; min-width: 0; }
+@media(max-width:1100px) {
+ .cockpit-native .flex:has(> .course_metadata_right) { grid-template-columns: minmax(0,1fr); }
+ .cockpit-native .course_metadata_right { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: start; gap: 20px; }
+ .cockpit-native .course_metadata_right > * { margin-top: 0; }
+}
+@media(max-width:600px) { .cockpit-native .course_metadata_right { grid-template-columns: minmax(0,1fr); } }

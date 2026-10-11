@@ -53,7 +53,7 @@ Tested locally against a separate real PostgreSQL/Redis/API stack and synthetic 
 
 ## Remaining release work
 
-Lessons 1 and 2 are functional pilot drafts. Lessons 3–15 remain unreleased. Projects, full toolkit structure, custom profile/security/recovery screens and account reset are not implemented; their status or native destination is explicit. No review-video media is mounted in this Cockpit release. Mobile Safari, actual MFA/org policy enforcement flows, token-expiry transitions, and broader assistive-technology acceptance still need browser testing. Existing API tests cover policy boundaries but do not substitute for those UI checks.
+Lessons 1 and 2 are functional pilot drafts. Lessons 3–15 remain unreleased. Projects and the full toolkit structure remain unavailable or limited; their status is explicit. Native profile/security/recovery screens now use the Cockpit account frame. No custom destructive account reset was introduced. No review-video media is mounted in this Cockpit release. Mobile Safari, actual MFA/org policy enforcement flows, token-expiry transitions, and broader assistive-technology acceptance still need browser testing. Existing API tests cover policy boundaries but do not substitute for those UI checks.
 
 Educator review, retention/deletion policy and the existing pilot's remaining backend acceptance items still apply. This work adds no paid service, Lumi installation, deployment, DNS changes, permissions or security settings.
 
@@ -98,5 +98,8 @@ Failed magic-link requests remain on the form with a retryable error.
 Local acceptance uses fictional accounts. Mail success/failure UI was tested with
 intercepted local fetch responses; no recovery mail was sent and no password or
 MFA setting changed. Live Google/SSO, real mail delivery and a full MFA enrollment
-remain deployment-specific acceptance work. The isolated backend currently cannot
-load purchases; its native error is surfaced instead of showing invented purchases.
+remain deployment-specific acceptance work. The isolated OSS backend has no payment capability. Store, offers and purchases now
+show a custom unavailable state without issuing unsupported purchase requests.
+Enabled payment backends retain their native functionality. See
+[WORKSPACE-ROUTES.md](WORKSPACE-ROUTES.md) for the full native workspace coverage,
+responsive/editor acceptance and remaining service-dependent limits.

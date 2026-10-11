@@ -1,11 +1,14 @@
+import { CockpitNotFound } from '@components/LearningAI/CockpitWorkspace'
+import { getAuthOrgSlug } from '@services/org/orgResolution'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import learnhouseIcon from 'public/black_logo.png'
 
-export default function NotFound() {
+export default async function NotFound() {
+  const orgslug = (await getAuthOrgSlug()) || ''
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center 
+    <CockpitNotFound orgslug={orgslug}><div className="flex min-h-screen w-full flex-col items-center justify-center
    bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-200 to-slate-300">
     {/* The nx-* classes here were left over from a Nextra template and never
         existed in this project's Tailwind build, so they rendered nothing.
@@ -36,7 +39,7 @@ export default function NotFound() {
         <ArrowRight className="tracking-tight transition-transform duration-150 ease-in-out ms-1" />
       </Link>
     </div>
-    </div>
+    </div></CockpitNotFound>
   )
 }
 

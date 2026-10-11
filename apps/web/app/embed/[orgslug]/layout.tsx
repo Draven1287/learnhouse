@@ -1,13 +1,15 @@
 'use client'
 
-import { use } from 'react'
+import CockpitWorkspace from '@components/LearningAI/CockpitWorkspace'
+import { isLearningAIOrg } from '@components/LearningAI/authPresentation'
+import { use, type ReactNode } from 'react'
 import { OrgProvider } from '@components/Contexts/OrgContext'
 import OrgLanguageSync from '@components/Contexts/OrgLanguageSync'
 import '@styles/globals.css'
 
 export default function EmbedLayout(
   props: {
-    children: React.ReactNode
+    children: ReactNode
     params: Promise<{ orgslug: string }>
   }
 ) {
@@ -15,14 +17,14 @@ export default function EmbedLayout(
   const { children } = props
 
   return (
-    <OrgProvider orgslug={params.orgslug}>
+    <CockpitWorkspace orgslug={params.orgslug}><OrgProvider orgslug={params.orgslug}>
       <OrgLanguageSync />
       {/* Suppress the root layout fade-in animation for embeds */}
       {/* Force light color scheme — prevents browsers in OS dark mode from auto-inverting text colors */}
-      <style>{`.animate-fade-in{animation:none!important;opacity:1!important}:root{color-scheme:light}html,body{color:#09090b}`}</style>
+      <style>{isLearningAIOrg(params.orgslug) ? `.animate-fade-in{animation:none!important;opacity:1!important}:root{color-scheme:dark}html,body{background:#000;color:#eee}` : `.animate-fade-in{animation:none!important;opacity:1!important}:root{color-scheme:light}html,body{color:#09090b}`}</style>
       <div className="min-h-screen">
         {children}
       </div>
-    </OrgProvider>
+    </OrgProvider></CockpitWorkspace>
   )
 }

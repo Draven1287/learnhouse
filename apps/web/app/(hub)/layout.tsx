@@ -1,3 +1,4 @@
+import CockpitWorkspace from '@components/LearningAI/CockpitWorkspace'
 import { notFound } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { getServerAPIUrl } from '@services/config/config'
@@ -31,5 +32,5 @@ async function getInstanceMode(): Promise<string | null> {
 export default async function HubLayout({ children }: { children: ReactNode }) {
   const mode = await getInstanceMode()
   if (mode === 'oss' || mode === 'ee') notFound()
-  return <>{children}</>
+  return <CockpitWorkspace>{children}</CockpitWorkspace>
 }

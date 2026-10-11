@@ -2,6 +2,9 @@
 
 import * as Sentry from "@sentry/nextjs";
 import '../styles/globals.css'
+import '@components/LearningAI/cockpit.css'
+import '@components/LearningAI/workspace.css'
+import { getConfig } from '@services/config/config'
 import { classifyError } from '@lib/errors/classify'
 import { detectClientLanguage, directionForLanguage, type Direction } from '@lib/direction'
 import { AlertTriangle, ChevronDown, ChevronRight, Home, LogOut, MessageSquareWarning, RefreshCcw } from 'lucide-react'
@@ -81,7 +84,7 @@ export default function GlobalError({
 
   return (
     <html lang="en" dir={dir} suppressHydrationWarning>
-      <body className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+      <body className={`${getConfig('NEXT_PUBLIC_LEARNINGAI_COURSE_UUID') ? 'cockpit-native ' : ''}flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4`}>
         <div className="flex flex-col items-center space-y-6 max-w-xl text-center">
           <div className="bg-rose-100 p-4 rounded-2xl">
             <AlertTriangle className="text-rose-700" size={44} />

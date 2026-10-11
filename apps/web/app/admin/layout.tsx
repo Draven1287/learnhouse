@@ -1,3 +1,4 @@
+import CockpitWorkspace from '@components/LearningAI/CockpitWorkspace'
 import type { Metadata } from 'next'
 import AdminProviders from './providers'
 import React from 'react'
@@ -25,8 +26,8 @@ export default async function AdminRootLayout({
   children: React.ReactNode
 }) {
   if (isSuperadminSurfaceBlocked(await fetchInstanceMode())) {
-    return <EERequiredScreen />
+    return <CockpitWorkspace><EERequiredScreen /></CockpitWorkspace>
   }
 
-  return <AdminProviders>{children}</AdminProviders>
+  return <CockpitWorkspace><AdminProviders>{children}</AdminProviders></CockpitWorkspace>
 }

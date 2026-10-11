@@ -1,3 +1,6 @@
+import { fetchInstanceMode } from '@lib/eeGate'
+import { paymentsUnavailable } from '@services/payments/availability'
+import { PaymentsUnavailable } from '@components/LearningAI/CockpitWorkspace'
 import { Metadata } from 'next'
 import { getOrganizationContextInfo } from '@services/organizations/orgs'
 import { getCanonicalUrl, getOrgSeoConfig, buildPageTitle, buildBreadcrumbJsonLd } from '@/lib/seo/utils'
@@ -31,6 +34,7 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
 export default async function OfferPage({ params }: { params: PageParams }) {
   const { orgslug, offerid } = await params
   const org = await getOrganizationContextInfo(orgslug, { revalidate: 120, tags: ['organizations'] })
+  if (paymentsUnavailable(await fetchInstanceMode(), org?.config?.config)) return <PaymentsUnavailable orgslug={orgslug} />
   const session = await getServerSession()
   const access_token = session?.tokens?.access_token ?? null
 

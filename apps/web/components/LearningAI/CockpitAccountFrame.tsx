@@ -8,10 +8,16 @@ import { AuthPresentation, isLearningAIOrg } from './authPresentation'
 import './cockpit.css'
 import './account.css'
 
+let themeUsers = 0
+
 export function LearningAITheme() {
   useEffect(() => {
+    themeUsers += 1
     document.documentElement.classList.add('learningai-theme')
-    return () => document.documentElement.classList.remove('learningai-theme')
+    return () => {
+      themeUsers -= 1
+      if (themeUsers === 0) document.documentElement.classList.remove('learningai-theme')
+    }
   }, [])
   return null
 }
