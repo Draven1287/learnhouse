@@ -1,4 +1,5 @@
 'use client'
+import { LearningAITheme } from './CockpitAccountFrame'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -555,7 +556,7 @@ function CockpitSession({
           <div>
             <span className="cap kick">Your account</span>
             <h1>Settings.</h1>
-            <p>Your learning belongs to your LearnHouse account.</p>
+            <p>Your profile, your security, your saved learning.</p>
           </div>
         </header>
         {signedIn ? (
@@ -567,8 +568,7 @@ function CockpitSession({
             <div className="set-row">
               <span className="k">Profile & security</span>
               <span className="v">
-                Manage your profile and authentication in LearnHouse account
-                settings.
+                Manage your details, sign-in methods and account security.
               </span>
               <Link
                 className="btn"
@@ -609,6 +609,7 @@ function CockpitSession({
 
   return (
     <div className="lai">
+      <LearningAITheme />
       <a className="skip" href="#learningai-main">
         Skip to content
       </a>

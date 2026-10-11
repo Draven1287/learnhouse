@@ -78,3 +78,25 @@ No production deployment or database migration was performed. This branch is sta
 Provision a real organization/course/chapter and two distinct published custom activities through the reviewed LearnHouse administration/setup path. Link them in course order 1 and 2 with the exact metadata above (`l01` and `l02`). Grant learners access using the existing membership/RBAC/course rules; do not copy the local fixture accounts or configuration. Set the actual course UUID and organization slug in web runtime config and `LEARNHOUSE_LEARNINGAI_PILOT=true` in the API only after target verification. The local `course_local_acceptance` is a disposable fixture, not a production identifier. Verify API/web origin, HTTPS and the deployment's existing auth/cookie configuration separately.
 
 Release gaps remain: educator review and learner testing, production schema compatibility, target course provisioning and real auth-policy/browser acceptance. The custom UI is functional for two lessons; the rest is explicitly a course plan.
+
+## Account journey presentation
+
+For the configured LearningAI organization, the shared Cockpit account frame now
+surrounds LearnHouse's native login, registration, passwordless login, recovery,
+reset, email verification, OAuth/SSO callback and account screens. Other organizations
+retain their standard layout. `/learningai/signin[/NN]` redirects to the native
+login with a sanitized return destination, preserving MFA, Turnstile and org policy.
+No demo authentication, new identity provider, credential migration or schema
+change is introduced by this presentation layer.
+
+Google is offered only when the web server has both existing
+`LEARNHOUSE_GOOGLE_CLIENT_ID` and `LEARNHOUSE_GOOGLE_CLIENT_SECRET` configured and
+org policy allows it. Passwordless and recovery requests still depend on the
+existing API mail configuration; request acceptance is not proof of email delivery.
+Failed magic-link requests remain on the form with a retryable error.
+
+Local acceptance uses fictional accounts. Mail success/failure UI was tested with
+intercepted local fetch responses; no recovery mail was sent and no password or
+MFA setting changed. Live Google/SSO, real mail delivery and a full MFA enrollment
+remain deployment-specific acceptance work. The isolated backend currently cannot
+load purchases; its native error is surfaced instead of showing invented purchases.

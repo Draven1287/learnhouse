@@ -1,4 +1,5 @@
 'use client'
+import { authRoute, isLearningAIOrg } from '@components/LearningAI/authPresentation'
 import React from 'react'
 import FormLayout, {
     FormField,
@@ -116,7 +117,7 @@ function ResetPasswordClient({ org }: ResetPasswordClientProps) {
         >
                 {/* Message Top Bar */}
                 {showMessage && (error || message) && (
-                    <div className={`
+                    <div role="status" aria-live="polite" className={`
                         mx-6 md:mx-12 lg:mx-20 mt-6 rounded-xl border px-4 py-3 flex items-center justify-between gap-3 animate-in slide-in-from-top duration-200
                         ${error ? 'bg-red-50 text-red-700 border-red-100' : 'bg-green-50 text-green-700 border-green-100'}
                     `}>
@@ -126,12 +127,13 @@ function ResetPasswordClient({ org }: ResetPasswordClientProps) {
                                 <span className="text-sm font-medium">{error || message}</span>
                                 {message && (
                                     <span className="text-sm ms-2">
-                                        · <Link href="/login" className="underline hover:no-underline">{t('auth.proceed_to_login')}</Link>
+                                        · <Link href={authRoute('/login', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))} className="underline hover:no-underline">{t('auth.proceed_to_login')}</Link>
                                     </span>
                                 )}
                             </div>
                         </div>
                         <button
+                            aria-label="Dismiss message"
                             onClick={() => setShowMessage(false)}
                             className="p-1 rounded-lg hover:bg-black/5 transition-colors shrink-0 opacity-60 hover:opacity-100"
                         >
@@ -146,6 +148,7 @@ function ResetPasswordClient({ org }: ResetPasswordClientProps) {
                         <h1 className="text-[28px] md:text-[32px] font-black text-black tracking-tight leading-tight">{t('auth.reset_password_title')}</h1>
                         <p className="mt-2 text-black/45 text-[15px] font-medium">{t('auth.reset_password_description')}</p>
 
+                        {!reset_code && <p role="status" className="mt-4 text-sm text-amber-700">Open the recovery link from your email, or enter its reset code below. <Link className="underline" href={authRoute('/forgot', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))}>Request a recovery link</Link>.</p>}
                         {/* Form */}
                         <div className="mt-8">
                             <FormLayout onSubmit={formik.handleSubmit}>
@@ -259,7 +262,7 @@ function ResetPasswordClient({ org }: ResetPasswordClientProps) {
                         {/* Back to Login */}
                         <p className="text-center text-sm text-black/35 mt-6">
                             {t('auth.remember_password')}{' '}
-                            <Link href="/login" className="text-black font-semibold hover:underline">
+                            <Link href={authRoute('/login', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))} className="text-black font-semibold hover:underline">
                                 {t('auth.login')}
                             </Link>
                         </p>

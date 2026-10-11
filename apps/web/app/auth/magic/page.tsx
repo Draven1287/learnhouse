@@ -1,5 +1,7 @@
 'use client'
 
+import { useOrg } from '@components/Contexts/OrgContext'
+import { authDestination, isLearningAIOrg } from '@components/LearningAI/authPresentation'
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Loader2, AlertTriangle } from 'lucide-react'
@@ -19,6 +21,7 @@ import { useAuth } from '@components/Contexts/AuthContext'
  * Suspense/CSR-bailout path, matching how the login page reads ?mfa_token.
  */
 export default function MagicLinkConsumePage() {
+  const org = useOrg() as any
   const { completeMagicLink } = useAuth()
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [error, setError] = useState<string | null>(null)
@@ -28,8 +31,7 @@ export default function MagicLinkConsumePage() {
   // rule the login page applies (internal same-origin path only, default /home).
   const buildCallbackUrl = () => {
     const params = new URLSearchParams(window.location.search)
-    const raw = params.get('next') ?? params.get('redirect') ?? params.get('redirect_to')
-    const dest = raw && /^\/(?!\/)/.test(raw) ? raw : '/home'
+    const dest = authDestination(params, isLearningAIOrg(org?.slug))
     return `${window.location.origin}/redirect_from_auth?next=${encodeURIComponent(dest)}`
   }
 
@@ -103,7 +105,7 @@ export default function MagicLinkConsumePage() {
               Request a new link
             </Link>
             <Link
-              href="/"
+              href={isLearningAIOrg(org?.slug) ? '/learningai' : '/'}
               className="block w-full py-2 px-4 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
             >
               Go Home

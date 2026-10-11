@@ -1,6 +1,8 @@
 'use client';
 import { use, useEffect, type ReactNode } from "react";
 import '@styles/globals.css'
+import CockpitAccountFrame from '@components/LearningAI/CockpitAccountFrame'
+import { isLearningAIOrg } from '@components/LearningAI/authPresentation'
 import Watermark from '@components/Objects/Watermark'
 import { SessionGate } from '@components/Contexts/LHSessionContext'
 import { OrgMenu } from '@components/Objects/Menus/OrgMenu'
@@ -99,6 +101,12 @@ function LayoutContent({ children, orgslug }: { children: ReactNode; orgslug: st
     }
   }, [customFont])
 
+  if (isLearningAIOrg(orgslug) && /(?:^|\/)account(?:\/|$)/.test(pathname || '') && !chromeless) {
+    return <CockpitAccountFrame account>
+      <PageViewTracker /><OrgJoinBanner /><OrgMFAPolicyGate />
+      {children}<OrgFooter /><Watermark />
+    </CockpitAccountFrame>
+  }
   const pathParts = pathname?.split('/').filter(Boolean) || []
 
   // Pages that use a full-bleed layout (no footer/watermark)

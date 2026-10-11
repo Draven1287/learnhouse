@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import LearningAICockpit from '@components/LearningAI/LearningAICockpit'
 
 export const metadata = { title: 'LearningAI · AI you can use' }
@@ -28,6 +28,10 @@ export default async function Page({
     !screens.includes(selected as (typeof screens)[number])
   )
     notFound()
+  if (selected === 'signin') {
+    const destination = lessonNumber ? `/learningai/lesson/${String(lessonNumber).padStart(2, '0')}` : '/learningai'
+    redirect(`/login?next=${encodeURIComponent(destination)}`)
+  }
   return (
     <LearningAICockpit
       orgslug={orgslug}

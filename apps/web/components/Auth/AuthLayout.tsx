@@ -1,5 +1,7 @@
 'use client'
 import React from 'react'
+import CockpitAccountFrame from '@components/LearningAI/CockpitAccountFrame'
+import { isLearningAIOrg, useAuthPresentation } from '@components/LearningAI/authPresentation'
 import LanguageSwitcher from '@components/Utils/LanguageSwitcher'
 import AuthBrandingPanel from '@components/Auth/AuthBrandingPanel'
 import AuthMobileHeader from '@components/Auth/AuthMobileHeader'
@@ -15,6 +17,9 @@ interface AuthLayoutProps {
 }
 
 export default function AuthLayout({ org, welcomeText, title, subtitle, children }: AuthLayoutProps) {
+  const { cockpit } = useAuthPresentation()
+  if (cockpit) return <>{children}</>
+  if (isLearningAIOrg(org?.slug)) return <CockpitAccountFrame>{children}</CockpitAccountFrame>
   return (
     <div className="min-h-screen lg:h-screen bg-white flex flex-col lg:flex-row relative overflow-hidden">
       {/* Page-level blueprint grid, bottom-anchored */}

@@ -1,4 +1,8 @@
 'use client'
+import { useSearchParams } from 'next/navigation'
+import { getAllowedAuthMethods } from '@services/auth/authMethods'
+import { useAuthPresentation } from '@components/LearningAI/authPresentation'
+import { authDestination, authRoute, isLearningAIOrg } from '@components/LearningAI/authPresentation'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
@@ -64,6 +68,9 @@ interface InviteOnlySignUpProps {
 }
 
 function InviteOnlySignUpComponent(props: InviteOnlySignUpProps) {
+  const { googleConfigured } = useAuthPresentation()
+  const googleAllowed = googleConfigured && getAllowedAuthMethods(props.org).has('google')
+  const searchParams = useSearchParams()
   const { t } = useTranslation()
   const { track } = useLHAnalytics('public')
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -134,8 +141,7 @@ function InviteOnlySignUpComponent(props: InviteOnlySignUpProps) {
   // cross-domain /redirect_from_auth handoff; default to /home.
   const buildCallbackUrl = () => {
     const params = new URLSearchParams(window.location.search)
-    const raw = params.get('next') ?? params.get('redirect')
-    const dest = raw && /^\/(?!\/)/.test(raw) ? raw : '/home'
+    const dest = authDestination(params, isLearningAIOrg(org?.slug))
     return `${window.location.origin}/redirect_from_auth?next=${encodeURIComponent(dest)}`
   }
 
@@ -188,7 +194,7 @@ function InviteOnlySignUpComponent(props: InviteOnlySignUpProps) {
               {t('auth.verification_email_sent_message')}
             </p>
             <hr className="border-green-100" />
-            <Link className="flex items-center gap-2 text-sm font-medium hover:underline" href="/login">
+            <Link className="flex items-center gap-2 text-sm font-medium hover:underline" href={authRoute('/login', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))}>
               <User size={14} />
               <span>{t('auth.login')}</span>
             </Link>
@@ -202,7 +208,7 @@ function InviteOnlySignUpComponent(props: InviteOnlySignUpProps) {
               <div className="font-semibold text-sm">{t('auth.account_created_success')}</div>
             </div>
             <hr className="border-green-100" />
-            <Link className="flex items-center gap-2 text-sm font-medium hover:underline" href="/login">
+            <Link className="flex items-center gap-2 text-sm font-medium hover:underline" href={authRoute('/login', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))}>
               <User size={14} />
               <span>{t('auth.login')}</span>
             </Link>
@@ -361,6 +367,7 @@ function InviteOnlySignUpComponent(props: InviteOnlySignUpProps) {
           </Form.Submit>
         </FormLayout>
 
+        {googleAllowed && <>
         {/* Divider */}
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
@@ -381,10 +388,11 @@ function InviteOnlySignUpComponent(props: InviteOnlySignUpProps) {
           <span>{t('auth.sign_in_with_google')}</span>
         </button>
 
+        </>}
         {/* Login Link */}
         <p className="text-center text-sm text-black/35 mt-6">
           {t('auth.already_have_account')}{' '}
-          <Link href="/login" className="text-black font-semibold hover:underline">
+          <Link href={authRoute('/login', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))} className="text-black font-semibold hover:underline">
             {t('auth.login')}
           </Link>
         </p>
