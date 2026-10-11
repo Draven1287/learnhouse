@@ -92,3 +92,4 @@
   .lai-account-frame .account-content .grid-cols-4 { grid-template-columns: minmax(0,1fr); }
   .lai-account-frame .account-content .grid-cols-4 > :is(.col-span-1,.col-span-3) { grid-column: auto; border-inline-end: 0; padding-inline-end: 0; min-width: 0; }
 }
+.learningai-theme .lh-toast { background: #111 !important; color: #f4f4f2 !important; border: 1px solid #555; border-radius: 2px; }
