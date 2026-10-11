@@ -84,5 +84,38 @@ class ContractTests(unittest.TestCase):
         activity.activity_type='TYPE_VIDEO'
         self.assertFalse(c.is_managed(activity))
 
+    def test_each_pilot_bundle_matches_canonical_and_preserves_fifteen_lesson_plan(self):
+        root = Path(__file__).resolve().parents[5]
+        manifest = json.loads((root / 'customizations/learningai/course/curriculum/course-manifest.json').read_text())
+        self.assertEqual([item['number'] for item in manifest['lessons']], list(range(1, 16)))
+        self.assertEqual(set(c.LESSONS), {'lai.ai-you-can-use.l01', 'lai.ai-you-can-use.l02'})
+        for lesson in c.LESSONS.values():
+            self.assertEqual(lesson, next(item for item in manifest['lessons'] if item['id'] == lesson['id']))
+            self.assertTrue(lesson['teaching']['practice']['instructions'])
+            self.assertTrue(lesson['teaching']['independentPractice'])
+
+    def test_second_lesson_has_isolated_validation_and_formative_completion(self):
+        lesson = c.LESSONS['lai.ai-you-can-use.l02']
+        answers = {a['id']: a['correctAnswer'] for a in lesson['activities']}
+        answers[lesson['transfer']['id']] = 'If a timer reaches zero, show a reminder. Test a learned tool on new labeled examples.'
+        self.assertTrue(c.transition(self.empty, answers, 3, 0, True, lesson)['completed'])
+        with self.assertRaisesRegex(c.ContractError, 'Unknown answer'):
+            c.validate(self.answers, 3, True, lesson)
+        with self.assertRaisesRegex(c.ContractError, 'Unknown answer'):
+            c.validate(answers, 3, True)
+        answers[lesson['activities'][0]['id']] = 'eras'
+        with self.assertRaisesRegex(c.ContractError, 'Required'):
+            c.validate(answers, 3, True, lesson)
+        answers[lesson['branchActivity']['id']] = 'no'
+        self.assertTrue(c.transition(self.empty, answers, 3, 0, True, lesson)['completed'])
+        answers[lesson['activities'][0]['id']] = 'mix'
+        self.assertNotIn(lesson['branchActivity']['id'], c.validate(answers, 3, True, lesson))
+
+    def test_lesson_registry_rejects_unreleased_and_malformed_definitions(self):
+        activity = SimpleNamespace(activity_type='TYPE_CUSTOM', activity_sub_type='SUBTYPE_CUSTOM', content={})
+        for lesson_id in ['lai.ai-you-can-use.l02', 'lai.ai-you-can-use.l03', [], None]:
+            activity.content = {'learningai': {'lesson_id': lesson_id, 'version': 1, 'content_version': c.CONTENT_VERSION}}
+            self.assertEqual(c.supported(activity), lesson_id == 'lai.ai-you-can-use.l02')
+
 if __name__ == '__main__':
     unittest.main()

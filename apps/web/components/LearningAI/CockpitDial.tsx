@@ -15,10 +15,14 @@ export default function CockpitDial({
   page = 0,
   completed = false,
   lesson = false,
+  lessonNumber = 1,
+  completedLessons = [],
 }: {
   page?: number
   completed?: boolean
   lesson?: boolean
+  lessonNumber?: number
+  completedLessons?: number[]
 }) {
   const id = useId().replace(/:/g, '')
   const count = lesson ? 4 : 15
@@ -26,7 +30,10 @@ export default function CockpitDial({
   const span = lesson ? (240 - 12) / 4 : (240 - 22) / 15
   const needle = lesson
     ? -120 + (completed ? 240 : (page + 0.5) * 60)
-    : -120 + (completed ? span : (page / 4) * span)
+    : -120 +
+      (lessonNumber - 1) * span +
+      Math.floor((lessonNumber - 1) / 5) * 11 +
+      (completed ? span - gap : (page / 4) * span)
   return (
     <svg viewBox="-320 -320 640 640" aria-hidden="true">
       <circle className="inner" r="196" />
@@ -47,7 +54,7 @@ export default function CockpitDial({
               return (
                 <line
                   key={j}
-                  className={`tk ${angle < needle ? 'on' : ''}`}
+                  className={`tk ${(lesson ? angle < needle : completedLessons.includes(i + 1) || (i + 1 === lessonNumber && angle < needle)) ? 'on' : ''}`}
                   x1={x1}
                   y1={y1}
                   x2={x2}
@@ -56,7 +63,7 @@ export default function CockpitDial({
               )
             })}
             <text
-              className={`lnum ${i === (lesson ? page : 0) ? 'now' : 'locked'}`}
+              className={`lnum ${i === (lesson ? page : lessonNumber - 1) ? 'now' : 'locked'}`}
               x={x}
               y={y}
               textAnchor="middle"

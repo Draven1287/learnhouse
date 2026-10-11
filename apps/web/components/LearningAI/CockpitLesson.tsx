@@ -14,6 +14,7 @@ type Props = {
   status: string
   required: boolean
   homeHref: string
+  nextLessonHref?: string
   answer: (_id: string, _value: string) => void
   persist: (_submit?: boolean, _page?: number) => Promise<void>
   reload: () => void
@@ -26,6 +27,7 @@ export default function CockpitLesson({
   status,
   required,
   homeHref,
+  nextLessonHref,
   answer,
   persist,
   reload,
@@ -78,10 +80,12 @@ export default function CockpitLesson({
   }
   return (
     <section className="lesson" aria-label={lesson.title}>
-      <p className="cap">Lesson 01 · Understand</p>
+      <p className="cap">
+        Lesson {String(lesson.number).padStart(2, '0')} · Understand
+      </p>
       <h1 ref={heading} tabIndex={-1}>
         {state.completed
-          ? 'Your first result. Kept.'
+          ? 'Your reasoning. Kept.'
           : page === 0
             ? lesson.title
             : stepNames[page]}
@@ -106,6 +110,13 @@ export default function CockpitLesson({
                         (c) => c.value === state.answers[check.id]
                       )?.text
                     }
+                    <p className="integration-status">
+                      {
+                        check.choices.find(
+                          (c) => c.value === state.answers[check.id]
+                        )?.feedback
+                      }
+                    </p>
                   </dd>
                 </div>
               )
@@ -113,11 +124,36 @@ export default function CockpitLesson({
             <dt>Your reflection</dt>
             <dd>{state.answers[lesson.transfer.id]}</dd>
           </dl>
+          <details className="lesson-references">
+            <summary>Revisit the explanation and sources</summary>
+            <p>{lesson.explanation}</p>
+            {lesson.teaching?.sections.map((section) => (
+              <section className="teaching-block" key={section.title}>
+                <h2>{section.title}</h2>
+                <p>{section.text}</p>
+              </section>
+            ))}
+            <p>{lesson.uncertainty}</p>
+            <ul>
+              {lesson.references?.map((source) => (
+                <li key={source.id}>
+                  <a href={source.url} target="_blank" rel="noreferrer">
+                    {source.title} ↗
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
           <p className="integration-status">
-            Submitted work stays unchanged in this release. Lessons 02–15 are
+            Submitted work stays unchanged in this release. Lessons 03–15 are
             not available yet.
           </p>
           <div className="integration-actions">
+            {nextLessonHref && (
+              <Link className="btn white" href={nextLessonHref}>
+                Explore the next lesson →
+              </Link>
+            )}
             <Link className="btn white" href={homeHref}>
               Back to your cockpit
             </Link>
@@ -125,6 +161,16 @@ export default function CockpitLesson({
               Your toolkit
             </Link>
           </div>
+          {lesson.teaching && (
+            <div className="rubric">
+              <h2>Try it independently</h2>
+              <p>{lesson.teaching.independentPractice}</p>
+              <p className="muted">
+                This optional follow-up is for your own practice; it does not
+                change your submitted work.
+              </p>
+            </div>
+          )}
         </>
       ) : (
         <>
@@ -145,7 +191,15 @@ export default function CockpitLesson({
           </nav>
           {page === 0 && (
             <div className="body">
+              <p className="cap">What you will practice</p>
+              <p>{lesson.objective}</p>
               <p>{lesson.explanation}</p>
+              {lesson.teaching?.sections.map((section) => (
+                <section className="teaching-block" key={section.title}>
+                  <h2>{section.title}</h2>
+                  <p>{section.text}</p>
+                </section>
+              ))}
               <aside className="case">
                 <span className="cap">The situation</span>
                 <p>{lesson.scenario}</p>
@@ -154,6 +208,36 @@ export default function CockpitLesson({
                 Read the brief. Make two choices, consider the feedback, then
                 write a plan of your own.
               </p>
+              {lesson.teaching && (
+                <div className="rubric">
+                  <h2>{lesson.teaching.practice.title}</h2>
+                  <ol>
+                    {lesson.teaching.practice.instructions.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ol>
+                  <p>{lesson.teaching.practice.selfCheck}</p>
+                </div>
+              )}
+              {!!lesson.references?.length && (
+                <details className="lesson-references">
+                  <summary>Sources and scope</summary>
+                  <p>{lesson.uncertainty}</p>
+                  <ul>
+                    {lesson.references.map((source) => (
+                      <li key={source.id}>
+                        <a href={source.url} target="_blank" rel="noreferrer">
+                          {source.title} ↗
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  <p>
+                    These sources support the concepts; they do not certify this
+                    course. The practice scenarios are fictional.
+                  </p>
+                </details>
+              )}
             </div>
           )}
           {(page === 1 || page === 2) && (
@@ -175,6 +259,14 @@ export default function CockpitLesson({
           )}
           {page === 3 && (
             <fieldset disabled={busy}>
+              {lesson.teaching && (
+                <div className="rubric">
+                  <h2>{lesson.teaching.practice.title}</h2>
+                  <p>Bring forward your own work from the first step.</p>
+                  <p>{lesson.teaching.practice.selfCheck}</p>
+                  <p>{lesson.teaching.takeaway}</p>
+                </div>
+              )}
               <label className="field-lbl" htmlFor="lai-reflection">
                 {lesson.transfer.prompt}
               </label>

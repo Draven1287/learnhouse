@@ -99,5 +99,43 @@
     "requires": "All visible required core/branch choices and required text fields",
     "correctAnswersRequired": false,
     "reflectionSemanticallyGraded": false
-  }
+  },
+  "teaching": {
+    "revision": "2026-10-11-pilot.1",
+    "question": "What makes a suggestion worth using?",
+    "sections": [
+      {
+        "title": "Start with what success needs",
+        "text": "For the fictional club, success means six students can join an activity within 10 minutes, with no spending and no phones. Those are constraints: conditions the result must satisfy. An exciting description does not make a plan fit."
+      },
+      {
+        "title": "Inspect the draft, one condition at a time",
+        "text": "The proposed online tournament takes 45 minutes, costs money and needs phones. It fails all three checks. You do not need an AI tool to notice this. Put the brief beside the suggestion and mark each mismatch."
+      },
+      {
+        "title": "Repair it, then check what you missed",
+        "text": "A possible repair uses one minute to explain a scrap-paper word game, seven minutes to play and two minutes to share. That totals 10 minutes and needs no spending or phones. It is still a proposal: ask the club organizer whether everyone can read, write or contribute another way."
+      }
+    ],
+    "practice": {
+      "title": "Your turn: make a different plan",
+      "instructions": [
+        "Before seeing the choices, sketch another activity on paper or think it through in your own words.",
+        "Check time, cost and devices separately. Include setup and clearing away in your 10 minutes.",
+        "Choose a checklist, a person, AI or no tool. Explain what that choice adds and what you would still check.",
+        "Keep your own plan for the final step. You will save it there, with one inclusion check and a role to consult."
+      ],
+      "selfCheck": "Could someone run your plan from the details you give? If a constraint is missing, revise it before submitting."
+    },
+    "takeaway": "Define useful → check every constraint → revise or reject → explain your decision.",
+    "independentPractice": "Tomorrow, try the same three-constraint check on a fictional plan without reopening the worked example. Explain one reason to use a tool and one reason not to."
+  },
+  "references": [
+    {
+      "id": "competencies",
+      "title": "UNESCO: AI competency framework for students",
+      "url": "https://www.unesco.org/en/articles/ai-competency-framework-students",
+      "supports": "Human agency, ethics and critical evaluation as learning goals. This draft is not UNESCO-certified."
+    }
+  ]
 }

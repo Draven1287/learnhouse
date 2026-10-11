@@ -215,7 +215,45 @@
         "requires": "All visible required core/branch choices and required text fields",
         "correctAnswersRequired": false,
         "reflectionSemanticallyGraded": false
-      }
+      },
+      "teaching": {
+        "revision": "2026-10-11-pilot.1",
+        "question": "What makes a suggestion worth using?",
+        "sections": [
+          {
+            "title": "Start with what success needs",
+            "text": "For the fictional club, success means six students can join an activity within 10 minutes, with no spending and no phones. Those are constraints: conditions the result must satisfy. An exciting description does not make a plan fit."
+          },
+          {
+            "title": "Inspect the draft, one condition at a time",
+            "text": "The proposed online tournament takes 45 minutes, costs money and needs phones. It fails all three checks. You do not need an AI tool to notice this. Put the brief beside the suggestion and mark each mismatch."
+          },
+          {
+            "title": "Repair it, then check what you missed",
+            "text": "A possible repair uses one minute to explain a scrap-paper word game, seven minutes to play and two minutes to share. That totals 10 minutes and needs no spending or phones. It is still a proposal: ask the club organizer whether everyone can read, write or contribute another way."
+          }
+        ],
+        "practice": {
+          "title": "Your turn: make a different plan",
+          "instructions": [
+            "Before seeing the choices, sketch another activity on paper or think it through in your own words.",
+            "Check time, cost and devices separately. Include setup and clearing away in your 10 minutes.",
+            "Choose a checklist, a person, AI or no tool. Explain what that choice adds and what you would still check.",
+            "Keep your own plan for the final step. You will save it there, with one inclusion check and a role to consult."
+          ],
+          "selfCheck": "Could someone run your plan from the details you give? If a constraint is missing, revise it before submitting."
+        },
+        "takeaway": "Define useful → check every constraint → revise or reject → explain your decision.",
+        "independentPractice": "Tomorrow, try the same three-constraint check on a fictional plan without reopening the worked example. Explain one reason to use a tool and one reason not to."
+      },
+      "references": [
+        {
+          "id": "competencies",
+          "title": "UNESCO: AI competency framework for students",
+          "url": "https://www.unesco.org/en/articles/ai-competency-framework-students",
+          "supports": "Human agency, ethics and critical evaluation as learning goals. This draft is not UNESCO-certified."
+        }
+      ]
     },
     {
       "id": "lai.ai-you-can-use.l02",
@@ -318,7 +356,45 @@
         "requires": "All visible required core/branch choices and required text fields",
         "correctAnswersRequired": false,
         "reflectionSemanticallyGraded": false
-      }
+      },
+      "teaching": {
+        "revision": "2026-10-11-pilot.1",
+        "question": "Is it following a rule, learning a pattern, or making something?",
+        "sections": [
+          {
+            "title": "Three approaches that still work together",
+            "text": "A rule-based tool follows a condition a person wrote: if the timer reaches zero, show a reminder. A learned classifier fits patterns from examples, such as labeled plant photos. A generator produces content, such as a new announcement. These are overlapping descriptions, not a timeline where each new approach erases the last."
+          },
+          {
+            "title": "Training changes; inference uses",
+            "text": "During training, a model is adjusted using data. When a trained plant model labels a new photo, it is doing inference. That one prediction does not prove the label is correct or mean the model learned from the photo. A product may separately collect data for later training; do not assume it does or does not."
+          },
+          {
+            "title": "Test beyond the examples it learned from",
+            "text": "Imagine a fictional leaf classifier trained only on clear daylight photos. A useful test includes different photos with independently checked labels, including shade or unfamiliar backgrounds. Record which predictions match and which fail. Testing only the training examples can hide a model that learned those examples but performs poorly on new ones."
+          }
+        ],
+        "practice": {
+          "title": "Your turn: design two tools",
+          "instructions": [
+            "On paper or in your own words, invent a rule with an explicit if/then condition. You do not need to code it.",
+            "Invent a learned tool. Name the examples it would train on and the prediction it would make.",
+            "Choose two new test cases, say how you would know the expected answers, and describe a failure you would look for.",
+            "Save your designs and test plan in the final step. Use fictional objects or made-up club tasks; do not upload photos or personal data."
+          ],
+          "selfCheck": "Can you explain why your test examples are separate from training? What would you do if the tool fails one?"
+        },
+        "takeaway": "Ask how it works, where its examples came from, and how you would check a new result.",
+        "independentPractice": "Without the notes, explain a timer, a learned classifier and a generator to someone—or write the explanation yourself. Include how their functions can overlap."
+      },
+      "references": [
+        {
+          "id": "ml",
+          "title": "Google: What is machine learning?",
+          "url": "https://developers.google.com/machine-learning/intro-to-ml/what-is-ml",
+          "supports": "Models learn patterns from data; prediction and generation. Not a claim that every software tool uses ML."
+        }
+      ]
     },
     {
       "id": "lai.ai-you-can-use.l03",

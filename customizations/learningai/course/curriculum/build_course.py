@@ -133,6 +133,16 @@ L[14]['transferFields']=[
  {'id':L[14]['id']+'.after','prompt':'Paste the revised artifact and identify the change made because of a test.','minLength':60,'maxLength':6000}]
 for l in L:
  l['completionPolicy']={'mode':'formative-submission','requires':'All visible required core/branch choices and required text fields','correctAnswersRequired':False,'reflectionSemanticallyGraded':False}
+# Additive teaching notes keep existing answer IDs and submission rules stable.
+pilot_teaching=json.loads((ROOT/'curriculum/pilot-teaching.json').read_text())
+for l in L:
+ if l['id'] in pilot_teaching:
+  l['teaching']=pilot_teaching[l['id']]
+  l['references']=[dict(s) for s in SOURCES if s['id'] in l['sourceIds']]
+  (ROOT.parents[2]/f'apps/api/src/services/learningai/lesson-{l["number"]:02d}.json').write_text(json.dumps(l,indent=2,ensure_ascii=False)+'\n')
+# The course map is a plan; availability always also requires a readable API activity.
+catalog=[{k:l[k] for k in ('id','number','part','title','objective','estimatedMinutes')} | {'pilot':l['id'] in pilot_teaching, 'question':pilot_teaching.get(l['id'], {}).get('question', l['objective'])} for l in L]
+(ROOT.parents[2]/'apps/web/components/LearningAI/course-catalog.json').write_text(json.dumps(catalog,indent=2,ensure_ascii=False)+'\n')
 course={'schemaVersion':1,'courseId':'lai.ai-you-can-use','contentVersion':'2026-10-05-draft.2','status':'draft-for-review-not-certified','audience':'High-school/teen learners; no external AI account required','parts':parts,'principles':['Evidence-based disagreement and justified non-use earn full credit.','All scenarios and evidence cards are fictional unless explicitly sourced.','Reflection rubrics are for self/teacher review; no semantic auto-grading.','Device-only persistence is not authenticated progress.'],'sources':[dict(s,reviewedOn='2026-10-05') for s in SOURCES],'lessons':L}
 (ROOT/'curriculum/course-manifest.json').write_text(json.dumps(course,indent=2,ensure_ascii=False)+'\n')
 # Human review edition generated from the same authored source.
@@ -141,6 +151,10 @@ for p in parts:
  lines += [f"### Part {p['number']}: {p['title']}",'']+[f"{n}. {L[n-1]['title']}" for n in p['lessons']]+['']
 for l in L:
  lines += [f"## {l['number']}. {l['title']}",'',f"Stable ID: `{l['id']}` · version {l['version']} · {l['status']}",'',f"**Objective:** {l['objective']}",'','**Student explanation**','',l['explanation'],'','**Practice scenario**','',l['scenario'],'']
+ if 'teaching' in l:
+  t=l['teaching']
+  for section in t['sections']:lines += ['### '+section['title'],'',section['text'],'']
+  lines += ['**'+t['practice']['title']+'**','']+[f'- {x}' for x in t['practice']['instructions']]+['',t['practice']['selfCheck'],'','**Takeaway:** '+t['takeaway'],'','**Independent practice:** '+t['independentPractice'],'']
  for a in l['activities']+([l['branchActivity']] if 'branchActivity'in l else []):
   lines += [f"### Exercise: {a['id']}",'']
   if 'visibleIfActivity'in a:lines += [f"Branch: show if `{a['visibleIfActivity']}` was answered other than `{a['visibleIfNotEqual']}`. It is a learning detour, not a penalty.",'']
@@ -164,6 +178,11 @@ def questions(a):
  return result
 for l in L:
  pages=[{'name':'understand','title':l['title'],'elements':[h(l['id']+'.intro','<h3>'+html.escape(l['objective'])+'</h3><p>'+html.escape(l['explanation'])+'</p><div class="evidence"><strong>Practice scenario</strong><p>'+html.escape(l['scenario'])+'</p></div>')]+questions(l['activities'][0])}, {'name':'decide','title':'Make a decision','elements':questions(l['activities'][1])}]
+ if 'teaching' in l:
+  t=l['teaching']; practice=t['practice']
+  teaching_html=''.join('<h3>'+html.escape(s['title'])+'</h3><p>'+html.escape(s['text'])+'</p>' for s in t['sections'])
+  teaching_html+='<h3>'+html.escape(practice['title'])+'</h3><ol>'+''.join('<li>'+html.escape(x)+'</li>' for x in practice['instructions'])+'</ol><p>'+html.escape(practice['selfCheck'])+'</p>'
+  pages[0]['elements'].insert(1,h(l['id']+'.teaching',teaching_html))
  a=l.get('branchActivity')
  if a:pages.append({'name':'detour','title':'Take a closer look','visibleIf':"{"+a['visibleIfActivity']+"} notempty and {"+a['visibleIfActivity']+"} != '"+a['visibleIfNotEqual']+"'",'elements':questions(a)})
  tid=l['transfer']['id'];pages.append({'name':'transfer','title':'Make the reasoning yours','elements':[{'type':'comment','name':tid,'title':l['transfer']['prompt'],'description':'Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.','isRequired':True,'maxLength':2000,'validators':[{'type':'text','minLength':30,'text':'Add enough reasoning to review (at least 30 characters).'}]},h(l['id']+'.rubric','<p><strong>Self-check</strong></p><ul>'+''.join('<li>'+html.escape(x)+'</li>'for x in l['transfer']['rubric'])+'</ul><p>'+html.escape(l['uncertainty'])+'</p>')]})

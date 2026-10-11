@@ -1,0 +1,152 @@
+[
+  {
+    "id": "lai.ai-you-can-use.l01",
+    "number": 1,
+    "part": 1,
+    "title": "Get your first useful result",
+    "objective": "Judge a suggestion against practical constraints and justify a tool choice.",
+    "estimatedMinutes": 8,
+    "pilot": true,
+    "question": "What makes a suggestion worth using?"
+  },
+  {
+    "id": "lai.ai-you-can-use.l02",
+    "number": 2,
+    "part": 1,
+    "title": "How did we get here?",
+    "objective": "Distinguish explicit rules, learning from examples, and generative output without treating them as mutually exclusive eras.",
+    "estimatedMinutes": 8,
+    "pilot": true,
+    "question": "Is it following a rule, learning a pattern, or making something?"
+  },
+  {
+    "id": "lai.ai-you-can-use.l03",
+    "number": 3,
+    "part": 1,
+    "title": "What is happening inside the chat?",
+    "objective": "Trace a typical cloud-chat request and separate generating a reply from checking a claim.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Trace a typical cloud-chat request and separate generating a reply from checking a claim."
+  },
+  {
+    "id": "lai.ai-you-can-use.l04",
+    "number": 4,
+    "part": 1,
+    "title": "What is prompt engineering?",
+    "objective": "Write and test a brief with a task, relevant context, limits and output format.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Write and test a brief with a task, relevant context, limits and output format."
+  },
+  {
+    "id": "lai.ai-you-can-use.l05",
+    "number": 5,
+    "part": 1,
+    "title": "Give it the missing context",
+    "objective": "Select relevant context and identify what remains unknown.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Select relevant context and identify what remains unknown."
+  },
+  {
+    "id": "lai.ai-you-can-use.l06",
+    "number": 6,
+    "part": 2,
+    "title": "Show what good looks like",
+    "objective": "Use examples to communicate format while noticing whose examples are missing.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Use examples to communicate format while noticing whose examples are missing."
+  },
+  {
+    "id": "lai.ai-you-can-use.l07",
+    "number": 7,
+    "part": 2,
+    "title": "Your first answer is a draft",
+    "objective": "Revise unsupported wording and track what changed.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Revise unsupported wording and track what changed."
+  },
+  {
+    "id": "lai.ai-you-can-use.l08",
+    "number": 8,
+    "part": 2,
+    "title": "Make AI your study coach",
+    "objective": "Choose assistance that preserves independent practice and follows assignment rules.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Choose assistance that preserves independent practice and follows assignment rules."
+  },
+  {
+    "id": "lai.ai-you-can-use.l09",
+    "number": 9,
+    "part": 2,
+    "title": "Make something that sounds like you",
+    "objective": "Make creative choices and distinguish attribution, permission, and authorship.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Make creative choices and distinguish attribution, permission, and authorship."
+  },
+  {
+    "id": "lai.ai-you-can-use.l10",
+    "number": 10,
+    "part": 2,
+    "title": "Check the part that matters",
+    "objective": "Trace a claim to relevant evidence and decide whether to share it.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Trace a claim to relevant evidence and decide whether to share it."
+  },
+  {
+    "id": "lai.ai-you-can-use.l11",
+    "number": 11,
+    "part": 3,
+    "title": "Give AI the right material",
+    "objective": "Minimize sensitive data and separate source text from instructions.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Minimize sensitive data and separate source text from instructions."
+  },
+  {
+    "id": "lai.ai-you-can-use.l12",
+    "number": 12,
+    "part": 3,
+    "title": "Turn a big task into small steps",
+    "objective": "Design a workflow with checkpoints and proportionate resource use.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Design a workflow with checkpoints and proportionate resource use."
+  },
+  {
+    "id": "lai.ai-you-can-use.l13",
+    "number": 13,
+    "part": 3,
+    "title": "Stay in charge",
+    "objective": "Test for uneven outcomes and keep consequential decisions reviewable.",
+    "estimatedMinutes": 8,
+    "pilot": false,
+    "question": "Test for uneven outcomes and keep consequential decisions reviewable."
+  },
+  {
+    "id": "lai.ai-you-can-use.l14",
+    "number": 14,
+    "part": 3,
+    "title": "Make something useful",
+    "objective": "Create a small artifact with a defined audience, evidence and documented choices.",
+    "estimatedMinutes": 15,
+    "pilot": false,
+    "question": "Create a small artifact with a defined audience, evidence and documented choices."
+  },
+  {
+    "id": "lai.ai-you-can-use.l15",
+    "number": 15,
+    "part": 3,
+    "title": "Test it, improve it, own it",
+    "objective": "Evaluate a project against criteria, revise it, and defend a final use decision.",
+    "estimatedMinutes": 15,
+    "pilot": false,
+    "question": "Evaluate a project against criteria, revise it, and defend a final use decision."
+  }
+]

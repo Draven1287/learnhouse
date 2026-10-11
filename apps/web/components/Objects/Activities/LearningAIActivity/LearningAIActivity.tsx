@@ -21,13 +21,22 @@ export type ChoiceActivity = {
 }
 export type Lesson = {
   id: string
+  number: number
   title: string
+  objective: string
   explanation: string
   scenario: string
   activities: ChoiceActivity[]
   branchActivity: ChoiceActivity
   transfer: { id: string; prompt: string; rubric: string[] }
   uncertainty: string
+  teaching?: {
+    sections: { title: string; text: string }[]
+    practice: { title: string; instructions: string[]; selfCheck: string }
+    takeaway: string
+    independentPractice: string
+  }
+  references?: { id: string; title: string; url: string }[]
 }
 const empty: LessonState = {
   answers: {},
@@ -40,12 +49,14 @@ type PlayerProps = {
   activity: { activity_uuid: string; reviewMedia?: LearningAIReviewMedia }
   presentation?: 'cockpit'
   homeHref?: string
+  nextLessonHref?: string
 }
 
 export default function LearningAIActivity({
   activity,
   presentation,
   homeHref = '/learningai',
+  nextLessonHref,
 }: PlayerProps) {
   const session = useLHSession() as any
   const token = session?.data?.tokens?.access_token
@@ -64,6 +75,7 @@ export default function LearningAIActivity({
       token={token}
       presentation={presentation}
       homeHref={homeHref}
+      nextLessonHref={nextLessonHref}
     />
   )
 }
@@ -73,6 +85,7 @@ function AuthenticatedLesson({
   token,
   presentation,
   homeHref = '/learningai',
+  nextLessonHref,
 }: PlayerProps & { token: string }) {
   const org = useOrg() as any
   const query = useQueryClient()
@@ -242,6 +255,7 @@ function AuthenticatedLesson({
         status={status}
         required={required}
         homeHref={homeHref}
+        nextLessonHref={nextLessonHref}
         answer={answer}
         persist={persist}
         reload={reload}

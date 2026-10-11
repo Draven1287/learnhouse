@@ -140,7 +140,7 @@ async def test_real_http_concurrent_saves_submissions_and_completion(http_fixtur
     async with pg_factory() as db:
         run=(await db.execute(select(TrailRun))).scalars().one()
         step=(await db.execute(select(TrailStep))).scalars().one()
-        assert run.status==StatusEnum.STATUS_COMPLETED and step.complete
+        assert run.status!=StatusEnum.STATUS_COMPLETED and step.complete
         assert step.user_id==2 and step.activity_id==activity.id and step.org_id==run.org_id
 
 @pytest.mark.asyncio
@@ -258,3 +258,46 @@ async def test_optional_vector_failure_preserves_core_bootstrap(pg_factory, monk
         assert await connection.scalar(text('SELECT 1')) == 1
         assert await connection.scalar(text("SELECT to_regclass('learningai_attempt')")) is not None
         assert await connection.scalar(text("SELECT to_regclass('course_embedding')")) is None
+
+
+@pytest.mark.asyncio
+async def test_two_lessons_keep_answers_revisions_and_completion_separate(http_fixture, pg_factory, db):
+    from src.services.learningai.contract import LESSONS
+    from src.db.courses.chapter_activities import ChapterActivity
+    app, headers, first, course, _ = http_fixture
+    definition = LESSONS['lai.ai-you-can-use.l02']
+    second = Activity(**first.model_dump(exclude={'id', 'activity_uuid', 'content', 'name'}),
+                      id=2, name=definition['title'], activity_uuid='activity_second_lesson',
+                      content={'learningai': {'lesson_id': definition['id'], 'version': 1, 'content_version': CONTENT_VERSION}})
+    db.add(second)
+    await db.commit()
+    first_link = (await db.execute(select(ChapterActivity).where(ChapterActivity.activity_id == first.id))).scalars().one()
+    db.add(ChapterActivity(**first_link.model_dump(exclude={'id', 'activity_id', 'order'}), activity_id=second.id, order=2))
+    await db.commit()
+    route = f'/learningai/{second.activity_uuid}'
+    work = {a['id']: a['correctAnswer'] for a in definition['activities']}
+    work[definition['transfer']['id']] = 'A timer follows an if/then rule. A plant classifier learns labeled examples; I test new shade photos against checked labels.'
+    async with client(app) as http:
+        data = (await http.get(route+'/state', headers=headers[2])).json()
+        assert data['lesson']['id'] == definition['id'] and data['state']['revision'] == 0
+        assert (await http.put(route+'/state', headers=headers[2], json=body())).status_code == 422
+        saved = await http.put(route+'/state', headers=headers[2], json={'answers': work, 'page': 3, 'revision': 0})
+        assert saved.status_code == 200, saved.text
+        assert (await http.get(f'/learningai/{first.activity_uuid}/state', headers=headers[2])).json()['state']['answers'] == {}
+        assert (await http.get(route+'/state', headers=headers[3])).json()['state']['answers'] == {}
+        assert (await http.get(route+'/state')).status_code == 401
+        assert (await http.put(route+'/state', headers=headers[2], json={'answers': work, 'page': 3, 'revision': 0})).status_code == 409
+    async with client(app) as http:
+        assert (await http.get(route+'/state', headers=headers[2])).json()['state']['answers'] == work
+        done = await http.post(route+'/submit', headers=headers[2], json={'answers': work, 'page': 3, 'revision': 1})
+        assert done.status_code == 200 and done.json()['state']['completed']
+        assert not (await http.get(f'/learningai/{first.activity_uuid}/state', headers=headers[2])).json()['state']['completed']
+        assert (await http.post(f'/learningai/{first.activity_uuid}/submit', headers=headers[2], json=body(complete=True))).status_code == 200
+    async with pg_factory() as session:
+        records = (await session.execute(select(LearningAIAttempt))).scalars().all()
+        assert len(records) == 2 and all(r.completed for r in records)
+        assert {r.activity_id for r in records} == {first.id, second.id}
+        steps = (await session.execute(select(TrailStep))).scalars().all()
+        assert len(steps) == 2 and all(s.complete for s in steps)
+        run = (await session.execute(select(TrailRun))).scalars().one()
+        assert run.status == StatusEnum.STATUS_IN_PROGRESS

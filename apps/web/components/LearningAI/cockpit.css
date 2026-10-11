@@ -1563,6 +1563,37 @@ html:has(.lai) {
 .lai .lrow {
   scroll-margin-top: 100px;
 }
+.lai .teaching-block {
+  margin: 28px 0;
+}
+.lai .lesson h2 {
+  font-size: 22px;
+  line-height: 1.3;
+  margin: 0 0 12px;
+}
+.lai .lesson ol {
+  list-style: decimal;
+  padding-left: 24px;
+}
+.lai .lesson ol li {
+  padding-left: 6px;
+  margin-bottom: 12px;
+}
+.lai .lesson-references {
+  margin: 24px 0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.lai .lesson-references summary {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.lai .lesson-references a {
+  text-decoration: underline;
+}
+.lai .slot-detail + .slot-detail {
+  margin-top: 30px;
+}
 .lai .mx-card .cap {
   font-size: 9px;
   letter-spacing: 0.12em;

@@ -10,6 +10,7 @@ import { getAPIUrl, getConfig, getUriWithOrg } from '@services/config/config'
 import { learningAIRequest, LessonState } from '@services/courses/learningai'
 import LearningAIActivity from '@components/Objects/Activities/LearningAIActivity/LearningAIActivity'
 import CockpitDial, { CockpitMiniDial } from './CockpitDial'
+import coursePlan from './course-catalog.json'
 import './cockpit.css'
 
 type CourseActivity = {
@@ -28,23 +29,26 @@ type Course = {
     activities: CourseActivity[]
   }[]
 }
-type Catalog = { course: Course; activity: CourseActivity | null }
+type Catalog = { course: Course; activities: Record<string, CourseActivity> }
 const steps = ['Learn', 'First choice', 'Your judgment', 'Make it yours']
 
 export default function LearningAICockpit({
   orgslug,
   screen,
+  lessonNumber,
 }: {
   orgslug: string
   screen: string
+  lessonNumber?: number
 }) {
   const session = useLHSession()
   // Drop all account-derived content immediately, including during a session change.
   return (
     <CockpitSession
-      key={`${orgslug}:${screen}:${session?.data?.user?.id ?? 'guest'}:${session?.data?.tokens?.access_token ?? ''}`}
+      key={`${orgslug}:${screen}:${lessonNumber ?? 0}:${session?.data?.user?.id ?? 'guest'}:${session?.data?.tokens?.access_token ?? ''}`}
       orgslug={orgslug}
       screen={screen}
+      lessonNumber={lessonNumber}
     />
   )
 }
@@ -52,9 +56,11 @@ export default function LearningAICockpit({
 function CockpitSession({
   orgslug,
   screen,
+  lessonNumber,
 }: {
   orgslug: string
   screen: string
+  lessonNumber?: number
 }) {
   const session = useLHSession()
   const org = useOrg() as { id?: number } | null
@@ -65,7 +71,9 @@ function CockpitSession({
   const href = (page = '') =>
     getUriWithOrg(orgslug, `/learningai${page ? `/${page}` : ''}`)
   const [catalog, setCatalog] = useState<Catalog | null>(null)
-  const [saved, setSaved] = useState<LessonState | null>(null)
+  const [savedLessons, setSavedLessons] = useState<Record<string, LessonState>>(
+    {}
+  )
   const [error, setError] = useState('')
   const [progressError, setProgressError] = useState('')
   const [retry, setRetry] = useState(0)
@@ -111,30 +119,50 @@ function CockpitSession({
       const course: Course = await response.json()
       if (course.org_id !== org?.id || !Array.isArray(course.chapters))
         throw new Error('The course is not available in this organization.')
-      const activity =
+      const activities = Object.fromEntries(
         course.chapters
           .filter((c) => !c.is_locked)
           .flatMap((c) => c.activities)
-          .find(
+          .filter(
             (a) =>
               !a.is_locked &&
-              a.content?.learningai?.lesson_id === 'lai.ai-you-can-use.l01'
-          ) || null
-      if (controller.signal.aborted) return
-      setCatalog({ course, activity })
-      if (token && activity) {
-        try {
-          const data = await learningAIRequest(
-            activity.activity_uuid,
-            token,
-            'GET',
-            undefined,
-            controller.signal
+              coursePlan.some(
+                (l) => l.pilot && l.id === a.content?.learningai?.lesson_id
+              )
           )
-          if (!controller.signal.aborted) setSaved(data.state)
-        } catch (e) {
-          if (!controller.signal.aborted) setProgressError((e as Error).message)
-        }
+          .map((a) => [a.content!.learningai!.lesson_id!, a])
+      )
+      if (controller.signal.aborted) return
+      setCatalog({ course, activities })
+      if (token) {
+        const results = await Promise.all(
+          Object.entries(activities).map(async ([id, activity]) => {
+            try {
+              const data = await learningAIRequest(
+                activity.activity_uuid,
+                token,
+                'GET',
+                undefined,
+                controller.signal
+              )
+              return { id, state: data.state as LessonState, error: '' }
+            } catch (e) {
+              return { id, state: null, error: (e as Error).message }
+            }
+          })
+        )
+        if (controller.signal.aborted) return
+        setSavedLessons(
+          Object.fromEntries(
+            results.filter((r) => r.state).map((r) => [r.id, r.state!])
+          )
+        )
+        setProgressError(
+          results
+            .filter((r) => r.error)
+            .map((r) => `Lesson ${r.id.slice(-2)}: ${r.error}`)
+            .join(' ')
+        )
       }
     }
     load().catch((e) => {
@@ -150,17 +178,27 @@ function CockpitSession({
       document.body.style.overflow = old
     }
   }, [menuOpen])
+  const available = coursePlan.filter((l) => catalog?.activities[l.id])
+  const next =
+    available.find(
+      (l) => savedLessons[l.id] && !savedLessons[l.id].completed
+    ) ||
+    available[0] ||
+    coursePlan[0]
+  const plan = coursePlan.find((l) => l.number === lessonNumber) || next
+  const number = String(plan.number).padStart(2, '0')
+  const saved = savedLessons[plan.id]
   const complete = saved?.completed ?? false
-  const activity = catalog?.activity
+  const activity = catalog?.activities[plan.id]
   const firstName = session?.data?.user?.first_name
   const actionText = !signedIn
     ? 'Sign in to begin'
     : complete
-      ? 'Review lesson 01'
+      ? `Review lesson ${number}`
       : saved?.revision
-        ? 'Resume lesson 01'
-        : 'Start lesson 01'
-  const target = !signedIn ? 'signin' : 'lesson'
+        ? `Resume lesson ${number}`
+        : `Start lesson ${number}`
+  const target = `${!signedIn ? 'signin' : 'lesson'}/${number}`
   const retryButton = (
     <button
       className="btn"
@@ -168,7 +206,7 @@ function CockpitSession({
         setError('')
         setProgressError('')
         setCatalog(null)
-        setSaved(null)
+        setSavedLessons({})
         setRetry((v) => v + 1)
       }}
     >
@@ -178,7 +216,7 @@ function CockpitSession({
   const unavailable =
     error ||
     (catalog && !activity
-      ? 'Lesson 01 is not currently available to this account.'
+      ? `Lesson ${number} is not currently available to this account.`
       : '')
   const courseStatus = unavailable ? (
     <div role="alert" className="integration-status integration-error">
@@ -208,7 +246,13 @@ function CockpitSession({
 
   let content
   if (screen === 'signin')
-    content = <SignIn orgslug={orgslug} home={href()} lesson={href('lesson')} />
+    content = (
+      <SignIn
+        orgslug={orgslug}
+        home={href()}
+        lesson={href(`lesson/${number}`)}
+      />
+    )
   else if (screen === 'lesson')
     content = (
       <>
@@ -224,7 +268,7 @@ function CockpitSession({
                 </p>
               </div>
             </header>
-            <Link className="btn white" href={href('signin')}>
+            <Link className="btn white" href={href(`signin/${number}`)}>
               Sign in
             </Link>
           </section>
@@ -237,6 +281,11 @@ function CockpitSession({
               activity={activity}
               presentation="cockpit"
               homeHref={href()}
+              nextLessonHref={
+                available.find((l) => l.number === plan.number + 1)
+                  ? href(`intro/${String(plan.number + 1).padStart(2, '0')}`)
+                  : undefined
+              }
             />
           ))
         )}
@@ -248,21 +297,21 @@ function CockpitSession({
         <section className="ck-side ck-left" aria-labelledby="cockpit-title">
           <p className="cap ck-clock">
             {screen === 'intro'
-              ? 'Lesson 01 · Understand'
+              ? `Lesson ${number} · Understand`
               : clock || 'LearningAI'}
           </p>
           <h1 id="cockpit-title">
             {screen === 'intro'
-              ? 'Your judgment. Your first result.'
+              ? plan.title
               : `${greeting}${signedIn && firstName ? `, ${firstName}` : ''}.`}
           </h1>
           <p className="lead-line">
             {screen === 'intro'
-              ? 'You decide what useful means. Compare a suggestion with real constraints, make two choices, then write your own plan.'
+              ? plan.objective
               : complete
-                ? 'Your first lesson is complete. Revisit your reasoning or find your saved reflection in your toolkit.'
+                ? 'Your available lessons are submitted. Revisit your reasoning or find your saved work in your toolkit.'
                 : signedIn
-                  ? 'Use AI without handing over your judgment. Continue your first lesson, then keep your reasoning in your toolkit.'
+                  ? 'Use AI without handing over your judgment. Continue your next lesson, then keep your reasoning in your toolkit.'
                   : 'Use AI without handing over your judgment. Your first lesson takes about eight minutes. Sign in to keep your place.'}
           </p>
           {signedIn && saved && !complete && (
@@ -290,6 +339,10 @@ function CockpitSession({
             page={saved?.page}
             completed={complete}
             lesson={screen === 'intro'}
+            lessonNumber={plan.number}
+            completedLessons={coursePlan
+              .filter((l) => savedLessons[l.id]?.completed)
+              .map((l) => l.number)}
           />
           <div className="ck-core">
             <span className="cap">
@@ -299,9 +352,9 @@ function CockpitSession({
                   ? 'Your next step'
                   : 'Begin with'}
             </span>
-            <div className="gear">01</div>
-            <div className="ttl">Get your first useful result</div>
-            <p className="q">What makes a suggestion worth using?</p>
+            <div className="gear">{number}</div>
+            <div className="ttl">{plan.title}</div>
+            <p className="q">{plan.question}</p>
           </div>
           <div className="ck-ign">{launch}</div>
         </div>
@@ -309,9 +362,9 @@ function CockpitSession({
           <ul className="ro">
             <Readout
               label="Available"
-              value={activity ? '01' : catalog ? '00' : '—'}
-              unit="lesson"
-              detail="The first lesson is ready for local review."
+              value={catalog ? String(available.length).padStart(2, '0') : '—'}
+              unit="lessons"
+              detail="Two lessons are connected for pilot review."
             />
             <Readout
               label={signedIn ? 'Saved progress' : 'First lesson'}
@@ -337,7 +390,7 @@ function CockpitSession({
               label="Course plan"
               value="15"
               unit="lessons"
-              detail="Understand. Revise. Judgment. Lessons 02–15 are not released."
+              detail="Understand. Revise. Judgment. Lessons 03–15 are not released."
             />
           </ul>
         </aside>
@@ -356,7 +409,11 @@ function CockpitSession({
             </p>
           </div>
           <ul className="ro ro-row">
-            <Readout label="Available" value="01" unit="lesson" />
+            <Readout
+              label="Available"
+              value={catalog ? String(available.length).padStart(2, '0') : '—'}
+              unit="lessons"
+            />
             <Readout label="Course plan" value="15" unit="lessons" />
             <Readout label="First lesson" value="08" unit="min" />
           </ul>
@@ -364,30 +421,50 @@ function CockpitSession({
         {courseStatus}
         {accountProgress}
         <div className="rows">
-          <Link id="part-1" className="lrow" href={href('intro')}>
-            <span className="no">01</span>
-            <span className="lt">Get your first useful result</span>
-            <span className="cap state">
-              {complete ? 'Complete · review' : 'View lesson'} →
-            </span>
-          </Link>
-          {['02–05 · Understand', '06–10 · Revise', '11–15 · Judgment'].map(
-            (part, index) => (
-              <div
-                key={part}
-                id={index > 0 ? `part-${index + 1}` : undefined}
+          {coursePlan.map((l) => {
+            const num = String(l.number).padStart(2, '0')
+            const accessible = !!catalog?.activities[l.id]
+            const state = savedLessons[l.id]
+            const row = (
+              <>
+                <span className="no">{num}</span>
+                <span className="lt">{l.title}</span>
+                <span className="cap state">
+                  {accessible
+                    ? state?.completed
+                      ? 'Submitted · review →'
+                      : state?.revision
+                        ? 'Resume →'
+                        : 'View lesson →'
+                    : l.pilot
+                      ? 'Unavailable'
+                      : 'Not released'}
+                </span>
+              </>
+            )
+            const id = [1, 6, 11].includes(l.number)
+              ? `part-${l.part}`
+              : undefined
+            return accessible ? (
+              <Link
+                key={l.id}
+                id={id}
                 className="lrow"
+                href={href(`intro/${num}`)}
               >
-                <span className="no">—</span>
-                <span className="lt">{part}</span>
-                <span className="cap state">Not released</span>
+                {row}
+              </Link>
+            ) : (
+              <div key={l.id} id={id} className="lrow">
+                {row}
               </div>
             )
-          )}
+          })}
         </div>
         <p className="footnote">
-          Your first lesson includes choices, feedback and a reflection.
-          Completion records your submission, not mastery.
+          Both pilot lessons include an explanation, hands-on practice, checks,
+          feedback and saved reasoning. Completion records your submission, not
+          mastery.
         </p>
       </section>
     )
@@ -411,24 +488,31 @@ function CockpitSession({
           <>
             {courseStatus}
             {accountProgress}
-            {saved && (
-              <div className="slot-detail">
-                <span className="cap">
-                  Lesson 01 ·{' '}
-                  {complete ? 'Submitted reflection' : 'Saved draft'}
-                </span>
-                <h2>Get your first useful result</h2>
-                <p className="toolkit-copy">
-                  {saved.answers['lai.ai-you-can-use.l01.transfer'] ||
-                    'Your reflection will appear here after you save it in the lesson.'}
-                </p>
-                <div className="integration-actions">
-                  <Link className="btn" href={href('lesson')}>
-                    {complete ? 'Review lesson' : 'Continue lesson'}
-                  </Link>
+            {available.map((l) => {
+              const work = savedLessons[l.id]
+              if (!work) return null
+              return (
+                <div className="slot-detail" key={l.id}>
+                  <span className="cap">
+                    Lesson {String(l.number).padStart(2, '0')} ·{' '}
+                    {work.completed ? 'Submitted reflection' : 'Saved draft'}
+                  </span>
+                  <h2>{l.title}</h2>
+                  <p className="toolkit-copy">
+                    {work.answers[`${l.id}.transfer`] ||
+                      'Your practice response will appear here after you save it in the lesson.'}
+                  </p>
+                  <div className="integration-actions">
+                    <Link
+                      className="btn"
+                      href={href(`lesson/${String(l.number).padStart(2, '0')}`)}
+                    >
+                      {work.completed ? 'Review lesson' : 'Continue lesson'}
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            )}
+              )
+            })}
           </>
         )}
       </section>
@@ -442,7 +526,7 @@ function CockpitSession({
             <h1>Your next project.</h1>
             <p>
               One real task, from goal to finished result. Projects are not
-              available in this first-lesson release.
+              available in this pilot release.
             </p>
           </div>
         </header>
@@ -459,7 +543,7 @@ function CockpitSession({
         </div>
         <div className="integration-actions">
           <Link className="btn" href={href('course')}>
-            Explore the available lesson
+            Explore the available lessons
           </Link>
         </div>
       </section>

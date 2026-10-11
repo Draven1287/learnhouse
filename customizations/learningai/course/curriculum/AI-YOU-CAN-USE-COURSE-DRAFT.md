@@ -48,6 +48,31 @@ You decide what a useful result means. A fluent suggestion can still miss your t
 
 Fictional club brief: six students have 10 minutes, no spending money and no phones. A draft suggests a paid online tournament lasting 45 minutes.
 
+### Start with what success needs
+
+For the fictional club, success means six students can join an activity within 10 minutes, with no spending and no phones. Those are constraints: conditions the result must satisfy. An exciting description does not make a plan fit.
+
+### Inspect the draft, one condition at a time
+
+The proposed online tournament takes 45 minutes, costs money and needs phones. It fails all three checks. You do not need an AI tool to notice this. Put the brief beside the suggestion and mark each mismatch.
+
+### Repair it, then check what you missed
+
+A possible repair uses one minute to explain a scrap-paper word game, seven minutes to play and two minutes to share. That totals 10 minutes and needs no spending or phones. It is still a proposal: ask the club organizer whether everyone can read, write or contribute another way.
+
+**Your turn: make a different plan**
+
+- Before seeing the choices, sketch another activity on paper or think it through in your own words.
+- Check time, cost and devices separately. Include setup and clearing away in your 10 minutes.
+- Choose a checklist, a person, AI or no tool. Explain what that choice adds and what you would still check.
+- Keep your own plan for the final step. You will save it there, with one inclusion check and a role to consult.
+
+Could someone run your plan from the details you give? If a constraint is missing, revise it before submitting.
+
+**Takeaway:** Define useful → check every constraint → revise or reject → explain your decision.
+
+**Independent practice:** Tomorrow, try the same three-constraint check on a fictional plan without reopening the worked example. Explain one reason to use a tool and one reason not to.
+
 ### Exercise: lai.ai-you-can-use.l01.repair
 
 Which revision fits all three constraints?
@@ -108,6 +133,31 @@ Some software follows rules people specify. Machine learning fits patterns using
 **Practice scenario**
 
 Three fictional tools: A sends a reminder when a timer reaches zero. B learns to label plant photos from labeled examples. C generates a new club announcement from a brief.
+
+### Three approaches that still work together
+
+A rule-based tool follows a condition a person wrote: if the timer reaches zero, show a reminder. A learned classifier fits patterns from examples, such as labeled plant photos. A generator produces content, such as a new announcement. These are overlapping descriptions, not a timeline where each new approach erases the last.
+
+### Training changes; inference uses
+
+During training, a model is adjusted using data. When a trained plant model labels a new photo, it is doing inference. That one prediction does not prove the label is correct or mean the model learned from the photo. A product may separately collect data for later training; do not assume it does or does not.
+
+### Test beyond the examples it learned from
+
+Imagine a fictional leaf classifier trained only on clear daylight photos. A useful test includes different photos with independently checked labels, including shade or unfamiliar backgrounds. Record which predictions match and which fail. Testing only the training examples can hide a model that learned those examples but performs poorly on new ones.
+
+**Your turn: design two tools**
+
+- On paper or in your own words, invent a rule with an explicit if/then condition. You do not need to code it.
+- Invent a learned tool. Name the examples it would train on and the prediction it would make.
+- Choose two new test cases, say how you would know the expected answers, and describe a failure you would look for.
+- Save your designs and test plan in the final step. Use fictional objects or made-up club tasks; do not upload photos or personal data.
+
+Can you explain why your test examples are separate from training? What would you do if the tool fails one?
+
+**Takeaway:** Ask how it works, where its examples came from, and how you would check a new result.
+
+**Independent practice:** Without the notes, explain a timer, a learned classifier and a generator to someone—or write the explanation yourself. Include how their functions can overlap.
 
 ### Exercise: lai.ai-you-can-use.l02.approaches
 
