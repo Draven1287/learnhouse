@@ -211,7 +211,6 @@ async def test_anonymous_http_course_keeps_display_fields_without_private_data(
     """Exercise the actual router, anonymous auth, RBAC and response serialization."""
     import httpx
     from fastapi import FastAPI
-    from src.core.events.database import get_db_session
     from src.routers.courses.courses import router
 
     from src.db.users import User
@@ -228,7 +227,14 @@ async def test_anonymous_http_course_keeps_display_fields_without_private_data(
     app.include_router(router, prefix='/courses')
     async def session():
         yield db
-    app.dependency_overrides[get_db_session] = session
+    # Database lifecycle tests reload that module; these consumers retain
+    # their original dependency callables. Replace only their DB dependency,
+    # leaving anonymous authentication, feature gates and RBAC intact.
+    from src.security import auth
+    from src.security.features_utils import dependencies as feature_dependencies
+    from src.routers.courses import courses as course_router
+    for dependency in (auth.get_db_session, feature_dependencies.get_db_session, course_router.get_db_session):
+        app.dependency_overrides[dependency] = session
     async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url='http://test') as client:
         response = await client.get(f'/courses/{course.course_uuid}{suffix}')
     assert response.status_code == 200, response.text
