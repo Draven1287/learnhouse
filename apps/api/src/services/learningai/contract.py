@@ -4,7 +4,7 @@ from pathlib import Path
 
 LESSONS = {
     lesson["id"]: lesson
-    for lesson in (json.loads(Path(__file__).with_name(f"lesson-{number:02d}.json").read_text()) for number in (1, 2))
+    for lesson in (json.loads(Path(__file__).with_name(f"lesson-{number:02d}.json").read_text()) for number in (1, 2, 3))
 }
 LESSON_VERSIONS = {(lesson["id"], lesson["version"]): lesson for lesson in LESSONS.values()}
 for number in (1, 2):

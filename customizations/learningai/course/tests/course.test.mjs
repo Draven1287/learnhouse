@@ -23,10 +23,24 @@ test('storage failures keep activity usable and do not claim reset succeeded',()
 test('event contract excludes free-text answer contents and bounds diagnostic history',()=>{const lesson=read('../lessons/course-01.json'),events=[],s=start(lesson,memory(),events);const value='Private practice string should stay out of emitted event payloads.';s.survey.setValue(lesson.reflectionId,value);for(let i=0;i<105;i++)s.survey.setValue(lesson.reflectionId,value+i);assert.ok(!JSON.stringify(events).includes(value));assert.equal(s.state.events.length,100);for(const e of events){assert.equal(e.schemaVersion,1);assert.equal(e.lessonId,lesson.id);assert.ok(e.eventId&&e.attemptId&&e.timestamp);}});
 for(let n=1;n<=15;n++){
  const lesson=read(`../lessons/course-${String(n).padStart(2,'0')}.json`),authored=manifest.lessons[n-1];
- test(`L${n}: SurveyJS navigation validates pages and completes the actual model`,()=>{const s=start(lesson);assert.equal(s.survey.nextPage(),false);for(const id of lesson.coreActivityIds)s.survey.setValue(id,s.survey.getQuestionByName(id).correctAnswer);assert.equal(s.survey.nextPage(),true);assert.equal(s.survey.currentPage.name,'decide');assert.equal(s.survey.nextPage(),true);assert.equal(s.survey.currentPage.name,'transfer');s.survey.tryComplete();assert.equal(s.state.completed,false);fill(s,lesson);s.survey.tryComplete();assert.equal(s.survey.isCompleted,true);assert.equal(s.state.completed,true);});
+ test(`L${n}: SurveyJS navigation validates each required page and completes the actual model`,()=>{
+  const s=start(lesson);assert.equal(s.survey.nextPage(),false);
+  const visited=[];
+  while(!s.survey.isLastPage){
+   visited.push(s.survey.currentPage.name);
+   for(const q of s.survey.currentPage.questions){
+    if(q.getType()==='radiogroup')s.survey.setValue(q.name,q.correctAnswer);
+    if(q.getType()==='comment')s.survey.setValue(q.name,'My initial reasoning compares the evidence with the claim and states a limit.');
+   }
+   assert.equal(s.survey.nextPage(),true);
+  }
+  assert.ok(visited.includes('understand'));assert.ok(visited.includes('decide'));
+  assert.equal(s.survey.currentPage.name,'transfer');s.survey.tryComplete();assert.equal(s.state.completed,false);
+  fill(s,lesson);s.survey.tryComplete();assert.equal(s.survey.isCompleted,true);assert.equal(s.state.completed,true);
+ });
  test(`L${n}: only selected feedback is visible`,()=>{const s=start(lesson);for(const a of authored.activities){for(const c of a.choices){s.survey.setValue(a.id,c.value);for(const other of a.choices)assert.equal(s.survey.getQuestionByName(a.id+'.feedback.'+other.value).isVisible,other.value===c.value);}}});
 }
 
 test('versioned persistence separates incompatible lessons and rejects wrong-version records',()=>{const lesson=read('../lessons/course-01.json'),storage=memory(),s=start(lesson,storage);fill(s,lesson);s.complete();const newer={...lesson,version:lesson.version+1},v2=start(newer,storage);assert.notEqual(s.key,v2.key);assert.deepEqual(v2.survey.data,{});v2.restart();assert.equal(start(lesson,storage).state.completed,true);const bad=JSON.parse(storage.getItem(s.key));bad.lessonVersion=99;storage.setItem(s.key,JSON.stringify(bad));assert.equal(start(lesson,storage).resumed,false);});
 for(const n of [14,15])test(`L${n}: every project submission is required and length limits enforced`,()=>{const lesson=read(`../lessons/course-${n}.json`),s=start(lesson);fill(s,lesson);const fields=s.survey.getAllQuestions().filter(q=>q.getType()==='comment');assert.equal(fields.length,4);for(const q of fields){const value=q.value;s.survey.setValue(q.name,'');assert.equal(s.complete(),false);s.survey.setValue(q.name,' '.repeat(100));assert.equal(s.complete(),false);s.survey.setValue(q.name,'x'.repeat(q.maxLength+1));assert.equal(s.complete(),false);s.survey.setValue(q.name,value);}assert.equal(s.complete(),true);assert.equal(lesson.completionPolicy.reflectionSemanticallyGraded,false);});
-test('all runtime schemas have declared stable IDs and formative completion metadata',()=>{for(let n=1;n<=15;n++){const l=read(`../lessons/course-${String(n).padStart(2,'0')}.json`),s=start(l);assert.equal(manifest.lessons[n-1].status,'implemented-draft');assert.equal(l.version,1);assert.equal(l.completionPolicy.correctAnswersRequired,false);const inputs=s.survey.getAllQuestions().filter(q=>q.getType()!=='html').map(q=>q.name);assert.deepEqual([...inputs].sort(),[...l.activityIds].sort());assert.equal(new Set(inputs).size,inputs.length);}});
+test('all runtime schemas have declared stable IDs and formative completion metadata',()=>{for(let n=1;n<=15;n++){const l=read(`../lessons/course-${String(n).padStart(2,'0')}.json`),s=start(l);assert.equal(manifest.lessons[n-1].status,'implemented-draft');assert.equal(l.version,manifest.lessons[n-1].version);assert.equal(l.completionPolicy.correctAnswersRequired,false);const inputs=s.survey.getAllQuestions().filter(q=>q.getType()!=='html').map(q=>q.name);assert.deepEqual([...inputs].sort(),[...l.activityIds].sort());assert.equal(new Set(inputs).size,inputs.length);}});

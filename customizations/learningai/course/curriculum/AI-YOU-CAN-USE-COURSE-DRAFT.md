@@ -236,64 +236,112 @@ Invent a simple rule-based tool and a tool that learns from examples. State the 
 
 ## 3. What is happening inside the chat?
 
-Stable ID: `lai.ai-you-can-use.l03` · version 1 · implemented-draft
+Stable ID: `lai.ai-you-can-use.l03` · version 2 · implemented-draft
 
 **Objective:** Trace a typical cloud-chat request and separate generating a reply from checking a claim.
 
 **Student explanation**
 
-In a typical cloud chat, the app sends your request over a network to a service. The server prepares input for model inference, then sends output back to the app. A text model processes tokens, which can be words or parts of words, and generates output using learned patterns and available context. This can produce useful text or plausible errors. Some apps run models locally or add search tools; neither a confident tone nor a reply alone proves that a search or fact-check happened.
+A chat interface shows a reply; it does not show everything that happened behind it. In this fictional cloud service, a trained model generates text. First trace the journey in your own words. Then compare a claim with dated evidence. You need no external account or live AI tool.
 
 **Practice scenario**
 
-Fictional chat: you send “hi,” then ask when the club meets. The reply says, “Definitely Friday at 4.” You supplied no timetable and see no source.
+Fictional club exercise, 13 October 2026. You ask a cloud chat: “When does the club meet this week?” It replies, “Definitely Friday at 4.” No timetable was supplied and no search or source is shown. Route cards, scrambled: A — app displays the returned reply; B — trained model generates output on the service; C — you type the prompt in the app; D — network carries the request to the service, which prepares the input.
+
+### Follow the message, then the reply
+
+For these cards: C → D → B → A. The app collects your prompt. The network carries it to the service; the service prepares the model input. The trained model generates output. The service sends the reply back over the network, and the app displays it. The interface, network, service and model do different jobs.
+
+### Training changes; inference uses
+
+Recall Lesson 2: training adjusts a model using data. Inference uses the trained model. Text models work with tokens—pieces of text—and generate using learned patterns and available context. Producing this reply does not, by itself, mean the model changed or searched the web.
+
+### A reply and a source do different jobs
+
+Fluent text can be useful and still be wrong. To check a schedule, inspect evidence from someone responsible for it. Ask: does this source cover this meeting, and has it been updated? A newer unsupported reply is not automatically stronger evidence than an applicable organizer notice.
+
+**Trace, compare, revise**
+
+- Save your own route before opening the worked trace. Use letters or sentences, with a return path.
+- Compare the model’s Friday claim against both dated notices. Save your explanation before opening the comparison choices.
+- Use the final book-swap case to write a supported notice and explain one claim you withheld.
+- Review your reasoning against the criteria. No real personal details or outside account are needed.
+
+Can you explain both how text was generated and why a particular source supports your correction?
+
+**Takeaway:** Trace the process. Check the claim against relevant evidence. Keep unsupported details out of what you share.
+
+**Independent practice:** Without reopening the worked trace, explain the cloud route to someone or write it yourself. Give a different example where a fluent answer needs an independent source, and say what evidence could change your mind.
 
 ### Exercise: lai.ai-you-can-use.l03.route
 
-Which route fits the cloud example?
+Compare with your own trace. Which account fits this cloud service?
 
-- **cloud — App → network → server → model inference → reply back.** Feedback: Yes. This is a simplified route, not a map of every service.
-- **local — Every app always computes the answer entirely on your phone.** Feedback: On-device models exist, but the scenario specifies a cloud service.
-- **search — Every reply is copied from a web search.** Feedback: Generation does not require a web search; tool use varies.
+- **cloud — C → D → B → A. The service uses a trained model; the reply returns over the network.** Feedback: That traces prompt, transport and service, model inference, then the reply. It does not establish a search or fact-check.
+- **train — C → D → B → A. Each reply necessarily retrains the model on this message.** Feedback: The travel order fits, but using a trained model is inference. A product may separately use stored data for later training; a reply alone does not establish that.
+- **search — C → D → A → B. The app first retrieves a verified answer; the model then checks it.** Feedback: In this scenario the model generates the reply before it is displayed. No search or verification is shown. Revisit what each card actually says.
 
-**Answer:** `cloud`. Distinguish the interface, transport, service and model.
+**Answer:** `cloud`. Trace this specified service without generalizing to every chat product.
 
 ### Exercise: lai.ai-you-can-use.l03.verify
 
-What should you do before sharing the meeting time?
+After your own source comparison, which message is justified by the packet?
 
-- **share — Share it because it says definitely.** Feedback: Confidence is wording, not evidence of the timetable.
-- **repeat — Ask the same chat until it repeats Friday.** Feedback: Consistency alone does not independently verify the claim.
-- **source — Check the club’s current timetable or ask its organizer.** Feedback: Use a source that actually knows the schedule and check its date.
+- **source — “For this week, the organizer’s 12 October update says Thursday at 16:00 in the library. I would use that update.”** Feedback: This names both the evidence and its scope. The older notice describes the earlier plan; confident chat wording adds no verification.
+- **share — “Friday at 4 is confirmed: both the older notice and the chat agree.”** Feedback: Agreement is not enough. Check whether the notice still applies after the organizer’s dated update.
+- **latest — “Friday at 4: the 13 October chat reply is newer than both notices.”** Feedback: A newer timestamp does not give a generated reply authority over an organizer’s update. Ask what source knows and whether it covers this week.
 
-**Answer:** `source`. The correct timetable is unknown from the supplied evidence.
+**Answer:** `source`. Compare authority, date and relevance together; do not choose simply by newest timestamp.
 
 ### Exercise: lai.ai-you-can-use.l03.evidence_check
 
 Branch: show if `lai.ai-you-can-use.l03.verify` was answered other than `source`. It is a learning detour, not a penalty.
 
-What would independently check the timetable claim?
+The reply repeats Friday. What would change the evidence?
 
-- **repeat — Repeating the same question.** Feedback: Repetition is not an independent timetable source.
-- **official — The current timetable or responsible organizer.** Feedback: That source can establish the meeting time.
+- **repeat — Ask for a more confident version of the same reply.** Feedback: That changes wording, not the source of the timetable.
+- **official — Check the current organizer update, or ask the organizer if the update is unclear.** Feedback: Use evidence from someone responsible for the schedule and check which meeting it covers.
 
-**Answer:** `official`. Complete this short check, then return to the main lesson.
+**Answer:** `official`. A repetition is not an independent check.
+
+**Required practice response:** Before opening the worked trace: type the card letters in travel order (for example X → Y), then explain the network’s job and what the model does. A numbered sentence is equally valid; no dragging is needed. Mark anything you are unsure of.
+
+Self-review criteria: Include all four cards and the return path.; Distinguish carrying a message from generating text.; This is your first attempt; uncertainty is welcome.
+
+**Required practice response:** Compare the Friday claim with both notices. Which source applies to this week, and why? Write a corrected message with its source and one thing the packet does not establish.
+
+Self-review criteria: Use dates, source responsibility and which meeting each notice covers.; Explain why “definitely” or repetition does not verify a claim.; State a limit without inventing missing details.
+
+**Required practice response:** Self-review: identify one change or clarification in your original trace or source comparison. Explain why it matters. What would you check if the organizer issued another update?
+
+Self-review criteria: Point to your own words and a specific reason.; Describe what new evidence would change your decision.
+
+**Fictional source packet: this week’s club meeting**
+
+Every card is invented for this exercise. Today in the scenario is 13 October 2026. No model was run. Compare responsibility, date and relevance; the chat has no shown access to either notice.
+
+Card | Source and date | What it says
+--- | --- | ---
+A | Club noticeboard · 5 October 2026 | Weekly club: Fridays at 16:00, room 4.
+B | Club organizer update · 12 October 2026 | This week only: the meeting moves to Thursday 15 October, 16:00, in the library. This replaces the Friday meeting.
+C | Generated chat reply · 13 October 2026 | Definitely Friday at 4. No source or search shown.
 
 **Reflection / transfer**
 
-Explain where the request travels and why the meeting time remains unverified. Name the source you would consult or explain why you would withhold the claim.
+New fictional case: a chat says “The book swap definitely has free pizza.” The current organizer card says “Tuesday, library, 15:30–16:00, free entry”; it says nothing about food. Write a notice you would share, identify what you withheld and why, and name a check that could resolve the food claim. Then explain why generating this reply is inference, not proof that the model retrained or searched.
 
 **Review rubric (0–2 per item)**
 
-- Distinguishes app/network/service/model.
-- Does not equate confident generation with verified truth.
-- Names a relevant independent check or justified decision not to share.
+- Notice includes only supported facts; free entry is not a promise of food.
+- Withholds the food claim without claiming food is definitely absent.
+- Names the responsible organizer or an applicable source as a check.
+- Distinguishes inference from training and does not assume search.
 
-**Uncertainty and scope:** This is a simplified cloud route. Chat retention, later training use, search access and on-device operation depend on the product and settings.
+**Uncertainty and scope:** This simplified route describes a fictional cloud service. Other products may use on-device models or tools. Chat retention, later training use and search depend on the product and settings. All dates, notices and replies here are invented teaching fixtures; no model was run.
 
 **Optional media — specification only:** Storyboard only: 20-second journey from “hi” on a screen through labeled app/network/server/model panels and back. Show tokens as text pieces, not a tiny human brain. Freeze-frame transcript must teach the same concept.
 
-**Factual references:** [Google: Introduction to large language models](https://developers.google.com/machine-learning/crash-course/llm), [NIST AI 600-1: Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
+**Factual references:** [Google: What is machine learning?](https://developers.google.com/machine-learning/intro-to-ml/what-is-ml), [Google: Introduction to large language models](https://developers.google.com/machine-learning/crash-course/llm), [NIST AI 600-1: Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
 
 ## 4. What is prompt engineering?
 

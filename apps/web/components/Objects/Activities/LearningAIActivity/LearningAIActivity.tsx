@@ -290,6 +290,8 @@ function AuthenticatedLesson({
     )
   const firstAttempt = lesson.responseFields?.find((field) => field.stage === 0)
   const showPractice = !firstAttempt || state.page > 0 || state.completed
+  const analysis = lesson.responseFields?.find((field) => field.stage === 2)
+  const analysisReady = !analysis || !!(state.answers[analysis.id] || '').trim()
   return (
     <section className={styles.lesson} aria-label={lesson.title}>
       <h1>{lesson.title}</h1>
@@ -336,7 +338,7 @@ function AuthenticatedLesson({
                   answer={answer}
                 />
               ))}
-            {checks.map((check) => (
+            {checks.filter((check) => analysisReady || check !== lesson.activities[1]).map((check) => (
               <fieldset key={check.id}>
                 <legend>{check.prompt}</legend>
                 {check.choices.map((choice) => (

@@ -97,8 +97,8 @@ async def complete(user, activity, course, db):
         db.add(TrailStep(trailrun_id=run.id, trail_id=trail.id, activity_id=activity.id, course_id=course.id,
                          org_id=course.org_id, user_id=user.id, complete=True, teacher_verified=False, grade="", creation_date=now, update_date=now))
         await db.flush()
-    # Only two of the planned fifteen lessons are enabled. Recording either (or
-    # both) must never certify the whole course, even in a two-activity fixture.
+    # Only a pilot subset of the planned fifteen lessons is enabled. Submitting
+    # every available pilot must never certify the whole planned course.
     if run.status == StatusEnum.STATUS_COMPLETED:
         run.status = StatusEnum.STATUS_IN_PROGRESS
         run.update_date = now

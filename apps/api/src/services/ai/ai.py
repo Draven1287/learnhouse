@@ -103,7 +103,8 @@ async def ai_start_activity_chat_session(
     # Get course authors
     from src.db.resource_authors import ResourceAuthor
     from src.db.users import User
-    from src.services.courses.courses import AuthorWithRole, UserRead
+    from src.db.courses.courses import AuthorWithRole
+    from src.db.users import UserReadAuthor
 
     authors_statement = (
         select(ResourceAuthor, User)
@@ -116,7 +117,7 @@ async def ai_start_activity_chat_session(
     # Convert to AuthorWithRole objects
     authors = [
         AuthorWithRole(
-            user=UserRead.model_validate(user),
+            user=UserReadAuthor.model_validate(user),
             authorship=resource_author.authorship,
             authorship_status=resource_author.authorship_status,
             creation_date=resource_author.creation_date,
@@ -258,7 +259,8 @@ async def ai_send_activity_chat_message(
     # Get course authors
     from src.db.resource_authors import ResourceAuthor
     from src.db.users import User
-    from src.services.courses.courses import AuthorWithRole, UserRead
+    from src.db.courses.courses import AuthorWithRole
+    from src.db.users import UserReadAuthor
 
     authors_statement = (
         select(ResourceAuthor, User)
@@ -271,7 +273,7 @@ async def ai_send_activity_chat_message(
     # Convert to AuthorWithRole objects
     authors = [
         AuthorWithRole(
-            user=UserRead.model_validate(user),
+            user=UserReadAuthor.model_validate(user),
             authorship=resource_author.authorship,
             authorship_status=resource_author.authorship_status,
             creation_date=resource_author.creation_date,
@@ -401,7 +403,8 @@ async def _get_activity_and_course_info(
     # Get course authors
     from src.db.resource_authors import ResourceAuthor
     from src.db.users import User
-    from src.services.courses.courses import AuthorWithRole, UserRead
+    from src.db.courses.courses import AuthorWithRole
+    from src.db.users import UserReadAuthor
 
     authors_statement = (
         select(ResourceAuthor, User)
@@ -414,7 +417,7 @@ async def _get_activity_and_course_info(
     # Convert to AuthorWithRole objects
     authors = [
         AuthorWithRole(
-            user=UserRead.model_validate(user),
+            user=UserReadAuthor.model_validate(user),
             authorship=resource_author.authorship,
             authorship_status=resource_author.authorship_status,
             creation_date=resource_author.creation_date,

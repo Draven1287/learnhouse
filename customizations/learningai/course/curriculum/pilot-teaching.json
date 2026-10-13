@@ -106,5 +106,68 @@
         ]
       ]
     }
+  },
+  "lai.ai-you-can-use.l03": {
+    "revision": "2026-10-13-pilot.1",
+    "question": "How does a reply arrive—and what would make its claim worth sharing?",
+    "exampleAfterAttempt": true,
+    "sections": [
+      {
+        "title": "Follow the message, then the reply",
+        "text": "For these cards: C → D → B → A. The app collects your prompt. The network carries it to the service; the service prepares the model input. The trained model generates output. The service sends the reply back over the network, and the app displays it. The interface, network, service and model do different jobs."
+      },
+      {
+        "title": "Training changes; inference uses",
+        "text": "Recall Lesson 2: training adjusts a model using data. Inference uses the trained model. Text models work with tokens—pieces of text—and generate using learned patterns and available context. Producing this reply does not, by itself, mean the model changed or searched the web."
+      },
+      {
+        "title": "A reply and a source do different jobs",
+        "text": "Fluent text can be useful and still be wrong. To check a schedule, inspect evidence from someone responsible for it. Ask: does this source cover this meeting, and has it been updated? A newer unsupported reply is not automatically stronger evidence than an applicable organizer notice."
+      }
+    ],
+    "practice": {
+      "title": "Trace, compare, revise",
+      "instructions": [
+        "Save your own route before opening the worked trace. Use letters or sentences, with a return path.",
+        "Compare the model’s Friday claim against both dated notices. Save your explanation before opening the comparison choices.",
+        "Use the final book-swap case to write a supported notice and explain one claim you withheld.",
+        "Review your reasoning against the criteria. No real personal details or outside account are needed."
+      ],
+      "selfCheck": "Can you explain both how text was generated and why a particular source supports your correction?"
+    },
+    "stepNames": [
+      "Trace the request",
+      "Compare your trace",
+      "Check the evidence",
+      "Transfer and review"
+    ],
+    "predictionTable": {
+      "caption": "Fictional source packet: this week’s club meeting",
+      "context": "Every card is invented for this exercise. Today in the scenario is 13 October 2026. No model was run. Compare responsibility, date and relevance; the chat has no shown access to either notice.",
+      "columns": [
+        "Card",
+        "Source and date",
+        "What it says"
+      ],
+      "rows": [
+        [
+          "A",
+          "Club noticeboard · 5 October 2026",
+          "Weekly club: Fridays at 16:00, room 4."
+        ],
+        [
+          "B",
+          "Club organizer update · 12 October 2026",
+          "This week only: the meeting moves to Thursday 15 October, 16:00, in the library. This replaces the Friday meeting."
+        ],
+        [
+          "C",
+          "Generated chat reply · 13 October 2026",
+          "Definitely Friday at 4. No source or search shown."
+        ]
+      ]
+    },
+    "takeaway": "Trace the process. Check the claim against relevant evidence. Keep unsupported details out of what you share.",
+    "independentPractice": "Without reopening the worked trace, explain the cloud route to someone or write it yourself. Give a different example where a fluent answer needs an independent source, and say what evidence could change your mind."
   }
 }

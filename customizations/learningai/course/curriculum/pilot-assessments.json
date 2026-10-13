@@ -124,5 +124,133 @@
         "rationale": "Separate observed mismatches, independent test examples and unsupported generalizations."
       }
     ]
+  },
+  "lai.ai-you-can-use.l03": {
+    "version": 2,
+    "estimatedMinutes": 12,
+    "explanation": "A chat interface shows a reply; it does not show everything that happened behind it. In this fictional cloud service, a trained model generates text. First trace the journey in your own words. Then compare a claim with dated evidence. You need no external account or live AI tool.",
+    "scenario": "Fictional club exercise, 13 October 2026. You ask a cloud chat: “When does the club meet this week?” It replies, “Definitely Friday at 4.” No timetable was supplied and no search or source is shown. Route cards, scrambled: A — app displays the returned reply; B — trained model generates output on the service; C — you type the prompt in the app; D — network carries the request to the service, which prepares the input.",
+    "activities": [
+      {
+        "id": "lai.ai-you-can-use.l03.route",
+        "prompt": "Compare with your own trace. Which account fits this cloud service?",
+        "choices": [
+          {
+            "value": "cloud",
+            "text": "C → D → B → A. The service uses a trained model; the reply returns over the network.",
+            "feedback": "That traces prompt, transport and service, model inference, then the reply. It does not establish a search or fact-check."
+          },
+          {
+            "value": "train",
+            "text": "C → D → B → A. Each reply necessarily retrains the model on this message.",
+            "feedback": "The travel order fits, but using a trained model is inference. A product may separately use stored data for later training; a reply alone does not establish that."
+          },
+          {
+            "value": "search",
+            "text": "C → D → A → B. The app first retrieves a verified answer; the model then checks it.",
+            "feedback": "In this scenario the model generates the reply before it is displayed. No search or verification is shown. Revisit what each card actually says."
+          }
+        ],
+        "correctAnswer": "cloud",
+        "rationale": "Trace this specified service without generalizing to every chat product."
+      },
+      {
+        "id": "lai.ai-you-can-use.l03.verify",
+        "prompt": "After your own source comparison, which message is justified by the packet?",
+        "choices": [
+          {
+            "value": "source",
+            "text": "“For this week, the organizer’s 12 October update says Thursday at 16:00 in the library. I would use that update.”",
+            "feedback": "This names both the evidence and its scope. The older notice describes the earlier plan; confident chat wording adds no verification."
+          },
+          {
+            "value": "share",
+            "text": "“Friday at 4 is confirmed: both the older notice and the chat agree.”",
+            "feedback": "Agreement is not enough. Check whether the notice still applies after the organizer’s dated update."
+          },
+          {
+            "value": "latest",
+            "text": "“Friday at 4: the 13 October chat reply is newer than both notices.”",
+            "feedback": "A newer timestamp does not give a generated reply authority over an organizer’s update. Ask what source knows and whether it covers this week."
+          }
+        ],
+        "correctAnswer": "source",
+        "rationale": "Compare authority, date and relevance together; do not choose simply by newest timestamp."
+      }
+    ],
+    "branchActivity": {
+      "id": "lai.ai-you-can-use.l03.evidence_check",
+      "prompt": "The reply repeats Friday. What would change the evidence?",
+      "choices": [
+        {
+          "value": "repeat",
+          "text": "Ask for a more confident version of the same reply.",
+          "feedback": "That changes wording, not the source of the timetable."
+        },
+        {
+          "value": "official",
+          "text": "Check the current organizer update, or ask the organizer if the update is unclear.",
+          "feedback": "Use evidence from someone responsible for the schedule and check which meeting it covers."
+        }
+      ],
+      "correctAnswer": "official",
+      "rationale": "A repetition is not an independent check.",
+      "visibleIfActivity": "lai.ai-you-can-use.l03.verify",
+      "visibleIfNotEqual": "source"
+    },
+    "responseFields": [
+      {
+        "id": "lai.ai-you-can-use.l03.request_trace",
+        "prompt": "Before opening the worked trace: type the card letters in travel order (for example X → Y), then explain the network’s job and what the model does. A numbered sentence is equally valid; no dragging is needed. Mark anything you are unsure of.",
+        "stage": 0,
+        "minLength": 1,
+        "maxLength": 2000,
+        "criteria": [
+          "Include all four cards and the return path.",
+          "Distinguish carrying a message from generating text.",
+          "This is your first attempt; uncertainty is welcome."
+        ]
+      },
+      {
+        "id": "lai.ai-you-can-use.l03.evidence_comparison",
+        "prompt": "Compare the Friday claim with both notices. Which source applies to this week, and why? Write a corrected message with its source and one thing the packet does not establish.",
+        "stage": 2,
+        "minLength": 1,
+        "maxLength": 2000,
+        "criteria": [
+          "Use dates, source responsibility and which meeting each notice covers.",
+          "Explain why “definitely” or repetition does not verify a claim.",
+          "State a limit without inventing missing details."
+        ]
+      },
+      {
+        "id": "lai.ai-you-can-use.l03.self_review",
+        "prompt": "Self-review: identify one change or clarification in your original trace or source comparison. Explain why it matters. What would you check if the organizer issued another update?",
+        "stage": 3,
+        "minLength": 1,
+        "maxLength": 2000,
+        "criteria": [
+          "Point to your own words and a specific reason.",
+          "Describe what new evidence would change your decision."
+        ]
+      }
+    ],
+    "transfer": {
+      "id": "lai.ai-you-can-use.l03.transfer",
+      "minLength": 1,
+      "prompt": "New fictional case: a chat says “The book swap definitely has free pizza.” The current organizer card says “Tuesday, library, 15:30–16:00, free entry”; it says nothing about food. Write a notice you would share, identify what you withheld and why, and name a check that could resolve the food claim. Then explain why generating this reply is inference, not proof that the model retrained or searched.",
+      "rubric": [
+        "Notice includes only supported facts; free entry is not a promise of food.",
+        "Withholds the food claim without claiming food is definitely absent.",
+        "Names the responsible organizer or an applicable source as a check.",
+        "Distinguishes inference from training and does not assume search."
+      ]
+    },
+    "sourceIds": [
+      "llm",
+      "ml",
+      "nist"
+    ],
+    "uncertainty": "This simplified route describes a fictional cloud service. Other products may use on-device models or tools. Chat retention, later training use and search depend on the product and settings. All dates, notices and replies here are invented teaching fixtures; no model was run."
   }
 }

@@ -25,9 +25,9 @@
     "part": 1,
     "title": "What is happening inside the chat?",
     "objective": "Trace a typical cloud-chat request and separate generating a reply from checking a claim.",
-    "estimatedMinutes": 8,
-    "pilot": false,
-    "question": "Trace a typical cloud-chat request and separate generating a reply from checking a claim."
+    "estimatedMinutes": 12,
+    "pilot": true,
+    "question": "How does a reply arrive—and what would make its claim worth sharing?"
   },
   {
     "id": "lai.ai-you-can-use.l04",

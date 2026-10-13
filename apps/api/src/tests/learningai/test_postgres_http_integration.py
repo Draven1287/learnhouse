@@ -261,11 +261,12 @@ async def test_optional_vector_failure_preserves_core_bootstrap(pg_factory, monk
 
 
 @pytest.mark.asyncio
-async def test_two_lessons_keep_answers_revisions_and_completion_separate(http_fixture, pg_factory, db):
+@pytest.mark.parametrize("lesson_id", ["lai.ai-you-can-use.l02", "lai.ai-you-can-use.l03"])
+async def test_pilot_lessons_keep_answers_revisions_and_completion_separate(http_fixture, pg_factory, db, lesson_id):
     from src.services.learningai.contract import LESSONS
     from src.db.courses.chapter_activities import ChapterActivity
     app, headers, first, course, _ = http_fixture
-    definition = LESSONS['lai.ai-you-can-use.l02']
+    definition = LESSONS[lesson_id]
     second = Activity(**first.model_dump(exclude={'id', 'activity_uuid', 'content', 'name'}),
                       id=2, name=definition['title'], activity_uuid='activity_second_lesson',
                       content={'learningai': {'lesson_id': definition['id'], 'version': definition['version'], 'content_version': CONTENT_VERSION}})

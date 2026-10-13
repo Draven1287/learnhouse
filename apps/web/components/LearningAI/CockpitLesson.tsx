@@ -158,7 +158,7 @@ export default function CockpitLesson({
                 <dd>{state.answers[field.id]}</dd>
               </div>
             ))}
-            <dt>Your revised plan or test design</dt>
+            <dt>Your transfer response</dt>
             <dd>{state.answers[lesson.transfer.id]}</dd>
           </dl>
           <details className="lesson-references">
@@ -183,7 +183,7 @@ export default function CockpitLesson({
             </ul>
           </details>
           <p className="integration-status">
-            Submitted work stays unchanged in this release. Lessons 03–15 are
+            Submitted work stays unchanged in this release. Lessons 04–15 are
             not available yet.
           </p>
           <div className="integration-actions">
@@ -289,7 +289,7 @@ export default function CockpitLesson({
                     </p>
                     {teaching}
                     <p>
-                      What did your plan do differently? Use the criteria to
+                      What did your response do differently? Use the criteria to
                       compare; matching the example is not the goal.
                     </p>
                   </>

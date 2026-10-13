@@ -197,13 +197,13 @@ for l in L:
    q={'type':'comment','name':f['id'],'title':f['prompt'],'description':'Self-review: '+'; '.join(f['criteria'])+'. Presence only; not automatically graded.','isRequired':True,'maxLength':f['maxLength']}
    if f['stage']==0:
     pages.insert(0,{'name':'first-attempt','title':'Your first attempt','elements':[h(l['id']+'.brief','<p>'+html.escape(l['scenario'])+'</p>'),q]})
-   elif f['stage']==2:pages[1]['elements'].insert(0,q)
+   elif f['stage']==2:next(p for p in pages if p['name']=='decide')['elements'].insert(0,q)
    else:pages[-1]['elements'].append(q)
   pages[-1]['elements'][0]['validators']=[]
   table=l.get('teaching',{}).get('predictionTable')
   if table:
    markup='<table><caption>'+html.escape(table['caption'])+'</caption><thead><tr>'+''.join('<th scope="col">'+html.escape(c)+'</th>' for c in table['columns'])+'</tr></thead><tbody>'+''.join('<tr><th scope="row">'+html.escape(row[0])+'</th>'+''.join('<td>'+html.escape(c)+'</td>' for c in row[1:])+'</tr>' for row in table['rows'])+'</tbody></table>'
-   pages[1]['elements'].insert(0,h(l['id']+'.predictions','<p>'+html.escape(table['context'])+'</p>'+markup))
+   next(p for p in pages if p['name']=='decide')['elements'].insert(0,h(l['id']+'.predictions','<p>'+html.escape(table['context'])+'</p>'+markup))
  for f in reversed(l.get('transferFields',[])):
   pages[-1]['elements'].insert(0,{'type':'comment','name':f['id'],'title':f['prompt'],'isRequired':True,'maxLength':f['maxLength'],'validators':[{'type':'text','minLength':f['minLength'],'text':f"Add at least {f['minLength']} characters of work to submit."}]})
  payload={'id':l['id'],'version':l['version'],'title':l['title'],'number':l['number'],'sourceIds':l['sourceIds'],'activityIds':[a['id']for a in l['activities']]+([l['branchActivity']['id']] if 'branchActivity' in l else [])+[tid]+[f['id'] for f in l.get('transferFields',[])]+[f['id'] for f in l.get('responseFields',[])],'coreActivityIds':[a['id']for a in l['activities']],'reflectionId':tid,'completionPolicy':l['completionPolicy'],'survey':{'showQuestionNumbers':'off','showProgressBar':'top','progressBarType':'questions','textUpdateMode':'onTyping','pageNextText':'Continue','pagePrevText':'Back','completeText':'Finish lesson','showCompletedPage':False,'clearInvisibleValues':'onHiddenContainer','pages':pages}}

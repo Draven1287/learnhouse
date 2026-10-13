@@ -365,7 +365,7 @@ function CockpitSession({
               label="Available"
               value={catalog ? String(available.length).padStart(2, '0') : '—'}
               unit="lessons"
-              detail="Two lessons are connected for pilot review."
+              detail="Three lessons are connected for pilot review."
             />
             <Readout
               label={signedIn ? 'Saved progress' : 'First lesson'}
@@ -391,7 +391,7 @@ function CockpitSession({
               label="Course plan"
               value="15"
               unit="lessons"
-              detail="Understand. Revise. Judgment. Lessons 03–15 are not released."
+              detail="Understand. Revise. Judgment. Lessons 04–15 are not released."
             />
           </ul>
         </aside>
@@ -463,7 +463,7 @@ function CockpitSession({
           })}
         </div>
         <p className="footnote">
-          Both pilot lessons include an explanation, hands-on practice, checks,
+          Available pilot lessons include an explanation, hands-on practice, checks,
           feedback and saved reasoning. Completion records your submission, not
           mastery.
         </p>
