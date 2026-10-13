@@ -1,4 +1,4 @@
-"""First-lesson state and TrailStep share the application's database transaction."""
+"""Pilot lesson state and TrailStep share the application's database transaction."""
 import os
 from datetime import datetime, timezone
 from uuid import uuid4
@@ -13,7 +13,7 @@ from src.db.trails import Trail
 from src.db.trail_runs import TrailRun, StatusEnum
 from src.db.trail_steps import TrailStep
 from src.security.rbac import check_resource_access, AccessAction
-from .contract import LESSON, CONTENT_VERSION, ContractError, supported, transition
+from .contract import CONTENT_VERSION, ContractError, supported, transition, lesson_for
 
 async def context(request, user, activity_uuid, db):
     if os.getenv("LEARNHOUSE_LEARNINGAI_PILOT") != "true":
@@ -47,7 +47,11 @@ def snapshot(record):
 
 async def read(request, user, activity_uuid, db):
     activity, course = await context(request, user, activity_uuid, db)
-    return {"lesson": LESSON, "state": snapshot(await attempt(user, activity, course, db))}
+    record = await attempt(user, activity, course, db)
+    lesson = lesson_for(activity, record.lesson_version if record else None)
+    if lesson is None:
+        raise HTTPException(409, "Saved lesson edition is unavailable")
+    return {"lesson": lesson, "state": snapshot(record)}
 
 async def write(request, user, activity_uuid, payload, db, submit=False):
     activity, course = await context(request, user, activity_uuid, db)
@@ -57,13 +61,16 @@ async def write(request, user, activity_uuid, payload, db, submit=False):
         raise HTTPException(503, "LearningAI writes require PostgreSQL row locks")
     await db.execute(select(User.id).where(User.id == user.id).with_for_update())
     record = await attempt(user, activity, course, db)
+    lesson = lesson_for(activity, record.lesson_version if record else None)
+    if lesson is None:
+        raise HTTPException(409, "Saved lesson edition is unavailable")
     try:
-        new = transition(snapshot(record), payload.answers, payload.page, payload.revision, submit)
+        new = transition(snapshot(record), payload.answers, payload.page, payload.revision, submit, lesson)
     except ContractError as error:
         raise HTTPException(409 if "revision" in str(error) or "immutable" in str(error) else 422, str(error))
     if record is None:
         record = LearningAIAttempt(user_id=user.id, org_id=course.org_id, course_id=course.id,
-                                  activity_id=activity.id, content_version=CONTENT_VERSION, lesson_version=1)
+                                  activity_id=activity.id, content_version=CONTENT_VERSION, lesson_version=lesson["version"])
     for key, value in new.items():
         setattr(record, key, value)
     db.add(record)
@@ -90,10 +97,10 @@ async def complete(user, activity, course, db):
         db.add(TrailStep(trailrun_id=run.id, trail_id=trail.id, activity_id=activity.id, course_id=course.id,
                          org_id=course.org_id, user_id=user.id, complete=True, teacher_verified=False, grade="", creation_date=now, update_date=now))
         await db.flush()
-    activities = (await db.execute(select(Activity.id).where(Activity.course_id == course.id))).scalars().all()
-    done = (await db.execute(select(TrailStep.activity_id).where(TrailStep.trailrun_id == run.id, TrailStep.user_id == user.id, TrailStep.complete == True))).scalars().all()
-    if activities and set(activities).issubset(done):
-        run.status = StatusEnum.STATUS_COMPLETED
+    # Only a pilot subset of the planned fifteen lessons is enabled. Submitting
+    # every available pilot must never certify the whole planned course.
+    if run.status == StatusEnum.STATUS_COMPLETED:
+        run.status = StatusEnum.STATUS_IN_PROGRESS
         run.update_date = now
         db.add(run)
     # Certificates/webhooks/analytics are deliberately outside this bounded local pilot.

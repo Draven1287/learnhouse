@@ -23,7 +23,7 @@ async def test_actual_completion_helper_retry(db, admin_user, activity, course):
     steps=(await db.execute(select(TrailStep).where(TrailStep.user_id==admin_user.id))).scalars().all()
     runs=(await db.execute(select(TrailRun).where(TrailRun.user_id==admin_user.id))).scalars().all()
     assert len(steps)==1 and steps[0].complete
-    assert len(runs)==1 and runs[0].status==StatusEnum.STATUS_COMPLETED
+    assert len(runs)==1 and runs[0].status==StatusEnum.STATUS_IN_PROGRESS
 
 @pytest.mark.asyncio
 async def test_answer_and_step_rollback_together(db,admin_user,activity,course):

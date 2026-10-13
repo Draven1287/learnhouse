@@ -1,0 +1,141 @@
+{
+  "id": "lai.ai-you-can-use.l02",
+  "version": 1,
+  "number": 2,
+  "part": 1,
+  "title": "How did we get here?",
+  "estimatedMinutes": 8,
+  "status": "implemented-draft",
+  "objective": "Distinguish explicit rules, learning from examples, and generative output without treating them as mutually exclusive eras.",
+  "explanation": "Some software follows rules people specify. Machine learning fits patterns using data. Generative AI produces content such as text or images. These approaches coexist: a generative model can be machine learning, and a product can combine models with ordinary rules. Training adjusts a model using data; inference uses the trained model. A useful test asks how a system works, not just whether its label says AI.",
+  "scenario": "Three fictional tools: A sends a reminder when a timer reaches zero. B learns to label plant photos from labeled examples. C generates a new club announcement from a brief.",
+  "activities": [
+    {
+      "prompt": "Which description is most accurate?",
+      "choices": [
+        {
+          "value": "eras",
+          "text": "A is obsolete; B and C replaced all rules.",
+          "feedback": "Rules still run timers, checks and many parts of AI applications."
+        },
+        {
+          "value": "mix",
+          "text": "A uses an explicit rule; B learns from examples; C generates content and may also use machine learning.",
+          "feedback": "These categories overlap rather than forming a simple replacement timeline."
+        },
+        {
+          "value": "all",
+          "text": "All three must be conscious to work.",
+          "feedback": "None of these behaviors establishes consciousness."
+        }
+      ],
+      "correctAnswer": "mix",
+      "rationale": "A product label is less informative than its mechanism.",
+      "id": "lai.ai-you-can-use.l02.approaches"
+    },
+    {
+      "prompt": "A trained plant model labels one new photo. What is this step?",
+      "choices": [
+        {
+          "value": "train",
+          "text": "Training must happen again for every photo.",
+          "feedback": "Using a trained model does not by itself imply its parameters changed."
+        },
+        {
+          "value": "infer",
+          "text": "Inference: applying the trained model to a new input.",
+          "feedback": "Right. Separate using the model from changing it during training."
+        },
+        {
+          "value": "certain",
+          "text": "Proof that its label is correct.",
+          "feedback": "A prediction still needs evaluation."
+        }
+      ],
+      "correctAnswer": "infer",
+      "rationale": "Inference can be wrong, especially for unfamiliar inputs.",
+      "id": "lai.ai-you-can-use.l02.inference"
+    }
+  ],
+  "transfer": {
+    "id": "lai.ai-you-can-use.l02.transfer",
+    "prompt": "Invent a simple rule-based tool and a tool that learns from examples. Explain how you would test the second on examples it did not train on.",
+    "rubric": [
+      "Rule example has an explicit condition/action.",
+      "Learning example uses data to fit patterns.",
+      "Test includes new examples and a way to identify errors."
+    ]
+  },
+  "sourceIds": [
+    "ml"
+  ],
+  "uncertainty": "Systems can combine approaches. Do not date a single clean switch from rules to learning or infer consciousness from outputs.",
+  "optionalMedia": {
+    "status": "specification-only",
+    "description": "Storyboard only: three workbenches labeled rule, learned classifier, generator. Connect overlapping paths; do not portray older approaches disappearing. Provide a complete text equivalent."
+  },
+  "branchActivity": {
+    "prompt": "Can a generative system also use machine learning?",
+    "choices": [
+      {
+        "value": "yes",
+        "text": "Yes; these describe overlapping properties.",
+        "feedback": "Generation describes output, while learning describes how patterns are fitted."
+      },
+      {
+        "value": "no",
+        "text": "No; they must be separate technologies.",
+        "feedback": "A generative model can learn from data."
+      }
+    ],
+    "correctAnswer": "yes",
+    "rationale": "Complete this short check, then return to the main lesson.",
+    "id": "lai.ai-you-can-use.l02.overlap_check",
+    "visibleIfActivity": "lai.ai-you-can-use.l02.approaches",
+    "visibleIfNotEqual": "mix"
+  },
+  "completionPolicy": {
+    "mode": "formative-submission",
+    "requires": "All visible required core/branch choices and required text fields",
+    "correctAnswersRequired": false,
+    "reflectionSemanticallyGraded": false
+  },
+  "teaching": {
+    "revision": "2026-10-11-pilot.1",
+    "question": "Is it following a rule, learning a pattern, or making something?",
+    "sections": [
+      {
+        "title": "Three approaches that still work together",
+        "text": "A rule-based tool follows a condition a person wrote: if the timer reaches zero, show a reminder. A learned classifier fits patterns from examples, such as labeled plant photos. A generator produces content, such as a new announcement. These are overlapping descriptions, not a timeline where each new approach erases the last."
+      },
+      {
+        "title": "Training changes; inference uses",
+        "text": "During training, a model is adjusted using data. When a trained plant model labels a new photo, it is doing inference. That one prediction does not prove the label is correct or mean the model learned from the photo. A product may separately collect data for later training; do not assume it does or does not."
+      },
+      {
+        "title": "Test beyond the examples it learned from",
+        "text": "Imagine a fictional leaf classifier trained only on clear daylight photos. A useful test includes different photos with independently checked labels, including shade or unfamiliar backgrounds. Record which predictions match and which fail. Testing only the training examples can hide a model that learned those examples but performs poorly on new ones."
+      }
+    ],
+    "practice": {
+      "title": "Your turn: design two tools",
+      "instructions": [
+        "On paper or in your own words, invent a rule with an explicit if/then condition. You do not need to code it.",
+        "Invent a learned tool. Name the examples it would train on and the prediction it would make.",
+        "Choose two new test cases, say how you would know the expected answers, and describe a failure you would look for.",
+        "Save your designs and test plan in the final step. Use fictional objects or made-up club tasks; do not upload photos or personal data."
+      ],
+      "selfCheck": "Can you explain why your test examples are separate from training? What would you do if the tool fails one?"
+    },
+    "takeaway": "Ask how it works, where its examples came from, and how you would check a new result.",
+    "independentPractice": "Without the notes, explain a timer, a learned classifier and a generator to someone—or write the explanation yourself. Include how their functions can overlap."
+  },
+  "references": [
+    {
+      "id": "ml",
+      "title": "Google: What is machine learning?",
+      "url": "https://developers.google.com/machine-learning/intro-to-ml/what-is-ml",
+      "supports": "Models learn patterns from data; prediction and generation. Not a claim that every software tool uses ML."
+    }
+  ]
+}

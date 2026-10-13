@@ -1,4 +1,5 @@
 'use client'
+import { isLearningAIOrg } from '@components/LearningAI/authPresentation'
 import React, { useEffect, useState } from 'react'
 import CopilotBubble from '@components/Copilot/CopilotBubble'
 import Image from 'next/image'
@@ -51,6 +52,8 @@ import { useLHAnalytics, AnalyticsEvent } from '@services/analytics'
 
 export const OrgMenu = (props: any) => {
   const orgslug = props.orgslug
+  const cockpit = isLearningAIOrg(orgslug)
+  const menuButton = React.useRef<HTMLButtonElement>(null)
   const session = useLHSession() as any;
   const _access_token = session?.data?.tokens?.access_token;
   const org = useOrg() as any;
@@ -86,7 +89,7 @@ export const OrgMenu = (props: any) => {
 
   // Get primary color from org config (v2: customization.general.color, v1: general.color)
   const config = org?.config?.config
-  const primaryColor = config?.customization?.general?.color || config?.general?.color || ''
+  const primaryColor = cockpit ? '#000000' : config?.customization?.general?.color || config?.general?.color || ''
   const colors = getMenuColorClasses(primaryColor)
 
   // Filter dashboard menu items by resolved_features from API
@@ -154,9 +157,9 @@ export const OrgMenu = (props: any) => {
         <div className="flex items-center justify-between w-full max-w-(--breakpoint-2xl) mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex items-center space-x-5 md:w-auto w-full">
             <div className="logo flex md:w-auto w-full justify-center">
-              <Link href={getUriWithOrg(orgslug, '/')}>
+              <Link href={getUriWithOrg(orgslug, cockpit ? '/learningai' : '/')}>
                 <div className="flex w-auto h-9 rounded-md items-center m-auto py-1 justify-center">
-                  {org?.logo_image ? (
+                  {cockpit ? <span className="cockpit-wordmark">LearningAI</span> : org?.logo_image ? (
                     <img
                       src={`${getOrgLogoMediaDirectory(org.org_uuid, org?.logo_image)}`}
                       alt="Learnhouse"
@@ -363,7 +366,12 @@ export const OrgMenu = (props: any) => {
               <HeaderProfileBox primaryColor={primaryColor} />
             </div>
             <button
+              ref={menuButton}
+              aria-label={isMenuOpen ? 'Close navigation' : 'Open navigation'}
+              aria-expanded={isMenuOpen}
+              aria-controls="org-mobile-navigation"
               className={`md:hidden focus:outline-hidden ${colors.text}`}
+              onKeyDown={(event) => { if (event.key === 'Escape') setIsMenuOpen(false) }}
               onClick={toggleMenu}
             >
               {isMenuOpen ? (
@@ -380,6 +388,11 @@ export const OrgMenu = (props: any) => {
         </div>
       </nav>
       <div
+        id="org-mobile-navigation"
+        inert={!isMenuOpen}
+        aria-hidden={!isMenuOpen}
+        onKeyDown={(event) => { if (event.key === 'Escape') { setIsMenuOpen(false); menuButton.current?.focus() } }}
+        onClick={(event) => { if ((event.target as Element).closest('a')) setIsMenuOpen(false) }}
         className={`fixed inset-x-0 bg-white/80 backdrop-blur-lg md:hidden shadow-lg transition-all duration-300 ease-in-out ${
           isMenuOpen ? 'opacity-100' : '-top-full opacity-0'
         }`}

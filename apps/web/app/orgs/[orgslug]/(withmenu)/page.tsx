@@ -1,4 +1,6 @@
 import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import { getConfig, getDefaultOrg } from '@services/config/config'
 import { getOrganizationContextInfo } from '@services/organizations/orgs'
 import { getOrgThumbnailMediaDirectory, getOrgOgImageMediaDirectory } from '@services/media/media'
 import { getOrgSeoConfig, buildPageTitle } from '@/lib/seo/utils'
@@ -76,6 +78,10 @@ export async function generateMetadata(props: MetadataProps): Promise<Metadata> 
 
 const OrgHomePage = async (params: any) => {
   const orgslug = (await params.params).orgslug
+  // Explicitly opt this organization into the native LearningAI student home.
+  if (getConfig('NEXT_PUBLIC_LEARNINGAI_COURSE_UUID') && orgslug === getConfig('NEXT_PUBLIC_LEARNINGAI_ORG_SLUG', getDefaultOrg())) {
+    redirect('/learningai')
+  }
   return <HomeClient orgslug={orgslug} />
 }
 

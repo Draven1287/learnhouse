@@ -1,4 +1,6 @@
 'use client'
+import { useSearchParams } from 'next/navigation'
+import { authDestination, authRoute, isLearningAIOrg, useAuthPresentation } from '@components/LearningAI/authPresentation'
 import FormLayout, {
   FormField,
 } from '@components/Objects/StyledElements/Form/Form'
@@ -24,6 +26,7 @@ interface LoginClientProps {
 }
 
 const LoginClient = (props: LoginClientProps) => {
+  const searchParams = useSearchParams()
   const { t } = useTranslation()
   const { signIn, completeMfaLogin, requestMagicLink } = useAuth()
   const { track } = useLHAnalytics('public')
@@ -45,7 +48,8 @@ const LoginClient = (props: LoginClientProps) => {
   )
   const passwordAllowed = allowedMethods.has('password')
   const magicLoginAllowed = allowedMethods.has('magic_login')
-  const googleAllowed = allowedMethods.has('google')
+  const { googleConfigured } = useAuthPresentation()
+  const googleAllowed = allowedMethods.has('google') && googleConfigured
   const ssoAllowed = allowedMethods.has('sso')
   // SSO counts only once it is actually configured for the org (ssoEnabled).
   const hasAlternativeMethods = googleAllowed || magicLoginAllowed || (ssoAllowed && ssoEnabled)
@@ -55,8 +59,8 @@ const LoginClient = (props: LoginClientProps) => {
   // Guarded by !isSubmitting so a FRESH login (which flips the session to
   // authenticated) doesn't race the onSubmit's own post-login navigation.
   useEffect(() => {
-    if (isAuthenticated && !isSubmitting) router.replace('/home')
-  }, [isAuthenticated, isSubmitting, router])
+    if (isAuthenticated && !isSubmitting) router.replace(authDestination(new URLSearchParams(searchParams.toString()), isLearningAIOrg(props.org?.slug)))
+  }, [isAuthenticated, isSubmitting, router, searchParams, props.org?.slug])
 
   // Error state with type information
   const [error, setError] = useState('')
@@ -108,12 +112,11 @@ const LoginClient = (props: LoginClientProps) => {
     const res = await requestMagicLink(email, props.org?.slug)
     setMagicSubmitting(false)
 
-    if (res.rateLimited) {
+    if (!res.ok) {
       setMagicError(res.detail)
       return
     }
-    // The backend answers generically whether or not the account exists, so a
-    // non-rate-limited response always advances to the confirmation state.
+    // Only accepted requests advance; the backend keeps account existence private.
     setMagicSent(true)
   }
 
@@ -132,8 +135,7 @@ const LoginClient = (props: LoginClientProps) => {
     const params = new URLSearchParams(window.location.search)
     // `redirect_to` is what the magic-link consume endpoint forwards when it
     // bounces a 2FA-enabled user here instead of signing them straight in.
-    const raw = params.get('next') ?? params.get('redirect') ?? params.get('redirect_to')
-    const dest = raw && /^\/(?!\/)/.test(raw) ? raw : '/home'
+    const dest = authDestination(params, isLearningAIOrg(props.org?.slug))
     return `${window.location.origin}/redirect_from_auth?next=${encodeURIComponent(dest)}`
   }
 
@@ -446,7 +448,7 @@ const LoginClient = (props: LoginClientProps) => {
     >
         {/* Error Top Bar */}
         {showErrorModal && (
-          <div className={`
+          <div role="status" aria-live="polite" className={`
             mx-6 md:mx-12 lg:mx-20 mt-6 rounded-xl border px-4 py-3 flex items-center justify-between gap-3 animate-in slide-in-from-top duration-200
             ${errorType === 'EMAIL_NOT_VERIFIED' && !verificationResent ? 'bg-amber-50 text-amber-700 border-amber-100' : ''}
             ${verificationResent ? 'bg-green-50 text-green-700 border-green-100' : ''}
@@ -497,6 +499,7 @@ const LoginClient = (props: LoginClientProps) => {
             </div>
 
             <button
+              aria-label="Dismiss error"
               onClick={() => {
                 setShowErrorModal(false)
                 if (verificationResent) setVerificationResent(false)
@@ -523,12 +526,13 @@ const LoginClient = (props: LoginClientProps) => {
                 </p>
 
                 <form onSubmit={handleMfaSubmit} className="mt-8">
-                  <label className="block text-[13px] font-semibold text-black/70 mb-1.5">
+                  <label htmlFor="login-mfa-code" className="block text-[13px] font-semibold text-black/70 mb-1.5">
                     {useBackupCode
                       ? t('auth.mfa_backup_code', { defaultValue: 'Backup code' })
                       : t('auth.mfa_code', { defaultValue: 'Verification code' })}
                   </label>
                   <input
+                    id="login-mfa-code"
                     type="text"
                     value={mfaCode}
                     onChange={(e) => {
@@ -552,7 +556,7 @@ const LoginClient = (props: LoginClientProps) => {
                   />
 
                   {mfaError && (
-                    <p className="mt-2 text-red-600 text-xs flex items-start gap-1.5">
+                    <p role="alert" className="mt-2 text-red-600 text-xs flex items-start gap-1.5">
                       <Info size={12} className="shrink-0 mt-0.5" />
                       <span>{mfaError}</span>
                     </p>
@@ -623,9 +627,9 @@ const LoginClient = (props: LoginClientProps) => {
                         {t('auth.magic_sent_title', { defaultValue: 'Check your email' })}
                       </h2>
                       <p className="mt-2 text-black/45 text-[15px] font-medium max-w-sm">
-                        {t('auth.magic_sent_body', {
+                        {t('auth.magic_request_accepted', {
                           defaultValue:
-                            'If an account exists for {{email}}, we just sent it a secure link to sign in. It expires shortly, so use it soon.',
+                            'Request received. If {{email}} belongs to an eligible account, look for a sign-in link in your email.',
                           email: magicEmail.trim(),
                         })}
                       </p>
@@ -653,10 +657,11 @@ const LoginClient = (props: LoginClientProps) => {
                       })}
                     </p>
                     <form onSubmit={handleMagicLinkRequest} className="mt-8">
-                      <label className="block text-[13px] font-semibold text-black/70 mb-1.5">
+                      <label htmlFor="login-magic-email" className="block text-[13px] font-semibold text-black/70 mb-1.5">
                         {t('auth.email')}
                       </label>
                       <input
+                        id="login-magic-email"
                         type="email"
                         value={magicEmail}
                         onChange={(e) => {
@@ -675,7 +680,7 @@ const LoginClient = (props: LoginClientProps) => {
                       />
 
                       {magicError && (
-                        <p className="mt-2 text-red-600 text-xs flex items-start gap-1.5">
+                        <p role="alert" className="mt-2 text-red-600 text-xs flex items-start gap-1.5">
                           <Info size={12} className="shrink-0 mt-0.5" />
                           <span>{magicError}</span>
                         </p>
@@ -764,7 +769,7 @@ const LoginClient = (props: LoginClientProps) => {
                       </span>
                     )}
                     <Link
-                      href="/forgot"
+                      href={authRoute('/forgot', new URLSearchParams(searchParams.toString()), isLearningAIOrg(props.org?.slug))}
                       className="text-xs text-black/60 hover:text-black font-semibold transition-colors"
                     >
                       {t('auth.forgot_password')}
@@ -872,7 +877,7 @@ const LoginClient = (props: LoginClientProps) => {
               {/* Sign Up Link */}
               <p className="text-center text-sm text-black/35 mt-6">
                 {t('auth.no_account')}{' '}
-                <Link href="/signup" className="text-black font-semibold hover:underline">
+                <Link href={authRoute('/signup', new URLSearchParams(searchParams.toString()), isLearningAIOrg(props.org?.slug))} className="text-black font-semibold hover:underline">
                   {t('auth.sign_up')}
                 </Link>
               </p>

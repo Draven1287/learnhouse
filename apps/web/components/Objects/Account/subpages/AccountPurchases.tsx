@@ -1,4 +1,8 @@
 'use client'
+import { useOrg } from '@components/Contexts/OrgContext'
+import { getDeploymentMode } from '@services/config/config'
+import { paymentsUnavailable } from '@services/payments/availability'
+import { PaymentsUnavailable } from '@components/LearningAI/CockpitWorkspace'
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
@@ -105,6 +109,8 @@ function EnrollmentCard({ enrollment, orgslug, onManageBilling, billingLoading }
 }
 
 function AccountPurchases({ orgId, orgslug }: AccountPurchasesProps) {
+  const org = useOrg() as any
+  const unavailable = paymentsUnavailable(getDeploymentMode(), org?.config?.config)
   const session = useLHSession() as any
   const access_token = session?.data?.tokens?.access_token
   const [billingLoading, setBillingLoading] = useState(false)
@@ -113,7 +119,7 @@ function AccountPurchases({ orgId, orgslug }: AccountPurchasesProps) {
   const { data: enrollmentsResult, isLoading, error } = useQuery({
     queryKey: ['payments', orgId, 'enrollments', 'mine'],
     queryFn: () => getUserEnrollments(orgId, access_token),
-    enabled: !!orgId && !!access_token,
+    enabled: !!orgId && !!access_token && !unavailable,
     staleTime: 60_000,
   })
 
@@ -138,6 +144,8 @@ function AccountPurchases({ orgId, orgslug }: AccountPurchasesProps) {
       setBillingLoading(false)
     }
   }
+
+  if (unavailable) return <PaymentsUnavailable orgslug={orgslug} />
 
   if (isLoading) {
     return (

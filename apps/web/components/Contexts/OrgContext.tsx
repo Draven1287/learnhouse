@@ -1,4 +1,5 @@
 'use client'
+import { isLearningAIOrg } from '@components/LearningAI/authPresentation'
 import React, { createContext, useContext, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { queryKeys } from '@/lib/query/keys'
@@ -68,13 +69,13 @@ export function OrgProvider({
   // Pass the real SWR error so it's classified into a meaningful message
   // (offline / server / not-found …) with the right recovery actions. An
   // explicit errorMessage prop still overrides the classification.
-  if (orgError) return <ErrorUI error={orgError} message={errorMessage} submessage={errorSubmessage} />
+  if (orgError) return <div className={isLearningAIOrg(orgslug) ? 'cockpit-native' : undefined}><ErrorUI error={orgError} message={errorMessage} submessage={errorSubmessage} /></div>
   if (!isLoading && org && !isOrgActive) return (
-    <ErrorUI
+    <div className={isLearningAIOrg(orgslug) ? 'cockpit-native' : undefined}><ErrorUI
       message={inactiveMessage}
       submessage="The workspace has been deactivated. If you believe this is a mistake, contact the organization's owner or our support team."
       resolutions={['home', 'signout', 'contact_support']}
-    />
+    /></div>
   )
 
   return <OrgContext.Provider value={contextValue}>{children}</OrgContext.Provider>

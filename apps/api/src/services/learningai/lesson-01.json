@@ -1,6 +1,6 @@
 {
   "id": "lai.ai-you-can-use.l01",
-  "version": 1,
+  "version": 2,
   "number": 1,
   "part": 1,
   "title": "Get your first useful result",
@@ -59,11 +59,13 @@
   ],
   "transfer": {
     "id": "lai.ai-you-can-use.l01.transfer",
-    "prompt": "Write a short replacement plan. Explain how it meets all three constraints: 10 minutes, no spending money, and no phones. Choose AI, a checklist, a person, or no tool and explain why that choice fits. Identify a role to consult, such as the club organizer, rather than a real person’s name.",
+    "minLength": 1,
+    "prompt": "Changed constraint: the club now has only FIVE minutes. Six students, no spending and no phones still apply. Adapt your original plan: give a new time allocation including setup and clearing away, explain what you cut or kept, reconsider your tool choice, and name an inclusion check and a role to consult. Use fictional details.",
     "rubric": [
-      "Plan fits 10 minutes, no money, and no phones.",
-      "Justifies why AI, a checklist, a person, or no tool fits the task.",
-      "Identifies an inclusion check and a role to consult without personal information."
+      "The revised times total no more than five minutes, including setup and clearing away.",
+      "Explains what changed from the original attempt and why; still no spending or phones.",
+      "Justifies keeping or changing the tool choice, including non-use.",
+      "Names an inclusion check and a role to consult without personal details."
     ]
   },
   "sourceIds": [
@@ -99,5 +101,74 @@
     "requires": "All visible required core/branch choices and required text fields",
     "correctAnswersRequired": false,
     "reflectionSemanticallyGraded": false
-  }
+  },
+  "responseFields": [
+    {
+      "id": "lai.ai-you-can-use.l01.first_attempt",
+      "prompt": "Your first attempt: write a 10-minute plan for the six students before seeing the example. Include time, cost, devices and your tool choice.",
+      "stage": 0,
+      "minLength": 1,
+      "maxLength": 2000,
+      "criteria": [
+        "Include setup and clearing away in 10 minutes.",
+        "Use no spending and no phones.",
+        "Explain a tool choice or justified non-use."
+      ]
+    },
+    {
+      "id": "lai.ai-you-can-use.l01.self_review",
+      "prompt": "Self-review: name one criterion your revised plan meets, show the detail that supports it, and identify one uncertainty to check.",
+      "stage": 3,
+      "minLength": 1,
+      "maxLength": 2000,
+      "criteria": [
+        "Point to evidence in your own plan.",
+        "Name a remaining uncertainty without claiming the activity has been tested."
+      ]
+    }
+  ],
+  "teaching": {
+    "revision": "2026-10-11-pilot.2",
+    "question": "What makes a suggestion worth using?",
+    "sections": [
+      {
+        "title": "Start with what success needs",
+        "text": "For the fictional club, success means six students can join an activity within 10 minutes, with no spending and no phones. Those are constraints: conditions the result must satisfy. An exciting description does not make a plan fit."
+      },
+      {
+        "title": "Inspect the draft, one condition at a time",
+        "text": "The proposed online tournament takes 45 minutes, costs money and needs phones. It fails all three checks. You do not need an AI tool to notice this. Put the brief beside the suggestion and mark each mismatch."
+      },
+      {
+        "title": "Repair it, then check what you missed",
+        "text": "A possible repair uses one minute to explain a scrap-paper word game, seven minutes to play and two minutes to share. That totals 10 minutes and needs no spending or phones. It is still a proposal: ask the club organizer whether everyone can read, write or contribute another way."
+      }
+    ],
+    "practice": {
+      "title": "Start with your own plan",
+      "instructions": [
+        "Write a first plan before opening the worked example. Include setup, activity and clearing away in 10 minutes.",
+        "Check no spending and no phones. Choose a tool or explain why none is needed.",
+        "Keep this first version for comparison; you will adapt it to a changed constraint later."
+      ],
+      "selfCheck": "Is every constraint visible in your plan? What still needs checking with the club organizer?"
+    },
+    "takeaway": "Define useful → check every constraint → revise or reject → explain your decision.",
+    "independentPractice": "Tomorrow, try the same three-constraint check on a fictional plan without reopening the worked example. Explain one reason to use a tool and one reason not to.",
+    "stepNames": [
+      "Your first attempt",
+      "Compare and check",
+      "Your judgment",
+      "Adapt your plan"
+    ],
+    "exampleAfterAttempt": true
+  },
+  "references": [
+    {
+      "id": "competencies",
+      "title": "UNESCO: AI competency framework for students",
+      "url": "https://www.unesco.org/en/articles/ai-competency-framework-students",
+      "supports": "Human agency, ethics and critical evaluation as learning goals. This draft is not UNESCO-certified."
+    }
+  ]
 }

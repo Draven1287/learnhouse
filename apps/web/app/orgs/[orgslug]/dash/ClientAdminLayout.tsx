@@ -10,6 +10,8 @@ import { CommandPaletteProvider } from '@components/Dashboard/CommandPalette/Com
 import CommandPalette from '@components/Dashboard/CommandPalette/CommandPalette'
 import { UpgradeModalProvider } from '@components/Dashboard/Shared/PlanRestricted/UpgradeModalContext'
 import React from 'react'
+import { useOrgMembership } from '@components/Contexts/OrgContext'
+import { CockpitWorkspaceHeading } from '@components/LearningAI/CockpitWorkspace'
 import { useMediaQuery } from 'usehooks-ts';
 
 function ClientAdminLayout({
@@ -19,6 +21,7 @@ function ClientAdminLayout({
     // Accepted (the server layout passes it) but unused here.
     params?: any
 }) {
+    const { orgslug } = useOrgMembership()
     const isMobile = useMediaQuery('(max-width: 1024px)')
 
     return (
@@ -38,6 +41,7 @@ function ClientAdminLayout({
                             {!isMobile && <DashLeftMenu />}
                             <div className="flex flex-col w-full min-w-0 relative isolate pb-24 lg:pb-0">
                                 {/* Renders nothing outside the demo organization. */}
+                                <CockpitWorkspaceHeading orgslug={orgslug} />
                                 <DemoBanner />
                                 {children}
                                 <OnboardingTracker />

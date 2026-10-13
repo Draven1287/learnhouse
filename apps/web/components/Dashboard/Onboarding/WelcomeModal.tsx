@@ -1,4 +1,6 @@
 'use client'
+import { useOrg } from '@components/Contexts/OrgContext'
+import { isLearningAIOrg } from '@components/LearningAI/authPresentation'
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { useOnboarding } from '@components/Hooks/useOnboarding'
@@ -100,6 +102,8 @@ const FEATURES = [
 ]
 
 export default function WelcomeModal() {
+  const org = useOrg() as any
+  const cockpit = isLearningAIOrg(org?.slug)
   const { welcomeSeen, markWelcomeSeen, dismissed } = useOnboarding()
   const { t } = useTranslation()
   const { track } = useLHAnalytics('dashboard')
@@ -147,6 +151,8 @@ export default function WelcomeModal() {
                 >
                   <div className="px-10 pt-10 pb-2 text-center">
                     <motion.img
+                      aria-hidden={cockpit}
+                      hidden={cockpit}
                       src="/lrn-dash.svg"
                       alt="LearnHouse"
                       className="h-12 w-12 mx-auto mb-5"
@@ -161,7 +167,7 @@ export default function WelcomeModal() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3, duration: 0.5, ease }}
                     >
-                      {t('onboarding.welcome.title')}
+                      {cockpit ? 'Your teaching workspace.' : t('onboarding.welcome.title')}
                     </motion.h1>
                     <motion.p
                       className="text-sm text-gray-400 mt-2"
@@ -230,7 +236,7 @@ export default function WelcomeModal() {
               transition={{ duration: 0.6, ease }}
             >
               <div className="w-[280px]">
-                <WelcomeGlobe />
+                {cockpit ? <div className="cockpit-onboarding-mark">LEARNINGAI<br /><small>Plan. Teach. Review.</small></div> : <WelcomeGlobe />}
               </div>
             </motion.div>
 

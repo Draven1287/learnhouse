@@ -1,4 +1,5 @@
 'use client'
+import { authDestination, authRoute, isLearningAIOrg } from '@components/LearningAI/authPresentation'
 import React, { useEffect, useRef, useState } from 'react'
 import { AlertTriangle, CheckCircle, Loader2, X } from 'lucide-react'
 import Link from 'next/link'
@@ -99,7 +100,7 @@ function VerifyEmailClient({ org }: VerifyEmailClientProps) {
         >
                 {/* Message Top Bar */}
                 {showMessage && !isVerifying && (error || success) && (
-                    <div className={`
+                    <div role="status" aria-live="polite" className={`
                         mx-6 md:mx-12 lg:mx-20 mt-6 rounded-xl border px-4 py-3 flex items-center justify-between gap-3 animate-in slide-in-from-top duration-200
                         ${error ? 'bg-red-50 text-red-700 border-red-100' : 'bg-green-50 text-green-700 border-green-100'}
                     `}>
@@ -111,12 +112,13 @@ function VerifyEmailClient({ org }: VerifyEmailClientProps) {
                                 </span>
                                 {success && (
                                     <span className="text-sm ms-2">
-                                        · <Link href="/home" className="underline hover:no-underline">{t('auth.continue_to_dashboard', { defaultValue: 'Continue to your dashboard' })}</Link>
+                                        · <Link href={authDestination(new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))} className="underline hover:no-underline">{t('auth.continue_to_dashboard', { defaultValue: 'Continue to your dashboard' })}</Link>
                                     </span>
                                 )}
                             </div>
                         </div>
                         <button
+                            aria-label="Dismiss message"
                             onClick={() => setShowMessage(false)}
                             className="p-1 rounded-lg hover:bg-black/5 transition-colors shrink-0 opacity-60 hover:opacity-100"
                         >
@@ -152,7 +154,7 @@ function VerifyEmailClient({ org }: VerifyEmailClientProps) {
                                     {t('auth.verification_trouble')}
                                 </p>
                                 <Link
-                                    href="/login"
+                                    href={authRoute('/login', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))}
                                     className="box-border w-full inline-flex h-[44px] rounded-lg items-center justify-center bg-black hover:bg-black/85 text-white px-[15px] font-bold text-[14px] leading-none transition-all"
                                 >
                                     {t('auth.back_to_login')}
@@ -173,7 +175,7 @@ function VerifyEmailClient({ org }: VerifyEmailClientProps) {
                                     </div>
                                 </div>
                                 <Link
-                                    href="/home"
+                                    href={authDestination(new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))}
                                     className="box-border w-full inline-flex h-[44px] rounded-lg items-center justify-center bg-black hover:bg-black/85 text-white px-[15px] font-bold text-[14px] leading-none transition-all"
                                 >
                                     {t('auth.continue_to_dashboard', { defaultValue: 'Continue to your dashboard' })}

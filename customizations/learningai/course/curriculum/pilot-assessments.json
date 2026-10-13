@@ -1,0 +1,256 @@
+{
+  "lai.ai-you-can-use.l01": {
+    "version": 2,
+    "responseFields": [
+      {
+        "id": "lai.ai-you-can-use.l01.first_attempt",
+        "prompt": "Your first attempt: write a 10-minute plan for the six students before seeing the example. Include time, cost, devices and your tool choice.",
+        "stage": 0,
+        "minLength": 1,
+        "maxLength": 2000,
+        "criteria": [
+          "Include setup and clearing away in 10 minutes.",
+          "Use no spending and no phones.",
+          "Explain a tool choice or justified non-use."
+        ]
+      },
+      {
+        "id": "lai.ai-you-can-use.l01.self_review",
+        "prompt": "Self-review: name one criterion your revised plan meets, show the detail that supports it, and identify one uncertainty to check.",
+        "stage": 3,
+        "minLength": 1,
+        "maxLength": 2000,
+        "criteria": [
+          "Point to evidence in your own plan.",
+          "Name a remaining uncertainty without claiming the activity has been tested."
+        ]
+      }
+    ],
+    "transfer": {
+      "id": "lai.ai-you-can-use.l01.transfer",
+      "minLength": 1,
+      "prompt": "Changed constraint: the club now has only FIVE minutes. Six students, no spending and no phones still apply. Adapt your original plan: give a new time allocation including setup and clearing away, explain what you cut or kept, reconsider your tool choice, and name an inclusion check and a role to consult. Use fictional details.",
+      "rubric": [
+        "The revised times total no more than five minutes, including setup and clearing away.",
+        "Explains what changed from the original attempt and why; still no spending or phones.",
+        "Justifies keeping or changing the tool choice, including non-use.",
+        "Names an inclusion check and a role to consult without personal details."
+      ]
+    }
+  },
+  "lai.ai-you-can-use.l02": {
+    "version": 2,
+    "responseFields": [
+      {
+        "id": "lai.ai-you-can-use.l02.error_analysis",
+        "prompt": "Your analysis: identify the wrong prediction, the row that cannot count as a new-example test, one next test case, and a limit on what these results tell you.",
+        "stage": 2,
+        "minLength": 1,
+        "maxLength": 2000,
+        "criteria": [
+          "Compare checked labels with predictions by row.",
+          "Separate reused training data from new test examples.",
+          "Propose another independently checked case; do not infer a general cause from one error."
+        ]
+      },
+      {
+        "id": "lai.ai-you-can-use.l02.self_review",
+        "prompt": "Self-review: point to how your test could reveal an error, and name one conclusion it would not justify.",
+        "stage": 3,
+        "minLength": 1,
+        "maxLength": 2000,
+        "criteria": [
+          "Describe evidence you could inspect.",
+          "State a limit on the conclusion."
+        ]
+      }
+    ],
+    "transfer": {
+      "id": "lai.ai-you-can-use.l02.transfer",
+      "minLength": 1,
+      "prompt": "Invent a simple rule-based tool and a tool that learns from examples. State the rule’s condition and action, the learned tool’s training examples and prediction, and two NEW test cases. Explain how you would check expected answers, identify errors, and respond to a failed test.",
+      "rubric": [
+        "Rule has an explicit condition and action.",
+        "Learning example identifies training data and a prediction.",
+        "Two test cases are separate from training, with independently checked expected answers.",
+        "Explains how a mismatch changes the use decision; avoids claiming the small test proves reliability."
+      ]
+    },
+    "activities": [
+      {
+        "id": "lai.ai-you-can-use.l02.approaches",
+        "prompt": "Which explanation best matches the three fictional tools?",
+        "choices": [
+          {
+            "value": "output",
+            "text": "A follows a rule; B learns labels; C follows fixed rules because its output is text.",
+            "feedback": "Text output does not establish fixed rules. Generation describes the output, while learning describes how patterns are fitted."
+          },
+          {
+            "value": "mix",
+            "text": "A follows a rule; B learns labels; C generates text and can also learn patterns from data.",
+            "feedback": "These descriptions can overlap: a generator can be a learned model, and a product can also use ordinary rules."
+          },
+          {
+            "value": "input",
+            "text": "A learns from elapsed time; B follows fixed rules because people supplied its example labels.",
+            "feedback": "Receiving an input is not itself learning. In the brief, B fits patterns from labeled examples; A applies a specified timer rule."
+          }
+        ],
+        "correctAnswer": "mix",
+        "rationale": "Distinguish a specified rule, fitting patterns and generating output; categories can overlap."
+      },
+      {
+        "id": "lai.ai-you-can-use.l02.prediction_review",
+        "prompt": "After your own analysis, which conclusion fits the table?",
+        "choices": [
+          {
+            "value": "all_new",
+            "text": "B is wrong; the other three rows are successful new-example tests, so use those four to estimate reliability.",
+            "feedback": "D is reused training data. Do not count it as an independent new-example test; this tiny set is also insufficient to establish general reliability."
+          },
+          {
+            "value": "limited",
+            "text": "B is wrong; D reuses training data. Check more new examples before relying on the model.",
+            "feedback": "B differs from its checked label. D cannot count as a new-example test. A and C match, but these few results do not establish general reliability."
+          },
+          {
+            "value": "cause",
+            "text": "B is wrong in shade; all shaded photos will fail, so daylight-only use is now proven safe.",
+            "feedback": "One shaded error does not prove its cause or predict every shaded result. Two daylight matches do not prove daylight use is safe."
+          }
+        ],
+        "correctAnswer": "limited",
+        "rationale": "Separate observed mismatches, independent test examples and unsupported generalizations."
+      }
+    ]
+  },
+  "lai.ai-you-can-use.l03": {
+    "version": 2,
+    "estimatedMinutes": 12,
+    "explanation": "A chat interface shows a reply; it does not show everything that happened behind it. In this fictional cloud service, a trained model generates text. First trace the journey in your own words. Then compare a claim with dated evidence. You need no external account or live AI tool.",
+    "scenario": "Fictional club exercise, 13 October 2026. You ask a cloud chat: “When does the club meet this week?” It replies, “Definitely Friday at 4.” No timetable was supplied and no search or source is shown. Route cards, scrambled: A — app displays the returned reply; B — trained model generates output on the service; C — you type the prompt in the app; D — network carries the request to the service, which prepares the input.",
+    "activities": [
+      {
+        "id": "lai.ai-you-can-use.l03.route",
+        "prompt": "Compare with your own trace. Which account fits this cloud service?",
+        "choices": [
+          {
+            "value": "cloud",
+            "text": "C → D → B → A. The service uses a trained model; the reply returns over the network.",
+            "feedback": "That traces prompt, transport and service, model inference, then the reply. It does not establish a search or fact-check."
+          },
+          {
+            "value": "train",
+            "text": "C → D → B → A. Each reply necessarily retrains the model on this message.",
+            "feedback": "The travel order fits, but using a trained model is inference. A product may separately use stored data for later training; a reply alone does not establish that."
+          },
+          {
+            "value": "search",
+            "text": "C → D → A → B. The app first retrieves a verified answer; the model then checks it.",
+            "feedback": "In this scenario the model generates the reply before it is displayed. No search or verification is shown. Revisit what each card actually says."
+          }
+        ],
+        "correctAnswer": "cloud",
+        "rationale": "Trace this specified service without generalizing to every chat product."
+      },
+      {
+        "id": "lai.ai-you-can-use.l03.verify",
+        "prompt": "After your own source comparison, which message is justified by the packet?",
+        "choices": [
+          {
+            "value": "source",
+            "text": "“For this week, the organizer’s 12 October update says Thursday at 16:00 in the library. I would use that update.”",
+            "feedback": "This names both the evidence and its scope. The older notice describes the earlier plan; confident chat wording adds no verification."
+          },
+          {
+            "value": "share",
+            "text": "“Friday at 4 is confirmed: both the older notice and the chat agree.”",
+            "feedback": "Agreement is not enough. Check whether the notice still applies after the organizer’s dated update."
+          },
+          {
+            "value": "latest",
+            "text": "“Friday at 4: the 13 October chat reply is newer than both notices.”",
+            "feedback": "A newer timestamp does not give a generated reply authority over an organizer’s update. Ask what source knows and whether it covers this week."
+          }
+        ],
+        "correctAnswer": "source",
+        "rationale": "Compare authority, date and relevance together; do not choose simply by newest timestamp."
+      }
+    ],
+    "branchActivity": {
+      "id": "lai.ai-you-can-use.l03.evidence_check",
+      "prompt": "The reply repeats Friday. What would change the evidence?",
+      "choices": [
+        {
+          "value": "repeat",
+          "text": "Ask for a more confident version of the same reply.",
+          "feedback": "That changes wording, not the source of the timetable."
+        },
+        {
+          "value": "official",
+          "text": "Check the current organizer update, or ask the organizer if the update is unclear.",
+          "feedback": "Use evidence from someone responsible for the schedule and check which meeting it covers."
+        }
+      ],
+      "correctAnswer": "official",
+      "rationale": "A repetition is not an independent check.",
+      "visibleIfActivity": "lai.ai-you-can-use.l03.verify",
+      "visibleIfNotEqual": "source"
+    },
+    "responseFields": [
+      {
+        "id": "lai.ai-you-can-use.l03.request_trace",
+        "prompt": "Before opening the worked trace: type the card letters in travel order (for example X → Y), then explain the network’s job and what the model does. A numbered sentence is equally valid; no dragging is needed. Mark anything you are unsure of.",
+        "stage": 0,
+        "minLength": 1,
+        "maxLength": 2000,
+        "criteria": [
+          "Include all four cards and the return path.",
+          "Distinguish carrying a message from generating text.",
+          "This is your first attempt; uncertainty is welcome."
+        ]
+      },
+      {
+        "id": "lai.ai-you-can-use.l03.evidence_comparison",
+        "prompt": "Compare the Friday claim with both notices. Which source applies to this week, and why? Write a corrected message with its source and one thing the packet does not establish.",
+        "stage": 2,
+        "minLength": 1,
+        "maxLength": 2000,
+        "criteria": [
+          "Use dates, source responsibility and which meeting each notice covers.",
+          "Explain why “definitely” or repetition does not verify a claim.",
+          "State a limit without inventing missing details."
+        ]
+      },
+      {
+        "id": "lai.ai-you-can-use.l03.self_review",
+        "prompt": "Self-review: identify one change or clarification in your original trace or source comparison. Explain why it matters. What would you check if the organizer issued another update?",
+        "stage": 3,
+        "minLength": 1,
+        "maxLength": 2000,
+        "criteria": [
+          "Point to your own words and a specific reason.",
+          "Describe what new evidence would change your decision."
+        ]
+      }
+    ],
+    "transfer": {
+      "id": "lai.ai-you-can-use.l03.transfer",
+      "minLength": 1,
+      "prompt": "New fictional case: a chat says “The book swap definitely has free pizza.” The current organizer card says “Tuesday, library, 15:30–16:00, free entry”; it says nothing about food. Write a notice you would share, identify what you withheld and why, and name a check that could resolve the food claim. Then explain why generating this reply is inference, not proof that the model retrained or searched.",
+      "rubric": [
+        "Notice includes only supported facts; free entry is not a promise of food.",
+        "Withholds the food claim without claiming food is definitely absent.",
+        "Names the responsible organizer or an applicable source as a check.",
+        "Distinguishes inference from training and does not assume search."
+      ]
+    },
+    "sourceIds": [
+      "llm",
+      "ml",
+      "nist"
+    ],
+    "uncertainty": "This simplified route describes a fictional cloud service. Other products may use on-device models or tools. Chat retention, later training use and search depend on the product and settings. All dates, notices and replies here are invented teaching fixtures; no model was run."
+  }
+}

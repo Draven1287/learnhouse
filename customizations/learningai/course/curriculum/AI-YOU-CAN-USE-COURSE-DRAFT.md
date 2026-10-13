@@ -36,7 +36,7 @@ All exercises use fictional practice material. Learners can use plain text or di
 
 ## 1. Get your first useful result
 
-Stable ID: `lai.ai-you-can-use.l01` · version 1 · implemented-draft
+Stable ID: `lai.ai-you-can-use.l01` · version 2 · implemented-draft
 
 **Objective:** Judge a suggestion against practical constraints and justify a tool choice.
 
@@ -47,6 +47,30 @@ You decide what a useful result means. A fluent suggestion can still miss your t
 **Practice scenario**
 
 Fictional club brief: six students have 10 minutes, no spending money and no phones. A draft suggests a paid online tournament lasting 45 minutes.
+
+### Start with what success needs
+
+For the fictional club, success means six students can join an activity within 10 minutes, with no spending and no phones. Those are constraints: conditions the result must satisfy. An exciting description does not make a plan fit.
+
+### Inspect the draft, one condition at a time
+
+The proposed online tournament takes 45 minutes, costs money and needs phones. It fails all three checks. You do not need an AI tool to notice this. Put the brief beside the suggestion and mark each mismatch.
+
+### Repair it, then check what you missed
+
+A possible repair uses one minute to explain a scrap-paper word game, seven minutes to play and two minutes to share. That totals 10 minutes and needs no spending or phones. It is still a proposal: ask the club organizer whether everyone can read, write or contribute another way.
+
+**Start with your own plan**
+
+- Write a first plan before opening the worked example. Include setup, activity and clearing away in 10 minutes.
+- Check no spending and no phones. Choose a tool or explain why none is needed.
+- Keep this first version for comparison; you will adapt it to a changed constraint later.
+
+Is every constraint visible in your plan? What still needs checking with the club organizer?
+
+**Takeaway:** Define useful → check every constraint → revise or reject → explain your decision.
+
+**Independent practice:** Tomorrow, try the same three-constraint check on a fictional plan without reopening the worked example. Explain one reason to use a tool and one reason not to.
 
 ### Exercise: lai.ai-you-can-use.l01.repair
 
@@ -79,15 +103,24 @@ What should guide a revised plan?
 
 **Answer:** `limits`. Complete this short check, then return to the main lesson.
 
+**Required practice response:** Your first attempt: write a 10-minute plan for the six students before seeing the example. Include time, cost, devices and your tool choice.
+
+Self-review criteria: Include setup and clearing away in 10 minutes.; Use no spending and no phones.; Explain a tool choice or justified non-use.
+
+**Required practice response:** Self-review: name one criterion your revised plan meets, show the detail that supports it, and identify one uncertainty to check.
+
+Self-review criteria: Point to evidence in your own plan.; Name a remaining uncertainty without claiming the activity has been tested.
+
 **Reflection / transfer**
 
-Write a short replacement plan. Explain how it meets all three constraints: 10 minutes, no spending money, and no phones. Choose AI, a checklist, a person, or no tool and explain why that choice fits. Identify a role to consult, such as the club organizer, rather than a real person’s name.
+Changed constraint: the club now has only FIVE minutes. Six students, no spending and no phones still apply. Adapt your original plan: give a new time allocation including setup and clearing away, explain what you cut or kept, reconsider your tool choice, and name an inclusion check and a role to consult. Use fictional details.
 
 **Review rubric (0–2 per item)**
 
-- Plan fits 10 minutes, no money, and no phones.
-- Justifies why AI, a checklist, a person, or no tool fits the task.
-- Identifies an inclusion check and a role to consult without personal information.
+- The revised times total no more than five minutes, including setup and clearing away.
+- Explains what changed from the original attempt and why; still no spending or phones.
+- Justifies keeping or changing the tool choice, including non-use.
+- Names an inclusion check and a role to consult without personal details.
 
 **Uncertainty and scope:** A proposed activity is not proven successful until tried with its actual participants.
 
@@ -97,7 +130,7 @@ Write a short replacement plan. Explain how it meets all three constraints: 10 m
 
 ## 2. How did we get here?
 
-Stable ID: `lai.ai-you-can-use.l02` · version 1 · implemented-draft
+Stable ID: `lai.ai-you-can-use.l02` · version 2 · implemented-draft
 
 **Objective:** Distinguish explicit rules, learning from examples, and generative output without treating them as mutually exclusive eras.
 
@@ -109,25 +142,50 @@ Some software follows rules people specify. Machine learning fits patterns using
 
 Three fictional tools: A sends a reminder when a timer reaches zero. B learns to label plant photos from labeled examples. C generates a new club announcement from a brief.
 
+### Three approaches that still work together
+
+A rule-based tool follows a condition a person wrote: if the timer reaches zero, show a reminder. A learned classifier fits patterns from examples, such as labeled plant photos. A generator produces content, such as a new announcement. These are overlapping descriptions, not a timeline where each new approach erases the last.
+
+### Training changes; inference uses
+
+During training, a model is adjusted using data. When a trained plant model labels a new photo, it is doing inference. That one prediction does not prove the label is correct or mean the model learned from the photo. A product may separately collect data for later training; do not assume it does or does not.
+
+### Test beyond the examples it learned from
+
+Imagine a fictional leaf classifier trained only on clear daylight photos. A useful test includes different photos with independently checked labels, including shade or unfamiliar backgrounds. Record which predictions match and which fail. Testing only the training examples can hide a model that learned those examples but performs poorly on new ones.
+
+**Your turn: design two tools**
+
+- On paper or in your own words, invent a rule with an explicit if/then condition. You do not need to code it.
+- Invent a learned tool. Name the examples it would train on and the prediction it would make.
+- Inspect the prediction table and save your error analysis. Then design two new test cases for your own learned tool, with expected answers and a way to check them.
+- Save your designs and test plan in the final step. Use fictional objects or made-up club tasks; do not upload photos or personal data.
+
+Can you explain why your test examples are separate from training? What would you do if the tool fails one?
+
+**Takeaway:** Ask how it works, where its examples came from, and how you would check a new result.
+
+**Independent practice:** Without the notes, explain a timer, a learned classifier and a generator to someone—or write the explanation yourself. Include how their functions can overlap.
+
 ### Exercise: lai.ai-you-can-use.l02.approaches
 
-Which description is most accurate?
+Which explanation best matches the three fictional tools?
 
-- **eras — A is obsolete; B and C replaced all rules.** Feedback: Rules still run timers, checks and many parts of AI applications.
-- **mix — A uses an explicit rule; B learns from examples; C generates content and may also use machine learning.** Feedback: These categories overlap rather than forming a simple replacement timeline.
-- **all — All three must be conscious to work.** Feedback: None of these behaviors establishes consciousness.
+- **output — A follows a rule; B learns labels; C follows fixed rules because its output is text.** Feedback: Text output does not establish fixed rules. Generation describes the output, while learning describes how patterns are fitted.
+- **mix — A follows a rule; B learns labels; C generates text and can also learn patterns from data.** Feedback: These descriptions can overlap: a generator can be a learned model, and a product can also use ordinary rules.
+- **input — A learns from elapsed time; B follows fixed rules because people supplied its example labels.** Feedback: Receiving an input is not itself learning. In the brief, B fits patterns from labeled examples; A applies a specified timer rule.
 
-**Answer:** `mix`. A product label is less informative than its mechanism.
+**Answer:** `mix`. Distinguish a specified rule, fitting patterns and generating output; categories can overlap.
 
-### Exercise: lai.ai-you-can-use.l02.inference
+### Exercise: lai.ai-you-can-use.l02.prediction_review
 
-A trained plant model labels one new photo. What is this step?
+After your own analysis, which conclusion fits the table?
 
-- **train — Training must happen again for every photo.** Feedback: Using a trained model does not by itself imply its parameters changed.
-- **infer — Inference: applying the trained model to a new input.** Feedback: Right. Separate using the model from changing it during training.
-- **certain — Proof that its label is correct.** Feedback: A prediction still needs evaluation.
+- **all_new — B is wrong; the other three rows are successful new-example tests, so use those four to estimate reliability.** Feedback: D is reused training data. Do not count it as an independent new-example test; this tiny set is also insufficient to establish general reliability.
+- **limited — B is wrong; D reuses training data. Check more new examples before relying on the model.** Feedback: B differs from its checked label. D cannot count as a new-example test. A and C match, but these few results do not establish general reliability.
+- **cause — B is wrong in shade; all shaded photos will fail, so daylight-only use is now proven safe.** Feedback: One shaded error does not prove its cause or predict every shaded result. Two daylight matches do not prove daylight use is safe.
 
-**Answer:** `infer`. Inference can be wrong, especially for unfamiliar inputs.
+**Answer:** `limited`. Separate observed mismatches, independent test examples and unsupported generalizations.
 
 ### Exercise: lai.ai-you-can-use.l02.overlap_check
 
@@ -140,15 +198,35 @@ Can a generative system also use machine learning?
 
 **Answer:** `yes`. Complete this short check, then return to the main lesson.
 
+**Required practice response:** Your analysis: identify the wrong prediction, the row that cannot count as a new-example test, one next test case, and a limit on what these results tell you.
+
+Self-review criteria: Compare checked labels with predictions by row.; Separate reused training data from new test examples.; Propose another independently checked case; do not infer a general cause from one error.
+
+**Required practice response:** Self-review: point to how your test could reveal an error, and name one conclusion it would not justify.
+
+Self-review criteria: Describe evidence you could inspect.; State a limit on the conclusion.
+
+**Fictional leaf classifier: inspect four predictions**
+
+Every label and prediction below is invented for this exercise. No model was run. The fictional model trained on daylight photos. Actual means the independently checked label; Model means its prediction. Compare the two and separate new test examples from reused training examples.
+
+ID | Example | Actual | Model
+--- | --- | --- | ---
+A | New daylight photo | Broad | Broad
+B | New shade photo | Narrow | Broad
+C | New daylight photo | Narrow | Narrow
+D | Reused training photo, daylight | Broad | Broad
+
 **Reflection / transfer**
 
-Invent a simple rule-based tool and a tool that learns from examples. Explain how you would test the second on examples it did not train on.
+Invent a simple rule-based tool and a tool that learns from examples. State the rule’s condition and action, the learned tool’s training examples and prediction, and two NEW test cases. Explain how you would check expected answers, identify errors, and respond to a failed test.
 
 **Review rubric (0–2 per item)**
 
-- Rule example has an explicit condition/action.
-- Learning example uses data to fit patterns.
-- Test includes new examples and a way to identify errors.
+- Rule has an explicit condition and action.
+- Learning example identifies training data and a prediction.
+- Two test cases are separate from training, with independently checked expected answers.
+- Explains how a mismatch changes the use decision; avoids claiming the small test proves reliability.
 
 **Uncertainty and scope:** Systems can combine approaches. Do not date a single clean switch from rules to learning or infer consciousness from outputs.
 
@@ -158,64 +236,112 @@ Invent a simple rule-based tool and a tool that learns from examples. Explain ho
 
 ## 3. What is happening inside the chat?
 
-Stable ID: `lai.ai-you-can-use.l03` · version 1 · implemented-draft
+Stable ID: `lai.ai-you-can-use.l03` · version 2 · implemented-draft
 
 **Objective:** Trace a typical cloud-chat request and separate generating a reply from checking a claim.
 
 **Student explanation**
 
-In a typical cloud chat, the app sends your request over a network to a service. The server prepares input for model inference, then sends output back to the app. A text model processes tokens, which can be words or parts of words, and generates output using learned patterns and available context. This can produce useful text or plausible errors. Some apps run models locally or add search tools; neither a confident tone nor a reply alone proves that a search or fact-check happened.
+A chat interface shows a reply; it does not show everything that happened behind it. In this fictional cloud service, a trained model generates text. First trace the journey in your own words. Then compare a claim with dated evidence. You need no external account or live AI tool.
 
 **Practice scenario**
 
-Fictional chat: you send “hi,” then ask when the club meets. The reply says, “Definitely Friday at 4.” You supplied no timetable and see no source.
+Fictional club exercise, 13 October 2026. You ask a cloud chat: “When does the club meet this week?” It replies, “Definitely Friday at 4.” No timetable was supplied and no search or source is shown. Route cards, scrambled: A — app displays the returned reply; B — trained model generates output on the service; C — you type the prompt in the app; D — network carries the request to the service, which prepares the input.
+
+### Follow the message, then the reply
+
+For these cards: C → D → B → A. The app collects your prompt. The network carries it to the service; the service prepares the model input. The trained model generates output. The service sends the reply back over the network, and the app displays it. The interface, network, service and model do different jobs.
+
+### Training changes; inference uses
+
+Recall Lesson 2: training adjusts a model using data. Inference uses the trained model. Text models work with tokens—pieces of text—and generate using learned patterns and available context. Producing this reply does not, by itself, mean the model changed or searched the web.
+
+### A reply and a source do different jobs
+
+Fluent text can be useful and still be wrong. To check a schedule, inspect evidence from someone responsible for it. Ask: does this source cover this meeting, and has it been updated? A newer unsupported reply is not automatically stronger evidence than an applicable organizer notice.
+
+**Trace, compare, revise**
+
+- Save your own route before opening the worked trace. Use letters or sentences, with a return path.
+- Compare the model’s Friday claim against both dated notices. Save your explanation before opening the comparison choices.
+- Use the final book-swap case to write a supported notice and explain one claim you withheld.
+- Review your reasoning against the criteria. No real personal details or outside account are needed.
+
+Can you explain both how text was generated and why a particular source supports your correction?
+
+**Takeaway:** Trace the process. Check the claim against relevant evidence. Keep unsupported details out of what you share.
+
+**Independent practice:** Without reopening the worked trace, explain the cloud route to someone or write it yourself. Give a different example where a fluent answer needs an independent source, and say what evidence could change your mind.
 
 ### Exercise: lai.ai-you-can-use.l03.route
 
-Which route fits the cloud example?
+Compare with your own trace. Which account fits this cloud service?
 
-- **cloud — App → network → server → model inference → reply back.** Feedback: Yes. This is a simplified route, not a map of every service.
-- **local — Every app always computes the answer entirely on your phone.** Feedback: On-device models exist, but the scenario specifies a cloud service.
-- **search — Every reply is copied from a web search.** Feedback: Generation does not require a web search; tool use varies.
+- **cloud — C → D → B → A. The service uses a trained model; the reply returns over the network.** Feedback: That traces prompt, transport and service, model inference, then the reply. It does not establish a search or fact-check.
+- **train — C → D → B → A. Each reply necessarily retrains the model on this message.** Feedback: The travel order fits, but using a trained model is inference. A product may separately use stored data for later training; a reply alone does not establish that.
+- **search — C → D → A → B. The app first retrieves a verified answer; the model then checks it.** Feedback: In this scenario the model generates the reply before it is displayed. No search or verification is shown. Revisit what each card actually says.
 
-**Answer:** `cloud`. Distinguish the interface, transport, service and model.
+**Answer:** `cloud`. Trace this specified service without generalizing to every chat product.
 
 ### Exercise: lai.ai-you-can-use.l03.verify
 
-What should you do before sharing the meeting time?
+After your own source comparison, which message is justified by the packet?
 
-- **share — Share it because it says definitely.** Feedback: Confidence is wording, not evidence of the timetable.
-- **repeat — Ask the same chat until it repeats Friday.** Feedback: Consistency alone does not independently verify the claim.
-- **source — Check the club’s current timetable or ask its organizer.** Feedback: Use a source that actually knows the schedule and check its date.
+- **source — “For this week, the organizer’s 12 October update says Thursday at 16:00 in the library. I would use that update.”** Feedback: This names both the evidence and its scope. The older notice describes the earlier plan; confident chat wording adds no verification.
+- **share — “Friday at 4 is confirmed: both the older notice and the chat agree.”** Feedback: Agreement is not enough. Check whether the notice still applies after the organizer’s dated update.
+- **latest — “Friday at 4: the 13 October chat reply is newer than both notices.”** Feedback: A newer timestamp does not give a generated reply authority over an organizer’s update. Ask what source knows and whether it covers this week.
 
-**Answer:** `source`. The correct timetable is unknown from the supplied evidence.
+**Answer:** `source`. Compare authority, date and relevance together; do not choose simply by newest timestamp.
 
 ### Exercise: lai.ai-you-can-use.l03.evidence_check
 
 Branch: show if `lai.ai-you-can-use.l03.verify` was answered other than `source`. It is a learning detour, not a penalty.
 
-What would independently check the timetable claim?
+The reply repeats Friday. What would change the evidence?
 
-- **repeat — Repeating the same question.** Feedback: Repetition is not an independent timetable source.
-- **official — The current timetable or responsible organizer.** Feedback: That source can establish the meeting time.
+- **repeat — Ask for a more confident version of the same reply.** Feedback: That changes wording, not the source of the timetable.
+- **official — Check the current organizer update, or ask the organizer if the update is unclear.** Feedback: Use evidence from someone responsible for the schedule and check which meeting it covers.
 
-**Answer:** `official`. Complete this short check, then return to the main lesson.
+**Answer:** `official`. A repetition is not an independent check.
+
+**Required practice response:** Before opening the worked trace: type the card letters in travel order (for example X → Y), then explain the network’s job and what the model does. A numbered sentence is equally valid; no dragging is needed. Mark anything you are unsure of.
+
+Self-review criteria: Include all four cards and the return path.; Distinguish carrying a message from generating text.; This is your first attempt; uncertainty is welcome.
+
+**Required practice response:** Compare the Friday claim with both notices. Which source applies to this week, and why? Write a corrected message with its source and one thing the packet does not establish.
+
+Self-review criteria: Use dates, source responsibility and which meeting each notice covers.; Explain why “definitely” or repetition does not verify a claim.; State a limit without inventing missing details.
+
+**Required practice response:** Self-review: identify one change or clarification in your original trace or source comparison. Explain why it matters. What would you check if the organizer issued another update?
+
+Self-review criteria: Point to your own words and a specific reason.; Describe what new evidence would change your decision.
+
+**Fictional source packet: this week’s club meeting**
+
+Every card is invented for this exercise. Today in the scenario is 13 October 2026. No model was run. Compare responsibility, date and relevance; the chat has no shown access to either notice.
+
+Card | Source and date | What it says
+--- | --- | ---
+A | Club noticeboard · 5 October 2026 | Weekly club: Fridays at 16:00, room 4.
+B | Club organizer update · 12 October 2026 | This week only: the meeting moves to Thursday 15 October, 16:00, in the library. This replaces the Friday meeting.
+C | Generated chat reply · 13 October 2026 | Definitely Friday at 4. No source or search shown.
 
 **Reflection / transfer**
 
-Explain where the request travels and why the meeting time remains unverified. Name the source you would consult or explain why you would withhold the claim.
+New fictional case: a chat says “The book swap definitely has free pizza.” The current organizer card says “Tuesday, library, 15:30–16:00, free entry”; it says nothing about food. Write a notice you would share, identify what you withheld and why, and name a check that could resolve the food claim. Then explain why generating this reply is inference, not proof that the model retrained or searched.
 
 **Review rubric (0–2 per item)**
 
-- Distinguishes app/network/service/model.
-- Does not equate confident generation with verified truth.
-- Names a relevant independent check or justified decision not to share.
+- Notice includes only supported facts; free entry is not a promise of food.
+- Withholds the food claim without claiming food is definitely absent.
+- Names the responsible organizer or an applicable source as a check.
+- Distinguishes inference from training and does not assume search.
 
-**Uncertainty and scope:** This is a simplified cloud route. Chat retention, later training use, search access and on-device operation depend on the product and settings.
+**Uncertainty and scope:** This simplified route describes a fictional cloud service. Other products may use on-device models or tools. Chat retention, later training use and search depend on the product and settings. All dates, notices and replies here are invented teaching fixtures; no model was run.
 
 **Optional media — specification only:** Storyboard only: 20-second journey from “hi” on a screen through labeled app/network/server/model panels and back. Show tokens as text pieces, not a tiny human brain. Freeze-frame transcript must teach the same concept.
 
-**Factual references:** [Google: Introduction to large language models](https://developers.google.com/machine-learning/crash-course/llm), [NIST AI 600-1: Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
+**Factual references:** [Google: What is machine learning?](https://developers.google.com/machine-learning/intro-to-ml/what-is-ml), [Google: Introduction to large language models](https://developers.google.com/machine-learning/crash-course/llm), [NIST AI 600-1: Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
 
 ## 4. What is prompt engineering?
 

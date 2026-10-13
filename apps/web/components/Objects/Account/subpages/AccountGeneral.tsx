@@ -1,5 +1,5 @@
 'use client';
-import { updateProfile } from '@services/settings/profile'
+import { ownAccountProfile, saveAccountProfile } from '@services/settings/accountProfile'
 import { getUser } from '@services/users/users'
 import React, { useEffect, useState, useCallback } from 'react'
 import { Formik, Form } from 'formik'
@@ -552,7 +552,7 @@ function AccountGeneral() {
       if (session?.data?.user?.id) {
         try {
           const data = await getUser(session.data.user.id, access_token);
-          setUserData(data);
+          setUserData(ownAccountProfile(data, session.data.user));
         } catch (error) {
           console.error('Error fetching user data:', error);
           setError('Failed to load user data');
@@ -561,7 +561,7 @@ function AccountGeneral() {
     };
 
     fetchUserData();
-  }, [session?.data?.user?.id, access_token]);
+  }, [session?.data?.user?.id, session?.data?.user?.email, access_token]);
 
   const handleFileChange = async (event: any) => {
     const userId = session?.data?.user?.id
@@ -653,6 +653,9 @@ function AccountGeneral() {
     signOut({ redirect: true, callbackUrl: getUriWithoutOrg('/') })
   }
 
+  if (!userData && error) {
+    return <div role="alert" className="bg-white rounded-xl nice-shadow p-8 text-red-600">{error}. <button type="button" onClick={() => window.location.reload()} className="underline">Try again</button></div>
+  }
   if (!userData) {
     return (
       <div className="bg-white rounded-xl nice-shadow p-8">
@@ -681,7 +684,7 @@ function AccountGeneral() {
           const loadingToast = toast.loading(t('user.settings.general.saving'))
 
           try {
-            await updateProfile(values, userData.id, access_token)
+            await saveAccountProfile(values, userData.id, access_token)
             toast.dismiss(loadingToast)
             track(AnalyticsEvent.AccountProfileUpdated, {
               email_changed: isEmailChanged,
@@ -693,7 +696,7 @@ function AccountGeneral() {
               toast.success(t('user.settings.general.profile_updated'))
             }
             const refreshedUser = await getUser(userData.id, access_token)
-            setUserData(refreshedUser)
+            setUserData(ownAccountProfile(refreshedUser, { ...session.data.user, email: values.email }))
           } catch {
             toast.error('Failed to update profile', { id: loadingToast })
           } finally {

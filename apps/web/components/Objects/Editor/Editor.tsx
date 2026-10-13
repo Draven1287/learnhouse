@@ -419,6 +419,7 @@ function Editor(props: EditorProps) {
           <Monitor className='mx-auto my-5' size={60} />
           <p>{t('editor.desktop_only_message')}</p>
           <p>{t('editor.switch_to_desktop')}</p>
+          <Link className="inline-block mt-6 border-b pb-2" href={`/dash/courses/course/${course_uuid}/content`}>Return to course management →</Link>
         </div>
       </div>
     )
@@ -569,7 +570,7 @@ function Editor(props: EditorProps) {
 
                 {/* Save Button with Conflict Detection */}
                 <div className="relative">
-                  <div
+                  <button type="button"
                     className={`${
                       conflictInfo?.hasConflict
                         ? 'bg-amber-500 hover:bg-amber-600'
@@ -585,7 +586,7 @@ function Editor(props: EditorProps) {
                       <AlertTriangle size={14} />
                     )}
                     {t('editor.save')}
-                  </div>
+                  </button>
 
                   {/* Conflict Modal */}
                   {showConflictModal && conflictInfo?.hasConflict && (

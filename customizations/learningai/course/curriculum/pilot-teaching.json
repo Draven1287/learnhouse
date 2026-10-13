@@ -1,0 +1,173 @@
+{
+  "lai.ai-you-can-use.l01": {
+    "revision": "2026-10-11-pilot.2",
+    "question": "What makes a suggestion worth using?",
+    "sections": [
+      {
+        "title": "Start with what success needs",
+        "text": "For the fictional club, success means six students can join an activity within 10 minutes, with no spending and no phones. Those are constraints: conditions the result must satisfy. An exciting description does not make a plan fit."
+      },
+      {
+        "title": "Inspect the draft, one condition at a time",
+        "text": "The proposed online tournament takes 45 minutes, costs money and needs phones. It fails all three checks. You do not need an AI tool to notice this. Put the brief beside the suggestion and mark each mismatch."
+      },
+      {
+        "title": "Repair it, then check what you missed",
+        "text": "A possible repair uses one minute to explain a scrap-paper word game, seven minutes to play and two minutes to share. That totals 10 minutes and needs no spending or phones. It is still a proposal: ask the club organizer whether everyone can read, write or contribute another way."
+      }
+    ],
+    "practice": {
+      "title": "Start with your own plan",
+      "instructions": [
+        "Write a first plan before opening the worked example. Include setup, activity and clearing away in 10 minutes.",
+        "Check no spending and no phones. Choose a tool or explain why none is needed.",
+        "Keep this first version for comparison; you will adapt it to a changed constraint later."
+      ],
+      "selfCheck": "Is every constraint visible in your plan? What still needs checking with the club organizer?"
+    },
+    "takeaway": "Define useful → check every constraint → revise or reject → explain your decision.",
+    "independentPractice": "Tomorrow, try the same three-constraint check on a fictional plan without reopening the worked example. Explain one reason to use a tool and one reason not to.",
+    "stepNames": [
+      "Your first attempt",
+      "Compare and check",
+      "Your judgment",
+      "Adapt your plan"
+    ],
+    "exampleAfterAttempt": true
+  },
+  "lai.ai-you-can-use.l02": {
+    "revision": "2026-10-11-pilot.2",
+    "question": "Is it following a rule, learning a pattern, or making something?",
+    "sections": [
+      {
+        "title": "Three approaches that still work together",
+        "text": "A rule-based tool follows a condition a person wrote: if the timer reaches zero, show a reminder. A learned classifier fits patterns from examples, such as labeled plant photos. A generator produces content, such as a new announcement. These are overlapping descriptions, not a timeline where each new approach erases the last."
+      },
+      {
+        "title": "Training changes; inference uses",
+        "text": "During training, a model is adjusted using data. When a trained plant model labels a new photo, it is doing inference. That one prediction does not prove the label is correct or mean the model learned from the photo. A product may separately collect data for later training; do not assume it does or does not."
+      },
+      {
+        "title": "Test beyond the examples it learned from",
+        "text": "Imagine a fictional leaf classifier trained only on clear daylight photos. A useful test includes different photos with independently checked labels, including shade or unfamiliar backgrounds. Record which predictions match and which fail. Testing only the training examples can hide a model that learned those examples but performs poorly on new ones."
+      }
+    ],
+    "practice": {
+      "title": "Your turn: design two tools",
+      "instructions": [
+        "On paper or in your own words, invent a rule with an explicit if/then condition. You do not need to code it.",
+        "Invent a learned tool. Name the examples it would train on and the prediction it would make.",
+        "Inspect the prediction table and save your error analysis. Then design two new test cases for your own learned tool, with expected answers and a way to check them.",
+        "Save your designs and test plan in the final step. Use fictional objects or made-up club tasks; do not upload photos or personal data."
+      ],
+      "selfCheck": "Can you explain why your test examples are separate from training? What would you do if the tool fails one?"
+    },
+    "takeaway": "Ask how it works, where its examples came from, and how you would check a new result.",
+    "independentPractice": "Without the notes, explain a timer, a learned classifier and a generator to someone—or write the explanation yourself. Include how their functions can overlap.",
+    "stepNames": [
+      "How the tools work",
+      "Compare approaches",
+      "Inspect predictions",
+      "Design your test"
+    ],
+    "predictionTable": {
+      "caption": "Fictional leaf classifier: inspect four predictions",
+      "context": "Every label and prediction below is invented for this exercise. No model was run. The fictional model trained on daylight photos. Actual means the independently checked label; Model means its prediction. Compare the two and separate new test examples from reused training examples.",
+      "columns": [
+        "ID",
+        "Example",
+        "Actual",
+        "Model"
+      ],
+      "rows": [
+        [
+          "A",
+          "New daylight photo",
+          "Broad",
+          "Broad"
+        ],
+        [
+          "B",
+          "New shade photo",
+          "Narrow",
+          "Broad"
+        ],
+        [
+          "C",
+          "New daylight photo",
+          "Narrow",
+          "Narrow"
+        ],
+        [
+          "D",
+          "Reused training photo, daylight",
+          "Broad",
+          "Broad"
+        ]
+      ]
+    }
+  },
+  "lai.ai-you-can-use.l03": {
+    "revision": "2026-10-13-pilot.1",
+    "question": "How does a reply arrive—and what would make its claim worth sharing?",
+    "exampleAfterAttempt": true,
+    "sections": [
+      {
+        "title": "Follow the message, then the reply",
+        "text": "For these cards: C → D → B → A. The app collects your prompt. The network carries it to the service; the service prepares the model input. The trained model generates output. The service sends the reply back over the network, and the app displays it. The interface, network, service and model do different jobs."
+      },
+      {
+        "title": "Training changes; inference uses",
+        "text": "Recall Lesson 2: training adjusts a model using data. Inference uses the trained model. Text models work with tokens—pieces of text—and generate using learned patterns and available context. Producing this reply does not, by itself, mean the model changed or searched the web."
+      },
+      {
+        "title": "A reply and a source do different jobs",
+        "text": "Fluent text can be useful and still be wrong. To check a schedule, inspect evidence from someone responsible for it. Ask: does this source cover this meeting, and has it been updated? A newer unsupported reply is not automatically stronger evidence than an applicable organizer notice."
+      }
+    ],
+    "practice": {
+      "title": "Trace, compare, revise",
+      "instructions": [
+        "Save your own route before opening the worked trace. Use letters or sentences, with a return path.",
+        "Compare the model’s Friday claim against both dated notices. Save your explanation before opening the comparison choices.",
+        "Use the final book-swap case to write a supported notice and explain one claim you withheld.",
+        "Review your reasoning against the criteria. No real personal details or outside account are needed."
+      ],
+      "selfCheck": "Can you explain both how text was generated and why a particular source supports your correction?"
+    },
+    "stepNames": [
+      "Trace the request",
+      "Compare your trace",
+      "Check the evidence",
+      "Transfer and review"
+    ],
+    "predictionTable": {
+      "caption": "Fictional source packet: this week’s club meeting",
+      "context": "Every card is invented for this exercise. Today in the scenario is 13 October 2026. No model was run. Compare responsibility, date and relevance; the chat has no shown access to either notice.",
+      "columns": [
+        "Card",
+        "Source and date",
+        "What it says"
+      ],
+      "rows": [
+        [
+          "A",
+          "Club noticeboard · 5 October 2026",
+          "Weekly club: Fridays at 16:00, room 4."
+        ],
+        [
+          "B",
+          "Club organizer update · 12 October 2026",
+          "This week only: the meeting moves to Thursday 15 October, 16:00, in the library. This replaces the Friday meeting."
+        ],
+        [
+          "C",
+          "Generated chat reply · 13 October 2026",
+          "Definitely Friday at 4. No source or search shown."
+        ]
+      ]
+    },
+    "takeaway": "Trace the process. Check the claim against relevant evidence. Keep unsupported details out of what you share.",
+    "independentPractice": "Without reopening the worked trace, explain the cloud route to someone or write it yourself. Give a different example where a fluent answer needs an independent source, and say what evidence could change your mind."
+  }
+}

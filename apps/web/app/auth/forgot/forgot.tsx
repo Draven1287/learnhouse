@@ -1,4 +1,6 @@
 'use client'
+import { useSearchParams } from 'next/navigation'
+import { authRoute, isLearningAIOrg } from '@components/LearningAI/authPresentation'
 import React from 'react'
 import FormLayout, {
     FormField,
@@ -31,7 +33,8 @@ interface ForgotPasswordClientProps {
 }
 
 function ForgotPasswordClient({ org }: ForgotPasswordClientProps) {
-    const { t } = useTranslation();
+    const searchParams = useSearchParams()
+  const { t } = useTranslation();
     const { track } = useLHAnalytics('public')
     const [isSubmitting, setIsSubmitting] = React.useState(false)
     const [error, setError] = React.useState('')
@@ -63,7 +66,7 @@ function ForgotPasswordClient({ org }: ForgotPasswordClientProps) {
                 let res = await sendResetLink(values.email)
                 if (res.status == 200) {
                     track(AnalyticsEvent.PasswordResetLinkRequested, { success: true })
-                    setMessage(res.data + ', ' + t('auth.check_email_message'))
+                    setMessage(t('auth.recovery_request_accepted', { defaultValue: 'Request received. If this account can receive recovery mail, follow the link in your email to continue.' }))
                     setShowMessage(true)
                 } else {
                     track(AnalyticsEvent.PasswordResetLinkRequested, { success: false })
@@ -91,7 +94,7 @@ function ForgotPasswordClient({ org }: ForgotPasswordClientProps) {
         >
                 {/* Notification — soft, rounded, inset to match the auth page style */}
                 {showMessage && (error || message) && (
-                    <div className={`
+                    <div role="status" aria-live="polite" className={`
                         mx-6 md:mx-12 lg:mx-20 mt-6 rounded-xl border px-4 py-3 flex items-center justify-between gap-3 animate-in slide-in-from-top duration-200
                         ${error ? 'bg-red-50 text-red-700 border-red-100' : 'bg-green-50 text-green-700 border-green-100'}
                     `}>
@@ -100,6 +103,7 @@ function ForgotPasswordClient({ org }: ForgotPasswordClientProps) {
                             <span className="text-sm font-medium">{error || message}</span>
                         </div>
                         <button
+                            aria-label="Dismiss message"
                             onClick={() => setShowMessage(false)}
                             className="p-1 rounded-lg hover:bg-black/5 transition-colors shrink-0 opacity-60 hover:opacity-100"
                         >
@@ -164,7 +168,7 @@ function ForgotPasswordClient({ org }: ForgotPasswordClientProps) {
 
                         {/* Back to Login */}
                         <p className="text-center text-sm text-black/35 mt-6">
-                            <Link href="/login" className="inline-flex items-center gap-2 text-black font-semibold hover:underline">
+                            <Link href={authRoute('/login', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))} className="inline-flex items-center gap-2 text-black font-semibold hover:underline">
                                 <ArrowLeft size={16} />
                                 {t('auth.back_to_login')}
                             </Link>

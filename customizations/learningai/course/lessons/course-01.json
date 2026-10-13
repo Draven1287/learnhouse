@@ -1,6 +1,6 @@
 {
   "id": "lai.ai-you-can-use.l01",
-  "version": 1,
+  "version": 2,
   "title": "Get your first useful result",
   "number": 1,
   "sourceIds": [
@@ -10,7 +10,9 @@
     "lai.ai-you-can-use.l01.repair",
     "lai.ai-you-can-use.l01.tool",
     "lai.ai-you-can-use.l01.constraint_check",
-    "lai.ai-you-can-use.l01.transfer"
+    "lai.ai-you-can-use.l01.transfer",
+    "lai.ai-you-can-use.l01.first_attempt",
+    "lai.ai-you-can-use.l01.self_review"
   ],
   "coreActivityIds": [
     "lai.ai-you-can-use.l01.repair",
@@ -35,6 +37,25 @@
     "clearInvisibleValues": "onHiddenContainer",
     "pages": [
       {
+        "name": "first-attempt",
+        "title": "Your first attempt",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.brief",
+            "html": "<p>Fictional club brief: six students have 10 minutes, no spending money and no phones. A draft suggests a paid online tournament lasting 45 minutes.</p>"
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l01.first_attempt",
+            "title": "Your first attempt: write a 10-minute plan for the six students before seeing the example. Include time, cost, devices and your tool choice.",
+            "description": "Self-review: Include setup and clearing away in 10 minutes.; Use no spending and no phones.; Explain a tool choice or justified non-use.. Presence only; not automatically graded.",
+            "isRequired": true,
+            "maxLength": 2000
+          }
+        ]
+      },
+      {
         "name": "understand",
         "title": "Get your first useful result",
         "elements": [
@@ -42,6 +63,11 @@
             "type": "html",
             "name": "lai.ai-you-can-use.l01.intro",
             "html": "<h3>Judge a suggestion against practical constraints and justify a tool choice.</h3><p>You decide what a useful result means. A fluent suggestion can still miss your time, budget, or audience. Write down the constraints, compare the suggestion with them, and change or reject it. You can do this with a person, a checklist, or an AI tool. Choosing not to use AI is a valid outcome; the goal is a decision you can explain.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Fictional club brief: six students have 10 minutes, no spending money and no phones. A draft suggests a paid online tournament lasting 45 minutes.</p></div>"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l01.teaching",
+            "html": "<h3>Start with what success needs</h3><p>For the fictional club, success means six students can join an activity within 10 minutes, with no spending and no phones. Those are constraints: conditions the result must satisfy. An exciting description does not make a plan fit.</p><h3>Inspect the draft, one condition at a time</h3><p>The proposed online tournament takes 45 minutes, costs money and needs phones. It fails all three checks. You do not need an AI tool to notice this. Put the brief beside the suggestion and mark each mismatch.</p><h3>Repair it, then check what you missed</h3><p>A possible repair uses one minute to explain a scrap-paper word game, seven minutes to play and two minutes to share. That totals 10 minutes and needs no spending or phones. It is still a proposal: ask the club organizer whether everyone can read, write or contribute another way.</p><h3>Start with your own plan</h3><ol><li>Write a first plan before opening the worked example. Include setup, activity and clearing away in 10 minutes.</li><li>Check no spending and no phones. Choose a tool or explain why none is needed.</li><li>Keep this first version for comparison; you will adapt it to a changed constraint later.</li></ol><p>Is every constraint visible in your plan? What still needs checking with the club organizer?</p>"
           },
           {
             "type": "radiogroup",
@@ -172,22 +198,24 @@
           {
             "type": "comment",
             "name": "lai.ai-you-can-use.l01.transfer",
-            "title": "Write a short replacement plan. Explain how it meets all three constraints: 10 minutes, no spending money, and no phones. Choose AI, a checklist, a person, or no tool and explain why that choice fits. Identify a role to consult, such as the club organizer, rather than a real person’s name.",
+            "title": "Changed constraint: the club now has only FIVE minutes. Six students, no spending and no phones still apply. Adapt your original plan: give a new time allocation including setup and clearing away, explain what you cut or kept, reconsider your tool choice, and name an inclusion check and a role to consult. Use fictional details.",
             "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
             "isRequired": true,
             "maxLength": 2000,
-            "validators": [
-              {
-                "type": "text",
-                "minLength": 30,
-                "text": "Add enough reasoning to review (at least 30 characters)."
-              }
-            ]
+            "validators": []
           },
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l01.rubric",
-            "html": "<p><strong>Self-check</strong></p><ul><li>Plan fits 10 minutes, no money, and no phones.</li><li>Justifies why AI, a checklist, a person, or no tool fits the task.</li><li>Identifies an inclusion check and a role to consult without personal information.</li></ul><p>A proposed activity is not proven successful until tried with its actual participants.</p>"
+            "html": "<p><strong>Self-check</strong></p><ul><li>The revised times total no more than five minutes, including setup and clearing away.</li><li>Explains what changed from the original attempt and why; still no spending or phones.</li><li>Justifies keeping or changing the tool choice, including non-use.</li><li>Names an inclusion check and a role to consult without personal details.</li></ul><p>A proposed activity is not proven successful until tried with its actual participants.</p>"
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l01.self_review",
+            "title": "Self-review: name one criterion your revised plan meets, show the detail that supports it, and identify one uncertainty to check.",
+            "description": "Self-review: Point to evidence in your own plan.; Name a remaining uncertainty without claiming the activity has been tested.. Presence only; not automatically graded.",
+            "isRequired": true,
+            "maxLength": 2000
           }
         ]
       }

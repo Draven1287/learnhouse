@@ -12,7 +12,7 @@ import pytest_asyncio
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from src.services.learningai import service
-from src.services.learningai.contract import LESSON
+from src.services.learningai.contract import LESSON, CONTENT_VERSION
 from src.db.courses.learningai_attempts import LearningAIAttempt
 
 @pytest_asyncio.fixture
@@ -37,7 +37,7 @@ async def local_db(monkeypatch):
                 await conn.execute(text(f'CREATE TABLE "{name}" (id INTEGER PRIMARY KEY)'))
                 await conn.execute(text(f'INSERT INTO "{name}" (id) VALUES (1), (2)'))
             await conn.run_sync(lambda sync: LearningAIAttempt.__table__.create(sync))
-        activity, course = Obj(id=1), Obj(id=1,org_id=1)
+        activity, course = Obj(id=1, activity_type='TYPE_CUSTOM', activity_sub_type='SUBTYPE_CUSTOM', content={'learningai': {'lesson_id': LESSON['id'], 'version': LESSON['version'], 'content_version': CONTENT_VERSION}}), Obj(id=1,org_id=1)
         monkeypatch.setattr(service,'context',AsyncMock(return_value=(activity,course)))
         monkeypatch.setattr(service,'complete',AsyncMock())
         yield async_sessionmaker(engine,expire_on_commit=False), activity, course

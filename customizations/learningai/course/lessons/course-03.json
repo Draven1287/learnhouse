@@ -1,17 +1,21 @@
 {
   "id": "lai.ai-you-can-use.l03",
-  "version": 1,
+  "version": 2,
   "title": "What is happening inside the chat?",
   "number": 3,
   "sourceIds": [
     "llm",
+    "ml",
     "nist"
   ],
   "activityIds": [
     "lai.ai-you-can-use.l03.route",
     "lai.ai-you-can-use.l03.verify",
     "lai.ai-you-can-use.l03.evidence_check",
-    "lai.ai-you-can-use.l03.transfer"
+    "lai.ai-you-can-use.l03.transfer",
+    "lai.ai-you-can-use.l03.request_trace",
+    "lai.ai-you-can-use.l03.evidence_comparison",
+    "lai.ai-you-can-use.l03.self_review"
   ],
   "coreActivityIds": [
     "lai.ai-you-can-use.l03.route",
@@ -36,51 +40,75 @@
     "clearInvisibleValues": "onHiddenContainer",
     "pages": [
       {
+        "name": "first-attempt",
+        "title": "Your first attempt",
+        "elements": [
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.brief",
+            "html": "<p>Fictional club exercise, 13 October 2026. You ask a cloud chat: “When does the club meet this week?” It replies, “Definitely Friday at 4.” No timetable was supplied and no search or source is shown. Route cards, scrambled: A — app displays the returned reply; B — trained model generates output on the service; C — you type the prompt in the app; D — network carries the request to the service, which prepares the input.</p>"
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l03.request_trace",
+            "title": "Before opening the worked trace: type the card letters in travel order (for example X → Y), then explain the network’s job and what the model does. A numbered sentence is equally valid; no dragging is needed. Mark anything you are unsure of.",
+            "description": "Self-review: Include all four cards and the return path.; Distinguish carrying a message from generating text.; This is your first attempt; uncertainty is welcome.. Presence only; not automatically graded.",
+            "isRequired": true,
+            "maxLength": 2000
+          }
+        ]
+      },
+      {
         "name": "understand",
         "title": "What is happening inside the chat?",
         "elements": [
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l03.intro",
-            "html": "<h3>Trace a typical cloud-chat request and separate generating a reply from checking a claim.</h3><p>In a typical cloud chat, the app sends your request over a network to a service. The server prepares input for model inference, then sends output back to the app. A text model processes tokens, which can be words or parts of words, and generates output using learned patterns and available context. This can produce useful text or plausible errors. Some apps run models locally or add search tools; neither a confident tone nor a reply alone proves that a search or fact-check happened.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Fictional chat: you send “hi,” then ask when the club meets. The reply says, “Definitely Friday at 4.” You supplied no timetable and see no source.</p></div>"
+            "html": "<h3>Trace a typical cloud-chat request and separate generating a reply from checking a claim.</h3><p>A chat interface shows a reply; it does not show everything that happened behind it. In this fictional cloud service, a trained model generates text. First trace the journey in your own words. Then compare a claim with dated evidence. You need no external account or live AI tool.</p><div class=\"evidence\"><strong>Practice scenario</strong><p>Fictional club exercise, 13 October 2026. You ask a cloud chat: “When does the club meet this week?” It replies, “Definitely Friday at 4.” No timetable was supplied and no search or source is shown. Route cards, scrambled: A — app displays the returned reply; B — trained model generates output on the service; C — you type the prompt in the app; D — network carries the request to the service, which prepares the input.</p></div>"
+          },
+          {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.teaching",
+            "html": "<h3>Follow the message, then the reply</h3><p>For these cards: C → D → B → A. The app collects your prompt. The network carries it to the service; the service prepares the model input. The trained model generates output. The service sends the reply back over the network, and the app displays it. The interface, network, service and model do different jobs.</p><h3>Training changes; inference uses</h3><p>Recall Lesson 2: training adjusts a model using data. Inference uses the trained model. Text models work with tokens—pieces of text—and generate using learned patterns and available context. Producing this reply does not, by itself, mean the model changed or searched the web.</p><h3>A reply and a source do different jobs</h3><p>Fluent text can be useful and still be wrong. To check a schedule, inspect evidence from someone responsible for it. Ask: does this source cover this meeting, and has it been updated? A newer unsupported reply is not automatically stronger evidence than an applicable organizer notice.</p><h3>Trace, compare, revise</h3><ol><li>Save your own route before opening the worked trace. Use letters or sentences, with a return path.</li><li>Compare the model’s Friday claim against both dated notices. Save your explanation before opening the comparison choices.</li><li>Use the final book-swap case to write a supported notice and explain one claim you withheld.</li><li>Review your reasoning against the criteria. No real personal details or outside account are needed.</li></ol><p>Can you explain both how text was generated and why a particular source supports your correction?</p>"
           },
           {
             "type": "radiogroup",
             "name": "lai.ai-you-can-use.l03.route",
-            "title": "Which route fits the cloud example?",
+            "title": "Compare with your own trace. Which account fits this cloud service?",
             "isRequired": true,
             "correctAnswer": "cloud",
             "choices": [
               {
                 "value": "cloud",
-                "text": "App → network → server → model inference → reply back."
+                "text": "C → D → B → A. The service uses a trained model; the reply returns over the network."
               },
               {
-                "value": "local",
-                "text": "Every app always computes the answer entirely on your phone."
+                "value": "train",
+                "text": "C → D → B → A. Each reply necessarily retrains the model on this message."
               },
               {
                 "value": "search",
-                "text": "Every reply is copied from a web search."
+                "text": "C → D → A → B. The app first retrieves a verified answer; the model then checks it."
               }
             ]
           },
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l03.route.feedback.cloud",
-            "html": "<p class=\"feedback\" role=\"status\">Yes. This is a simplified route, not a map of every service.</p>",
+            "html": "<p class=\"feedback\" role=\"status\">That traces prompt, transport and service, model inference, then the reply. It does not establish a search or fact-check.</p>",
             "visibleIf": "{lai.ai-you-can-use.l03.route} = 'cloud'"
           },
           {
             "type": "html",
-            "name": "lai.ai-you-can-use.l03.route.feedback.local",
-            "html": "<p class=\"feedback\" role=\"status\">On-device models exist, but the scenario specifies a cloud service.</p>",
-            "visibleIf": "{lai.ai-you-can-use.l03.route} = 'local'"
+            "name": "lai.ai-you-can-use.l03.route.feedback.train",
+            "html": "<p class=\"feedback\" role=\"status\">The travel order fits, but using a trained model is inference. A product may separately use stored data for later training; a reply alone does not establish that.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.route} = 'train'"
           },
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l03.route.feedback.search",
-            "html": "<p class=\"feedback\" role=\"status\">Generation does not require a web search; tool use varies.</p>",
+            "html": "<p class=\"feedback\" role=\"status\">In this scenario the model generates the reply before it is displayed. No search or verification is shown. Revisit what each card actually says.</p>",
             "visibleIf": "{lai.ai-you-can-use.l03.route} = 'search'"
           }
         ]
@@ -90,43 +118,56 @@
         "title": "Make a decision",
         "elements": [
           {
+            "type": "html",
+            "name": "lai.ai-you-can-use.l03.predictions",
+            "html": "<p>Every card is invented for this exercise. Today in the scenario is 13 October 2026. No model was run. Compare responsibility, date and relevance; the chat has no shown access to either notice.</p><table><caption>Fictional source packet: this week’s club meeting</caption><thead><tr><th scope=\"col\">Card</th><th scope=\"col\">Source and date</th><th scope=\"col\">What it says</th></tr></thead><tbody><tr><th scope=\"row\">A</th><td>Club noticeboard · 5 October 2026</td><td>Weekly club: Fridays at 16:00, room 4.</td></tr><tr><th scope=\"row\">B</th><td>Club organizer update · 12 October 2026</td><td>This week only: the meeting moves to Thursday 15 October, 16:00, in the library. This replaces the Friday meeting.</td></tr><tr><th scope=\"row\">C</th><td>Generated chat reply · 13 October 2026</td><td>Definitely Friday at 4. No source or search shown.</td></tr></tbody></table>"
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l03.evidence_comparison",
+            "title": "Compare the Friday claim with both notices. Which source applies to this week, and why? Write a corrected message with its source and one thing the packet does not establish.",
+            "description": "Self-review: Use dates, source responsibility and which meeting each notice covers.; Explain why “definitely” or repetition does not verify a claim.; State a limit without inventing missing details.. Presence only; not automatically graded.",
+            "isRequired": true,
+            "maxLength": 2000
+          },
+          {
             "type": "radiogroup",
             "name": "lai.ai-you-can-use.l03.verify",
-            "title": "What should you do before sharing the meeting time?",
+            "title": "After your own source comparison, which message is justified by the packet?",
             "isRequired": true,
             "correctAnswer": "source",
             "choices": [
               {
-                "value": "share",
-                "text": "Share it because it says definitely."
-              },
-              {
-                "value": "repeat",
-                "text": "Ask the same chat until it repeats Friday."
-              },
-              {
                 "value": "source",
-                "text": "Check the club’s current timetable or ask its organizer."
+                "text": "“For this week, the organizer’s 12 October update says Thursday at 16:00 in the library. I would use that update.”"
+              },
+              {
+                "value": "share",
+                "text": "“Friday at 4 is confirmed: both the older notice and the chat agree.”"
+              },
+              {
+                "value": "latest",
+                "text": "“Friday at 4: the 13 October chat reply is newer than both notices.”"
               }
             ]
           },
           {
             "type": "html",
+            "name": "lai.ai-you-can-use.l03.verify.feedback.source",
+            "html": "<p class=\"feedback\" role=\"status\">This names both the evidence and its scope. The older notice describes the earlier plan; confident chat wording adds no verification.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.verify} = 'source'"
+          },
+          {
+            "type": "html",
             "name": "lai.ai-you-can-use.l03.verify.feedback.share",
-            "html": "<p class=\"feedback\" role=\"status\">Confidence is wording, not evidence of the timetable.</p>",
+            "html": "<p class=\"feedback\" role=\"status\">Agreement is not enough. Check whether the notice still applies after the organizer’s dated update.</p>",
             "visibleIf": "{lai.ai-you-can-use.l03.verify} = 'share'"
           },
           {
             "type": "html",
-            "name": "lai.ai-you-can-use.l03.verify.feedback.repeat",
-            "html": "<p class=\"feedback\" role=\"status\">Consistency alone does not independently verify the claim.</p>",
-            "visibleIf": "{lai.ai-you-can-use.l03.verify} = 'repeat'"
-          },
-          {
-            "type": "html",
-            "name": "lai.ai-you-can-use.l03.verify.feedback.source",
-            "html": "<p class=\"feedback\" role=\"status\">Use a source that actually knows the schedule and check its date.</p>",
-            "visibleIf": "{lai.ai-you-can-use.l03.verify} = 'source'"
+            "name": "lai.ai-you-can-use.l03.verify.feedback.latest",
+            "html": "<p class=\"feedback\" role=\"status\">A newer timestamp does not give a generated reply authority over an organizer’s update. Ask what source knows and whether it covers this week.</p>",
+            "visibleIf": "{lai.ai-you-can-use.l03.verify} = 'latest'"
           }
         ]
       },
@@ -138,30 +179,30 @@
           {
             "type": "radiogroup",
             "name": "lai.ai-you-can-use.l03.evidence_check",
-            "title": "What would independently check the timetable claim?",
+            "title": "The reply repeats Friday. What would change the evidence?",
             "isRequired": true,
             "correctAnswer": "official",
             "choices": [
               {
                 "value": "repeat",
-                "text": "Repeating the same question."
+                "text": "Ask for a more confident version of the same reply."
               },
               {
                 "value": "official",
-                "text": "The current timetable or responsible organizer."
+                "text": "Check the current organizer update, or ask the organizer if the update is unclear."
               }
             ]
           },
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l03.evidence_check.feedback.repeat",
-            "html": "<p class=\"feedback\" role=\"status\">Repetition is not an independent timetable source.</p>",
+            "html": "<p class=\"feedback\" role=\"status\">That changes wording, not the source of the timetable.</p>",
             "visibleIf": "{lai.ai-you-can-use.l03.evidence_check} = 'repeat'"
           },
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l03.evidence_check.feedback.official",
-            "html": "<p class=\"feedback\" role=\"status\">That source can establish the meeting time.</p>",
+            "html": "<p class=\"feedback\" role=\"status\">Use evidence from someone responsible for the schedule and check which meeting it covers.</p>",
             "visibleIf": "{lai.ai-you-can-use.l03.evidence_check} = 'official'"
           }
         ]
@@ -173,22 +214,24 @@
           {
             "type": "comment",
             "name": "lai.ai-you-can-use.l03.transfer",
-            "title": "Explain where the request travels and why the meeting time remains unverified. Name the source you would consult or explain why you would withhold the claim.",
+            "title": "New fictional case: a chat says “The book swap definitely has free pizza.” The current organizer card says “Tuesday, library, 15:30–16:00, free entry”; it says nothing about food. Write a notice you would share, identify what you withheld and why, and name a check that could resolve the food claim. Then explain why generating this reply is inference, not proof that the model retrained or searched.",
             "description": "Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.",
             "isRequired": true,
             "maxLength": 2000,
-            "validators": [
-              {
-                "type": "text",
-                "minLength": 30,
-                "text": "Add enough reasoning to review (at least 30 characters)."
-              }
-            ]
+            "validators": []
           },
           {
             "type": "html",
             "name": "lai.ai-you-can-use.l03.rubric",
-            "html": "<p><strong>Self-check</strong></p><ul><li>Distinguishes app/network/service/model.</li><li>Does not equate confident generation with verified truth.</li><li>Names a relevant independent check or justified decision not to share.</li></ul><p>This is a simplified cloud route. Chat retention, later training use, search access and on-device operation depend on the product and settings.</p>"
+            "html": "<p><strong>Self-check</strong></p><ul><li>Notice includes only supported facts; free entry is not a promise of food.</li><li>Withholds the food claim without claiming food is definitely absent.</li><li>Names the responsible organizer or an applicable source as a check.</li><li>Distinguishes inference from training and does not assume search.</li></ul><p>This simplified route describes a fictional cloud service. Other products may use on-device models or tools. Chat retention, later training use and search depend on the product and settings. All dates, notices and replies here are invented teaching fixtures; no model was run.</p>"
+          },
+          {
+            "type": "comment",
+            "name": "lai.ai-you-can-use.l03.self_review",
+            "title": "Self-review: identify one change or clarification in your original trace or source comparison. Explain why it matters. What would you check if the organizer issued another update?",
+            "description": "Self-review: Point to your own words and a specific reason.; Describe what new evidence would change your decision.. Presence only; not automatically graded.",
+            "isRequired": true,
+            "maxLength": 2000
           }
         ]
       }

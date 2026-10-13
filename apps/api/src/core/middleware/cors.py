@@ -1,5 +1,6 @@
 """Tenancy-aware CORS configuration."""
 
+import logging
 import re
 from urllib.parse import urlparse
 
@@ -8,8 +9,25 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config.config import get_learnhouse_config
 
+logger = logging.getLogger(__name__)
 
 _SINGLE_TENANCY_LOCALHOST_REGEX = r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"
+_CATCH_ALL_PROBE = "https://unrelated.invalid"
+
+
+def effective_allowed_regexp(config=None) -> str | None:
+    """Ignore an origin pattern that also matches an unrelated host."""
+    config = config or get_learnhouse_config()
+    pattern = config.hosting_config.allowed_regexp
+    if not pattern:
+        return None
+    try:
+        if re.match(pattern, _CATCH_ALL_PROBE):
+            logger.warning("Ignoring catch-all LEARNHOUSE_ALLOWED_REGEXP")
+            return None
+    except re.error:
+        pass  # The caller compiles the pattern and reports the invalid regex.
+    return pattern
 
 
 def _host_from(value: str) -> str:
@@ -54,7 +72,7 @@ def _single_tenancy_origin_regex(config) -> str:
     )
 
 
-def get_cors_origin_regex() -> str:
+def get_cors_origin_regex(config=None) -> str:
     """
     Compute the regex for ``CORSMiddleware``'s ``allow_origin_regex`` based on
     the active tenancy mode.
@@ -66,7 +84,7 @@ def get_cors_origin_regex() -> str:
       domains are a known gap; they require backend restart or per-request
       DB resolution.
     """
-    config = get_learnhouse_config()
+    config = config or get_learnhouse_config()
     if config.hosting_config.tenancy == "single":
         return _single_tenancy_origin_regex(config)
     # Multi-tenancy: use the configured regexp. If the operator left it empty
@@ -74,7 +92,7 @@ def get_cors_origin_regex() -> str:
     # a domain-and-subdomain regex derived from the configured domain. Returning
     # an empty/None value here makes CORSMiddleware reject every cross-origin
     # request with credentials, taking the whole SaaS frontend offline.
-    allowed_regexp = config.hosting_config.allowed_regexp
+    allowed_regexp = effective_allowed_regexp(config)
     if allowed_regexp:
         return allowed_regexp
     domain = _host_from(config.hosting_config.domain)

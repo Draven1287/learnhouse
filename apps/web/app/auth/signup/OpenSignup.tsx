@@ -1,4 +1,6 @@
 'use client'
+import { useSearchParams } from 'next/navigation'
+import { authDestination, authRoute, isLearningAIOrg, useAuthPresentation } from '@components/LearningAI/authPresentation'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
@@ -67,6 +69,7 @@ interface OpenSignUpComponentProps {
 }
 
 function OpenSignUpComponent({ org: propOrg }: OpenSignUpComponentProps = {}) {
+  const searchParams = useSearchParams()
   const { t } = useTranslation()
   const { track } = useLHAnalytics('public')
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -85,7 +88,8 @@ function OpenSignUpComponent({ org: propOrg }: OpenSignUpComponentProps = {}) {
   // both, so offering them here would only surface a 403.
   const allowedMethods = React.useMemo(() => getAllowedAuthMethods(org), [org])
   const passwordAllowed = allowedMethods.has('password')
-  const googleAllowed = allowedMethods.has('google')
+  const { googleConfigured } = useAuthPresentation()
+  const googleAllowed = allowedMethods.has('google') && googleConfigured
 
   // Field definitions ship with the org config the page already loaded, so no
   // extra request is needed to render them.
@@ -147,8 +151,7 @@ function OpenSignUpComponent({ org: propOrg }: OpenSignUpComponentProps = {}) {
   // cross-domain /redirect_from_auth handoff; default to /home.
   const buildCallbackUrl = () => {
     const params = new URLSearchParams(window.location.search)
-    const raw = params.get('next') ?? params.get('redirect')
-    const dest = raw && /^\/(?!\/)/.test(raw) ? raw : '/home'
+    const dest = authDestination(params, isLearningAIOrg(org?.slug))
     return `${window.location.origin}/redirect_from_auth?next=${encodeURIComponent(dest)}`
   }
 
@@ -221,7 +224,7 @@ function OpenSignUpComponent({ org: propOrg }: OpenSignUpComponentProps = {}) {
               <p className="text-xs text-red-500">{t('auth.resend_verification_failed', { defaultValue: 'Could not resend. Please try again shortly.' })}</p>
             )}
             <hr className="border-green-100" />
-            <Link className="flex items-center gap-2 text-sm font-medium hover:underline" href="/login">
+            <Link className="flex items-center gap-2 text-sm font-medium hover:underline" href={authRoute('/login', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))}>
               <User size={14} />
               <span>{t('auth.login')}</span>
             </Link>
@@ -235,7 +238,7 @@ function OpenSignUpComponent({ org: propOrg }: OpenSignUpComponentProps = {}) {
               <div className="font-semibold text-sm">{t('auth.account_created_success')}</div>
             </div>
             <hr className="border-green-100" />
-            <Link className="flex items-center gap-2 text-sm font-medium hover:underline" href="/login">
+            <Link className="flex items-center gap-2 text-sm font-medium hover:underline" href={authRoute('/login', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))}>
               <User size={14} />
               <span>{t('auth.login')}</span>
             </Link>
@@ -435,7 +438,7 @@ function OpenSignUpComponent({ org: propOrg }: OpenSignUpComponentProps = {}) {
         {/* Login Link */}
         <p className="text-center text-sm text-black/35 mt-6">
           {t('auth.already_have_account')}{' '}
-          <Link href="/login" className="text-black font-semibold hover:underline">
+          <Link href={authRoute('/login', new URLSearchParams(searchParams.toString()), isLearningAIOrg(org?.slug))} className="text-black font-semibold hover:underline">
             {t('auth.login')}
           </Link>
         </p>

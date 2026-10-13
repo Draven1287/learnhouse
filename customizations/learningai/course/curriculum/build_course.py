@@ -133,6 +133,19 @@ L[14]['transferFields']=[
  {'id':L[14]['id']+'.after','prompt':'Paste the revised artifact and identify the change made because of a test.','minLength':60,'maxLength':6000}]
 for l in L:
  l['completionPolicy']={'mode':'formative-submission','requires':'All visible required core/branch choices and required text fields','correctAnswersRequired':False,'reflectionSemanticallyGraded':False}
+# Version 2 applies only to new attempts; the API retains frozen version 1 definitions.
+pilot_assessments=json.loads((ROOT/'curriculum/pilot-assessments.json').read_text())
+for l in L:
+ if l['id'] in pilot_assessments:l.update(pilot_assessments[l['id']])
+pilot_teaching=json.loads((ROOT/'curriculum/pilot-teaching.json').read_text())
+for l in L:
+ if l['id'] in pilot_teaching:
+  l['teaching']=pilot_teaching[l['id']]
+  l['references']=[dict(s) for s in SOURCES if s['id'] in l['sourceIds']]
+  (ROOT.parents[2]/f'apps/api/src/services/learningai/lesson-{l["number"]:02d}.json').write_text(json.dumps(l,indent=2,ensure_ascii=False)+'\n')
+# The course map is a plan; availability always also requires a readable API activity.
+catalog=[{k:l[k] for k in ('id','number','part','title','objective','estimatedMinutes')} | {'pilot':l['id'] in pilot_teaching, 'question':pilot_teaching.get(l['id'], {}).get('question', l['objective'])} for l in L]
+(ROOT.parents[2]/'apps/web/components/LearningAI/course-catalog.json').write_text(json.dumps(catalog,indent=2,ensure_ascii=False)+'\n')
 course={'schemaVersion':1,'courseId':'lai.ai-you-can-use','contentVersion':'2026-10-05-draft.2','status':'draft-for-review-not-certified','audience':'High-school/teen learners; no external AI account required','parts':parts,'principles':['Evidence-based disagreement and justified non-use earn full credit.','All scenarios and evidence cards are fictional unless explicitly sourced.','Reflection rubrics are for self/teacher review; no semantic auto-grading.','Device-only persistence is not authenticated progress.'],'sources':[dict(s,reviewedOn='2026-10-05') for s in SOURCES],'lessons':L}
 (ROOT/'curriculum/course-manifest.json').write_text(json.dumps(course,indent=2,ensure_ascii=False)+'\n')
 # Human review edition generated from the same authored source.
@@ -141,6 +154,10 @@ for p in parts:
  lines += [f"### Part {p['number']}: {p['title']}",'']+[f"{n}. {L[n-1]['title']}" for n in p['lessons']]+['']
 for l in L:
  lines += [f"## {l['number']}. {l['title']}",'',f"Stable ID: `{l['id']}` · version {l['version']} · {l['status']}",'',f"**Objective:** {l['objective']}",'','**Student explanation**','',l['explanation'],'','**Practice scenario**','',l['scenario'],'']
+ if 'teaching' in l:
+  t=l['teaching']
+  for section in t['sections']:lines += ['### '+section['title'],'',section['text'],'']
+  lines += ['**'+t['practice']['title']+'**','']+[f'- {x}' for x in t['practice']['instructions']]+['',t['practice']['selfCheck'],'','**Takeaway:** '+t['takeaway'],'','**Independent practice:** '+t['independentPractice'],'']
  for a in l['activities']+([l['branchActivity']] if 'branchActivity'in l else []):
   lines += [f"### Exercise: {a['id']}",'']
   if 'visibleIfActivity'in a:lines += [f"Branch: show if `{a['visibleIfActivity']}` was answered other than `{a['visibleIfNotEqual']}`. It is a learning detour, not a penalty.",'']
@@ -148,6 +165,9 @@ for l in L:
   for c in a['choices']:lines += [f"- **{c['value']} — {c['text']}** Feedback: {c['feedback']}"]
   lines += ['',f"**Answer:** `{a['correctAnswer']}`. {a['rationale']}",'']
  
+ for f in l.get('responseFields',[]):lines += ['**Required practice response:** '+f['prompt'], '', 'Self-review criteria: '+ '; '.join(f['criteria']), '']
+ if l.get('teaching',{}).get('predictionTable'):
+  table=l['teaching']['predictionTable'];lines += ['**'+table['caption']+'**','',table['context'],'',' | '.join(table['columns']),' | '.join(['---']*len(table['columns']))]+[' | '.join(row) for row in table['rows']]+['']
  for f in l.get('transferFields',[]):lines += ['**Required project submission:** '+f['prompt'], '', f"Field `{f['id']}`; {f['minLength']}–{f['maxLength']} characters. Length checks record submission, not quality.", '']
  lines += ['**Reflection / transfer**','',l['transfer']['prompt'],'','**Review rubric (0–2 per item)**','']+[f'- {x}'for x in l['transfer']['rubric']]+['',f"**Uncertainty and scope:** {l['uncertainty']}",'',f"**Optional media — specification only:** {l['optionalMedia']['description']}",'','**Factual references:** '+', '.join(f"[{s['title']}]({s['url']})"for s in SOURCES if s['id']in l['sourceIds']), '']
 lines+=['## Source notes and review boundaries','', 'Sources were checked on 2026-10-05. Scenarios, choices and rubrics are original instructional material. References support the specific conceptual claims below; they do not endorse this curriculum. Recheck product behavior, school policies and legal guidance before release.','']
@@ -164,11 +184,28 @@ def questions(a):
  return result
 for l in L:
  pages=[{'name':'understand','title':l['title'],'elements':[h(l['id']+'.intro','<h3>'+html.escape(l['objective'])+'</h3><p>'+html.escape(l['explanation'])+'</p><div class="evidence"><strong>Practice scenario</strong><p>'+html.escape(l['scenario'])+'</p></div>')]+questions(l['activities'][0])}, {'name':'decide','title':'Make a decision','elements':questions(l['activities'][1])}]
+ if 'teaching' in l:
+  t=l['teaching']; practice=t['practice']
+  teaching_html=''.join('<h3>'+html.escape(s['title'])+'</h3><p>'+html.escape(s['text'])+'</p>' for s in t['sections'])
+  teaching_html+='<h3>'+html.escape(practice['title'])+'</h3><ol>'+''.join('<li>'+html.escape(x)+'</li>' for x in practice['instructions'])+'</ol><p>'+html.escape(practice['selfCheck'])+'</p>'
+  pages[0]['elements'].insert(1,h(l['id']+'.teaching',teaching_html))
  a=l.get('branchActivity')
  if a:pages.append({'name':'detour','title':'Take a closer look','visibleIf':"{"+a['visibleIfActivity']+"} notempty and {"+a['visibleIfActivity']+"} != '"+a['visibleIfNotEqual']+"'",'elements':questions(a)})
  tid=l['transfer']['id'];pages.append({'name':'transfer','title':'Make the reasoning yours','elements':[{'type':'comment','name':tid,'title':l['transfer']['prompt'],'description':'Practice text only. Saved on this device. Reviewed by you or an educator, not AI graded.','isRequired':True,'maxLength':2000,'validators':[{'type':'text','minLength':30,'text':'Add enough reasoning to review (at least 30 characters).'}]},h(l['id']+'.rubric','<p><strong>Self-check</strong></p><ul>'+''.join('<li>'+html.escape(x)+'</li>'for x in l['transfer']['rubric'])+'</ul><p>'+html.escape(l['uncertainty'])+'</p>')]})
+ if l.get('responseFields'):
+  for f in l['responseFields']:
+   q={'type':'comment','name':f['id'],'title':f['prompt'],'description':'Self-review: '+'; '.join(f['criteria'])+'. Presence only; not automatically graded.','isRequired':True,'maxLength':f['maxLength']}
+   if f['stage']==0:
+    pages.insert(0,{'name':'first-attempt','title':'Your first attempt','elements':[h(l['id']+'.brief','<p>'+html.escape(l['scenario'])+'</p>'),q]})
+   elif f['stage']==2:next(p for p in pages if p['name']=='decide')['elements'].insert(0,q)
+   else:pages[-1]['elements'].append(q)
+  pages[-1]['elements'][0]['validators']=[]
+  table=l.get('teaching',{}).get('predictionTable')
+  if table:
+   markup='<table><caption>'+html.escape(table['caption'])+'</caption><thead><tr>'+''.join('<th scope="col">'+html.escape(c)+'</th>' for c in table['columns'])+'</tr></thead><tbody>'+''.join('<tr><th scope="row">'+html.escape(row[0])+'</th>'+''.join('<td>'+html.escape(c)+'</td>' for c in row[1:])+'</tr>' for row in table['rows'])+'</tbody></table>'
+   next(p for p in pages if p['name']=='decide')['elements'].insert(0,h(l['id']+'.predictions','<p>'+html.escape(table['context'])+'</p>'+markup))
  for f in reversed(l.get('transferFields',[])):
   pages[-1]['elements'].insert(0,{'type':'comment','name':f['id'],'title':f['prompt'],'isRequired':True,'maxLength':f['maxLength'],'validators':[{'type':'text','minLength':f['minLength'],'text':f"Add at least {f['minLength']} characters of work to submit."}]})
- payload={'id':l['id'],'version':l['version'],'title':l['title'],'number':l['number'],'sourceIds':l['sourceIds'],'activityIds':[a['id']for a in l['activities']]+([l['branchActivity']['id']] if 'branchActivity' in l else [])+[tid]+[f['id'] for f in l.get('transferFields',[])],'coreActivityIds':[a['id']for a in l['activities']],'reflectionId':tid,'completionPolicy':l['completionPolicy'],'survey':{'showQuestionNumbers':'off','showProgressBar':'top','progressBarType':'questions','textUpdateMode':'onTyping','pageNextText':'Continue','pagePrevText':'Back','completeText':'Finish lesson','showCompletedPage':False,'clearInvisibleValues':'onHiddenContainer','pages':pages}}
+ payload={'id':l['id'],'version':l['version'],'title':l['title'],'number':l['number'],'sourceIds':l['sourceIds'],'activityIds':[a['id']for a in l['activities']]+([l['branchActivity']['id']] if 'branchActivity' in l else [])+[tid]+[f['id'] for f in l.get('transferFields',[])]+[f['id'] for f in l.get('responseFields',[])],'coreActivityIds':[a['id']for a in l['activities']],'reflectionId':tid,'completionPolicy':l['completionPolicy'],'survey':{'showQuestionNumbers':'off','showProgressBar':'top','progressBarType':'questions','textUpdateMode':'onTyping','pageNextText':'Continue','pagePrevText':'Back','completeText':'Finish lesson','showCompletedPage':False,'clearInvisibleValues':'onHiddenContainer','pages':pages}}
  (ROOT/f'lessons/course-{l["number"]:02d}.json').write_text(json.dumps(payload,indent=2,ensure_ascii=False)+'\n')
 print(f'Generated {len(L)} authored lessons, 15 SurveyJS lessons, {len(lines)} Markdown blocks')

@@ -1,4 +1,5 @@
 'use client'
+import { isLearningAIOrg } from '@components/LearningAI/authPresentation'
 import { useOrg } from '@components/Contexts/OrgContext'
 import { signOut } from '@components/Contexts/AuthContext'
 import {
@@ -107,6 +108,7 @@ const UPGRADE_STARS: {
 
 function DashLeftMenu() {
   const org = useOrg() as any
+  const cockpit = isLearningAIOrg(org?.slug)
   const session = useLHSession() as any
   const { t, i18n } = useTranslation()
   const { track } = useLHAnalytics('dashboard')
@@ -250,9 +252,9 @@ function DashLeftMenu() {
       )}>
         <Link
           className={cn("flex items-center transition-opacity hover:opacity-70", isCollapsed ? "" : "space-x-3")}
-          href={'/'}
+          href={cockpit ? '/learningai' : '/'}
         >
-          {planMeetsRequirement(plan, 'standard') && hasOrgLogo(org) ? (
+          {cockpit ? <span className="cockpit-wordmark" aria-label="LearningAI">LA</span> : planMeetsRequirement(plan, 'standard') && hasOrgLogo(org) ? (
             <div className="h-9 w-9 rounded-lg overflow-hidden bg-white shrink-0">
               <OrgSquareLogo org={org} wideInsetClassName="p-1" fallback={null} />
             </div>

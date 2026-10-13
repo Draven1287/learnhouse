@@ -1,3 +1,4 @@
+import CockpitWorkspace from '@components/LearningAI/CockpitWorkspace'
 import type React from 'react'
 import { Metadata } from 'next'
 import { OrgProvider } from '@components/Contexts/OrgContext'
@@ -40,7 +41,7 @@ export default async function RootLayout(props: {
   const params = await props.params
 
   return (
-    <div>
+    <CockpitWorkspace orgslug={params.orgslug}>
       <OrgProvider orgslug={params.orgslug}>
         <OrgLanguageSync />
         <NextTopLoader color="#2e2e2e" initialPosition={0.3} height={4} easing={'ease'} speed={500} showSpinner={false} />
@@ -49,6 +50,6 @@ export default async function RootLayout(props: {
         {props.children}
         <Footer />
       </OrgProvider>
-    </div>
+    </CockpitWorkspace>
   )
 }

@@ -14,6 +14,7 @@ from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 from config.config import get_learnhouse_config
+from src.core.middleware.cors import get_cors_origin_regex
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +43,9 @@ class CSRFProtectionMiddleware(BaseHTTPMiddleware):
         super().__init__(app)
         config = get_learnhouse_config()
         self.allowed_origins = config.hosting_config.allowed_origins
-        self.allowed_regexp = config.hosting_config.allowed_regexp
+        # Keep browser mutations on the same domain-derived origin policy as
+        # credentialed CORS, including when the shipped catch-all is ignored.
+        self.allowed_regexp = get_cors_origin_regex(config)
         self.development_mode = config.general_config.development_mode
 
         # Compile the regexp for performance
