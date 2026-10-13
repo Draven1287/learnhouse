@@ -16,6 +16,7 @@ Tests cover:
 import asyncio
 import re
 from unittest.mock import AsyncMock, MagicMock, patch
+import pytest
 from starlette.responses import JSONResponse
 
 
@@ -42,6 +43,16 @@ def _make_request(method="POST", headers=None):
 
 class TestCSRFOriginValidation:
     """Test origin checking logic."""
+
+    @pytest.mark.parametrize("catch_all", [r".*", r"\b((?:https?://)[^\s/$.?#].[^\s]*)\b"])
+    def test_catch_all_regexp_does_not_disable_csrf(self, catch_all):
+        with patch("src.security.csrf.get_learnhouse_config", return_value=_make_mock_config(
+            allowed_origins=["https://example.com"], allowed_regexp=catch_all,
+        )):
+            from src.security.csrf import CSRFProtectionMiddleware
+            mw = CSRFProtectionMiddleware(MagicMock())
+            assert mw.is_allowed_origin("https://example.com") is True
+            assert mw.is_allowed_origin("https://unrelated.invalid") is False
 
     def test_allowed_origin_exact_match(self):
         with patch("src.security.csrf.get_learnhouse_config", return_value=_make_mock_config(

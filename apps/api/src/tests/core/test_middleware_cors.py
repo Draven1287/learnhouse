@@ -4,6 +4,7 @@ import re
 from types import SimpleNamespace
 from unittest.mock import patch
 
+import pytest
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -74,6 +75,16 @@ class TestGetCorsOriginRegex:
             assert re.fullmatch(regex, "https://acme.learnhouse.io")
             assert re.fullmatch(regex, "https://deep.sub.learnhouse.io:8443")
             assert not re.fullmatch(regex, "https://evil.example.org")
+
+    @pytest.mark.parametrize("catch_all", [r".*", r"\b((?:https?://)[^\s/$.?#].[^\s]*)\b"])
+    def test_multi_tenancy_ignores_catch_all_origin_regexp(self, catch_all):
+        with patch(
+            "src.core.middleware.cors.get_learnhouse_config",
+            return_value=_config("multi", allowed_regexp=catch_all, domain="learnhouse.io"),
+        ):
+            regex = get_cors_origin_regex()
+            assert re.fullmatch(regex, "https://acme.learnhouse.io")
+            assert not re.fullmatch(regex, "https://unrelated.invalid")
 
     def test_multi_tenancy_falls_back_to_localhost_when_regexp_and_domain_empty(self):
         # cors.py:83 - with neither allowed_regexp nor domain configured, multi
