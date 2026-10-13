@@ -72,7 +72,7 @@ def _single_tenancy_origin_regex(config) -> str:
     )
 
 
-def get_cors_origin_regex() -> str:
+def get_cors_origin_regex(config=None) -> str:
     """
     Compute the regex for ``CORSMiddleware``'s ``allow_origin_regex`` based on
     the active tenancy mode.
@@ -84,7 +84,7 @@ def get_cors_origin_regex() -> str:
       domains are a known gap; they require backend restart or per-request
       DB resolution.
     """
-    config = get_learnhouse_config()
+    config = config or get_learnhouse_config()
     if config.hosting_config.tenancy == "single":
         return _single_tenancy_origin_regex(config)
     # Multi-tenancy: use the configured regexp. If the operator left it empty

@@ -9,7 +9,7 @@ security certification. No production environment or database was used.
 | Boundary | Evidence | Result |
 | --- | --- | --- |
 | Cross-organization roles | Upstream `0ce31fc3` pins role joins to the target membership; our pre-patch join lacked both predicates. | Added predicates and regression tests for course/account writes and an allowed same-org write. |
-| Credentialed origins | Upstream `0ce31fc3` filters an overly broad allowed-origin regex. Our multi-tenant CORS and CSRF accepted `.*` and the shipped `config.yaml` regex, which both match `https://unrelated.invalid`. | Both now ignore a regex that matches an unrelated origin; tests cover CORS and CSRF with both patterns. Explicit origins still apply. |
+| Credentialed origins | Upstream `0ce31fc3` filters an overly broad allowed-origin regex. Our multi-tenant CORS and CSRF accepted `.*` and the shipped `config.yaml` regex, which both match `https://unrelated.invalid`. | Both now ignore a regex that matches an unrelated origin. CSRF uses CORS's domain-derived fallback so legitimate frontend origins continue to work in both tenancy modes. Tests cover the shipped pattern, explicit origins, and the single-tenant frontend. |
 | API schema exposure | Upstream `a2558c55`; our production app hid `/docs` and `/redoc` but left `/openapi.json` at FastAPI's default. | Schema route is now present only in development mode. |
 | Public author/profile projection | Upstream `7b8a3e22`, previously backported in this branch. | Focused privacy regressions passed at the Lesson 3 checkpoint. |
 

@@ -29,6 +29,9 @@ def _make_mock_config(
     config = MagicMock()
     config.hosting_config.allowed_origins = allowed_origins or []
     config.hosting_config.allowed_regexp = allowed_regexp or ""
+    config.hosting_config.tenancy = "multi"
+    config.hosting_config.domain = "example.com"
+    config.hosting_config.frontend_domain = "app.example.com"
     config.general_config.development_mode = development_mode
     return config
 
@@ -52,6 +55,18 @@ class TestCSRFOriginValidation:
             from src.security.csrf import CSRFProtectionMiddleware
             mw = CSRFProtectionMiddleware(MagicMock())
             assert mw.is_allowed_origin("https://example.com") is True
+            assert mw.is_allowed_origin("https://app.example.com") is True
+            assert mw.is_allowed_origin("https://unrelated.invalid") is False
+
+    def test_single_tenancy_frontend_domain_survives_catch_all_filter(self):
+        config = _make_mock_config(allowed_regexp=r".*")
+        config.hosting_config.tenancy = "single"
+        config.hosting_config.domain = "api.example.com"
+        config.hosting_config.frontend_domain = "learn.example.com"
+        with patch("src.security.csrf.get_learnhouse_config", return_value=config):
+            from src.security.csrf import CSRFProtectionMiddleware
+            mw = CSRFProtectionMiddleware(MagicMock())
+            assert mw.is_allowed_origin("https://learn.example.com") is True
             assert mw.is_allowed_origin("https://unrelated.invalid") is False
 
     def test_allowed_origin_exact_match(self):
