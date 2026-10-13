@@ -6,7 +6,7 @@ Published baseline: 95ffd3a89c744d5ea2e0ca07cef8540386b7cf1e; equivalent local c
 
 The canonical curriculum has 15 authored review drafts: explanations, two core checks with feedback, transfer prompts/rubrics, and project artifacts for Lessons 14–15. The generated SurveyJS review player is a separate device-local review surface. At baseline only Lessons 1–2 have native LearnHouse authenticated progress. Optional storyboards for 2, 3 and 12 are specifications, not completed videos. LearnHouse provides the platform; it does not supply this complete custom course.
 
-Preserve all titles, stable IDs, sequence, saved Lesson 1–2 editions and existing API shapes. Add Lesson 3 version 2 only to the native allowlist; keep 4–15 unreleased. No paid requests, external student accounts, deployment, credentials, DNS or database resets. UI redesign waits for an actual Claude response; this increment uses the existing dark native player.
+Preserve all titles, stable IDs, sequence, saved Lesson 1–2 editions and existing API shapes. Add Lesson 3 version 2 only to the native allowlist; keep 4–15 unreleased. No paid requests, external student accounts, deployment, credentials, DNS or database resets. The user accepts the current visual direction; preserve the dark native player and focus on lessons, functionality and targeted security fixes. A broad visual redesign is outside this increment.
 
 ## Work and acceptance
 
